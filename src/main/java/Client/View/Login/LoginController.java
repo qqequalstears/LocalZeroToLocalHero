@@ -1,6 +1,6 @@
-package View.Login;
+package Client.View.Login;
 
-import View.Home.HomeController;
+import Client.View.Home.HomeController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

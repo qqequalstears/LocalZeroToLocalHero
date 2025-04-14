@@ -2,6 +2,8 @@ package Server.fileman;
 
 import java.io.*;
 
+import Server.Model.IDataFetcher;
+
 
 /**
  * The ReadFromFile class provides methods for reading data from a file.
@@ -17,11 +19,11 @@ import java.io.*;
  * @date 2025-04-07
  */
 
-public class ReadFromFile {
+public class ReadFromFile implements IDataFetcher{
 
     private static ReadFromFile instance;
 
-    private static final String destinationUser = "src\\main\\java\\server\\fileman\\fileStorage\\users.txt";  //TODO the path will prob. change. This is from @Janssons local testing
+    private static final String destinationUser = "src\\main\\java\\server\\fileman\\fileStorage\\users.txt";  //TODO the path will prob. change. This is from @Janssons local testing 
     private static final String destinationAchievements = "src\\main\\java\\server\\fileman\\fileStorage\\achievements.txt";  //TODO the path will prob. change. This is from @Janssons local testing
 
     /**
@@ -96,6 +98,32 @@ public class ReadFromFile {
      */
     public String readAchievements() {
         return readWholeFile(destinationAchievements);
+    }
+
+
+    @Override
+    public String fetchAllUserData() {
+        return readUsers();
+    }
+
+
+    @Override
+    public String fetchAchievementsData() {
+      return readAchievements();
+    }
+
+
+    @Override
+    public String fetchUserAchievementsData() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'fetchUserAchievementsData'");
+    }
+
+
+    @Override
+    public String fetchUserAchievementsData(String userName) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'fetchUserAchievementsData'");
     }
 
 

@@ -1,6 +1,6 @@
-package Controller;
+package Client.Controller;
 
-import View.Login.LoginController;
+import Client.View.Login.LoginController;
 import javafx.application.Application;
 
 public class Launcher {

@@ -1,4 +1,4 @@
-package View.Home;
+package Client.View.Home;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

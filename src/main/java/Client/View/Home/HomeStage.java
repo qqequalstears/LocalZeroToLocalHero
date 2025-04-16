@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HomeController {
+public class HomeStage {
     public void creatHomeStage() {
         Stage recipeStage = new Stage();
         Parent root = null;

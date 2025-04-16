@@ -1,7 +1,7 @@
 package Client.Controller;
 
 import Client.Model.GUIEvents;
-import Client.View.Home.HomeController;
+import Client.View.Home.HomeStage;
 import Client.View.UserNotifier;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,8 +33,8 @@ public class GUIMediatorImpl implements GUIMediator{
                 clientController.sendUserToServer((String) data[0],(String) data[1],(String) data[2],(String) data[3]);
                 break;
             case NEWSTAGE:
-                HomeController homeController = new HomeController();
-                homeController.creatHomeStage();
+                HomeStage homeStage = new HomeStage();
+                homeStage.creatHomeStage();
                 break;
             case NOTIFYUSER:
                 UserNotifier userNotifier = (UserNotifier) controllers.get(UserNotifier.class.getName());

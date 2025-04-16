@@ -1,19 +1,13 @@
-package Client.View.Login;
+package Client.Controller.GUIControllers;
 
 import Client.Controller.GUIMediator;
 import Client.Controller.GUIMediatorImpl;
-import Client.View.Home.HomeController;
-import javafx.application.Application;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
-public class LoginController extends Application {
+public class LoginController {
     @FXML
     private ImageView background;
     @FXML
@@ -35,30 +29,19 @@ public class LoginController extends Application {
     @FXML
     private PasswordField passwordTextfield;
     private GUIMediator guiMediator;
-    private Stage stage;
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login/LoginStage.fxml"));
-        loader.setController(this);
-        Parent root = loader.load();
-        Scene scene = new Scene(root, 600, 400);
-        this.stage.setScene(scene);
-        this.stage.setResizable(false);
-        this.stage.setTitle("Welcome to LocalZeroToHero");
+    public LoginController() {}
+
+    @FXML
+    public void initialize() {
         nameTextfield.setVisible(false);
         cityTextfield.setVisible(false);
+
         Image image = new Image("LogIn/background.png");
         background.setImage(image);
+
         guiMediator = GUIMediatorImpl.getInstance();
         guiMediator.registerController(this.getClass().getName(), this);
-
-        this.stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
     public void setLoginMenu() {

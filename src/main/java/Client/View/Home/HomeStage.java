@@ -1,5 +1,6 @@
 package Client.View.Home;
 
+import Client.View.StageCreator;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -7,8 +8,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HomeStage {
-    public void creatHomeStage() {
+public class HomeStage implements StageCreator {
+    @Override
+    public void createStage() {
         Stage recipeStage = new Stage();
         Parent root = null;
         try {

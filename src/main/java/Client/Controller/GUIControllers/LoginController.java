@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class LoginController {
     @FXML
@@ -70,19 +71,31 @@ public class LoginController {
         }
     }
 
+    public void closeStage() {
+        Stage stage = (Stage) loginOrRegisterButton.getScene().getWindow();
+        stage.close();
+    }
+
     private void handleLogin(String mail, String password) {
         if (!mail.isEmpty() && !password.isEmpty()) {
+            loginOrRegisterButton.setDisable(false);
             guiMediator.notify("LOGIN",mail, password);
+            guiMediator.notify("NEWSTAGE","HOMESTAGE");
         } else {
             guiMediator.notify("NOTIFYUSER", "Mail or password has not been entered, please try again");
         }
     }
 
     private void handleRegister(String mail, String password, String name, String city) {
-        if (mail.contains("@") && !password.isEmpty() && !name.isEmpty() && !city.isEmpty()) { // todo Möjligtvivs lägg till bättre felhantering
-            guiMediator.notify("REGISTER", mail,password,name,city);
+        if (mail.contains("@")) {
+            if (!password.isEmpty() && !name.isEmpty() && !city.isEmpty()) {
+                loginOrRegisterButton.setDisable(true);
+                guiMediator.notify("REGISTER", mail, password, name, city);
+            } else {
+                guiMediator.notify("NOTIFYUSER", "Mail, password, name or city has not been entered properly, please try again");
+            }
         } else {
-            guiMediator.notify("NOTIFYUSER", "Mail, password, name or city has not been entered properly, please try again");
+            guiMediator.notify("NOTIFYUSER", "The mail needs to contain @");
         }
     }
 }

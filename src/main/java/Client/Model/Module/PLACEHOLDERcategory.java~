@@ -1,0 +1,6 @@
+package Client.Model.Module;
+
+public enum PLACEHOLDERcategories {
+    bla,
+    blabla,
+}

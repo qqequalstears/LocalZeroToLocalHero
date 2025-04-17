@@ -1,11 +1,19 @@
 package Server.Model;
+
+import java.util.List;
+
 /**
- * The {@code IDataFetcher} interface defines methods for retrieving user and achievement data from a data source.
- * It provides functionality to fetch all user data, all achievement data, and specific user achievement data.
+ * The {@code IDataFetcher} interface defines methods for retrieving user and
+ * achievement data from a data source.
+ * It provides functionality to fetch all user data, all achievement data, and
+ * specific user achievement data.
  * <p>
- * This interface is designed to be implemented by classes that handle data fetching operations, such as reading
- * from files or databases. It abstracts the details of data retrieval, allowing for flexibility in the underlying
+ * This interface is designed to be implemented by classes that handle data
+ * fetching operations, such as reading
+ * from files or databases. It abstracts the details of data retrieval, allowing
+ * for flexibility in the underlying
  * implementation.
+ * 
  * @author Jansson Anton
  * @Date 2025-04-14
  */
@@ -15,8 +23,19 @@ public interface IDataFetcher {
      * Fetches all user data from the data source.
      *
      * @return A string containing all user data.
+     * @author Jansson Anton
+     * @Date 2025-04-14
      */
     String fetchAllUserData();
+
+    /**
+     * Fetches all users from the data source.
+     *
+     * @return A list of {@code User} objects representing all users.
+     * @author Jansson Anton
+     * @Date 2025-04-15
+     */
+    List<User> fetchAllUsers();
 
     /**
      * Fetches all achievement data from the data source.
@@ -25,16 +44,16 @@ public interface IDataFetcher {
      * @author Jansson Anton
      * @Date 2025-04-14
      */
-    String fetchAchievementsData();
+    String fetchAllAchievementsData();
 
     /**
      * Fetches all user achievement data from the data source.
      *
      * @return A string containing all user achievement data.
      * @author Jansson Anton
-    * @Date 2025-04-14
+     * @Date 2025-04-14
      */
-    String fetchUserAchievementsData();
+    String fetchAllUserAchievementsData();
 
     /**
      * Fetches achievement data for a specific user from the data source.
@@ -45,4 +64,22 @@ public interface IDataFetcher {
      * @Date 2025-04-14
      */
     String fetchUserAchievementsData(String userName);
+
+    /**
+     * Fetches all log data from the data source.
+     *
+     * @return A string containing all log data.
+     * @author Jansson Anton
+     * @Date 2025-04-16
+     */
+    String fetchAllLogData();
+
+    /**
+     * Fetches all active initiative data from the data source.
+     *
+     * @return A string containing all active initiative data.
+     * @author Jansson Anton
+     * @Date 2025-04-16
+     */
+    String fetchAllActiveIntiativeData();
 }

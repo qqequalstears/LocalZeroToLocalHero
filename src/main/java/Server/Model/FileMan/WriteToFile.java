@@ -1,10 +1,10 @@
 package Server.Model.FileMan;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-
 
 /**
  * The WriteToFile class provides methods for writing data to a file.
@@ -26,23 +26,12 @@ import java.io.IOException;
  * @Date 2025-04-07
  */
 public class WriteToFile implements IDataWriter {
+    private static final File destinationUser = FileDestinationFactory.getUserDataFile();
+    private static final File destinationAchievements = FileDestinationFactory.getAchievementDataFile();
+    private static final File destinationLog = FileDestinationFactory.getLogDataFile();
+    private static final File destinationActiveIntiative = FileDestinationFactory.getActiveInitiativeDataFile();
 
     private static WriteToFile instance;
-    private static final String destinationUser = "src\\main\\java\\server\\fileStorage\\users.csv"; // TODO: Update
-                                                                                                     // path for
-                                                                                                     // production
-    private static final String destinationAchievements = "src\\main\\java\\server\\fileStorage\\achievements.csv"; // TODO:
-                                                                                                                    // Update
-                                                                                                                    // path
-                                                                                                                    // for
-                                                                                                                    // production
-    private static final String destinationLog = "src\\main\\java\\server\\fileStorage\\log.csv"; // TODO: Update path
-                                                                                                  // for production
-    private static final String destinationActiveIntiative = "src\\main\\java\\server\\fileStorage\\activeIntiative.csv"; // TODO:
-                                                                                                                          // Update
-                                                                                                                          // path
-                                                                                                                          // for
-                                                                                                                          // production
 
     /**
      * Provides a singleton instance of the WriteToFile class.
@@ -66,16 +55,16 @@ public class WriteToFile implements IDataWriter {
      * The file is overwritten (not appended) when this method is called.
      * If the file does not exist, it will be created.
      *
-     * @param destination The path of the file where the data should be written.
+     * @param file The path of the file where the data should be written.
      * @param header      The header to be written at the top of the file.
      * @param data        The content to be written to the file.
      * @return A message indicating the result of the operation.
      * @author Jansson Anton
      * @Date 2025-04-15
      */
-    private String writeToCSVFile(String destination, String header, String data) {
+    private String writeToCSVFile(File file, String header, String data) {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(destination, false));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file, false));
             if (header != null && !header.isEmpty()) {
                 bw.write(header);
             } else {
@@ -146,8 +135,8 @@ public class WriteToFile implements IDataWriter {
      * @Date 2025-04-16
      */
     private String writeToLog(String logEntery) {
-        String header = " logID,logEntery"; // TODO this is a placeholder. The header needs to be changed to the
-                                            // corresponding header.
+        String header = " logID,logEntery\n"; // TODO this is a placeholder. The header needs to be changed to the
+                                              // corresponding header.
         return writeToCSVFile(destinationLog, header, logEntery);
     }
 

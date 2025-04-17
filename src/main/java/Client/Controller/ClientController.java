@@ -1,14 +1,17 @@
 package Client.Controller;
 
+import Client.Controller.Mediators.GUIMediator;
+import Client.Controller.Mediators.Mediator;
+import Client.Controller.Mediators.MediatorManager;
 import Client.Model.LoginCredentials;
 import Client.Model.User;
 
 public class ClientController {
-    private GUIMediator guiMediator;
+    private Mediator mediator;
 
     public ClientController() {
-        guiMediator = GUIMediatorImpl.getInstance();
-        guiMediator.registerController(this.getClass().getName(), this);
+        mediator = MediatorManager.getInstance().getMediator("GUI");
+        mediator.registerController(this.getClass().getName(), this);
     }
 
     public void sendUserToServer(String mail, String password, String name, String city) {
@@ -23,9 +26,9 @@ public class ClientController {
 
     public void successfulLogin(boolean success) {
         if (success) {
-            guiMediator.notify("SUCCESSLOGIN");
+            mediator.notify("SUCCESSLOGIN");
         } else {
-            guiMediator.notify("NOTIFYUSER", "Wrong mail or password entered");
+            mediator.notify("NOTIFYUSER", "Wrong mail or password entered");
         }
     }
 }

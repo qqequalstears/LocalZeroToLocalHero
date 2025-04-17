@@ -1,4 +1,4 @@
-package Client.Controller;
+package Client.Controller.Mediators;
 
 import Client.Controller.GUIControllers.LoginController;
 import Client.Model.GUIEvents;
@@ -10,12 +10,12 @@ import Client.View.UserNotifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class GUIMediatorImpl implements GUIMediator{
-    private static GUIMediator instance;
-    private Map<String, Object> controllers;
+public class GUIMediator implements Mediator{
     private Map<String, StageCreator> stageCreators;
+    private Map<String, Object> controllers;
 
-    private GUIMediatorImpl() {
+
+    public GUIMediator() {
         controllers = new ConcurrentHashMap<>();
         stageCreators = new ConcurrentHashMap<>();
 
@@ -25,22 +25,14 @@ public class GUIMediatorImpl implements GUIMediator{
 
     @Override
     public void registerController(String key, Object controller) {
-        controllers.put(key,controller);
+
     }
 
     @Override
     public void notify(String event, Object... data) {
         GUIEvents eventType = GUIEvents.valueOf(event.toUpperCase());
 
-        ClientController clientController = (ClientController) controllers.get(ClientController.class.getName());
-
         switch (eventType) {
-            case LOGIN:
-                clientController.sendLoginToServer((String) data[0], (String) data[1]);
-                break;
-            case REGISTER:
-                clientController.sendUserToServer((String) data[0],(String) data[1],(String) data[2],(String) data[3]);
-                break;
             case NEWSTAGE:
                 StageCreator creator = stageCreators.get((String) data[0]);
                 creator.createStage();
@@ -53,12 +45,5 @@ public class GUIMediatorImpl implements GUIMediator{
                 LoginController loginController = (LoginController) controllers.get(LoginController.class.getName());
                 loginController.closeStage();
         }
-    }
-
-    public synchronized static GUIMediator getInstance() {
-        if (instance == null) {
-            instance = new GUIMediatorImpl();
-        }
-        return instance;
     }
 }

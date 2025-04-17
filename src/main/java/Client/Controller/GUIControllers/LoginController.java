@@ -1,7 +1,8 @@
 package Client.Controller.GUIControllers;
 
-import Client.Controller.GUIMediator;
-import Client.Controller.GUIMediatorImpl;
+import Client.Controller.Mediators.GUIMediator;
+import Client.Controller.Mediators.Mediator;
+import Client.Controller.Mediators.MediatorManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -29,7 +30,7 @@ public class LoginController {
     private TextField cityTextfield;
     @FXML
     private PasswordField passwordTextfield;
-    private GUIMediator guiMediator;
+    private Mediator mediator;
 
     public LoginController() {}
 
@@ -41,8 +42,8 @@ public class LoginController {
         Image image = new Image("LogIn/background.png");
         background.setImage(image);
 
-        guiMediator = GUIMediatorImpl.getInstance();
-        guiMediator.registerController(this.getClass().getName(), this);
+        mediator = MediatorManager.getInstance().getMediator("GUI");
+        mediator.registerController(this.getClass().getName(), this);
     }
 
     public void setLoginMenu() {
@@ -79,10 +80,10 @@ public class LoginController {
     private void handleLogin(String mail, String password) {
         if (!mail.isEmpty() && !password.isEmpty()) {
             loginOrRegisterButton.setDisable(false);
-            guiMediator.notify("LOGIN",mail, password);
-            guiMediator.notify("NEWSTAGE","HOMESTAGE");
+            mediator.notify("LOGIN",mail, password);
+            mediator.notify("NEWSTAGE","HOMESTAGE");
         } else {
-            guiMediator.notify("NOTIFYUSER", "Mail or password has not been entered, please try again");
+            mediator.notify("NOTIFYUSER", "Mail or password has not been entered, please try again");
         }
     }
 
@@ -90,12 +91,12 @@ public class LoginController {
         if (mail.contains("@")) {
             if (!password.isEmpty() && !name.isEmpty() && !city.isEmpty()) {
                 loginOrRegisterButton.setDisable(true);
-                guiMediator.notify("REGISTER", mail, password, name, city);
+                mediator.notify("REGISTER", mail, password, name, city);
             } else {
-                guiMediator.notify("NOTIFYUSER", "Mail, password, name or city has not been entered properly, please try again");
+                mediator.notify("NOTIFYUSER", "Mail, password, name or city has not been entered properly, please try again");
             }
         } else {
-            guiMediator.notify("NOTIFYUSER", "The mail needs to contain @");
+            mediator.notify("NOTIFYUSER", "The mail needs to contain @");
         }
     }
 }

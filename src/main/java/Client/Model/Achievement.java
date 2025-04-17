@@ -1,10 +1,10 @@
-package Client.Model.Module;
+package Client.Model;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 
 /**
- * Object representing Acheivements
+ * Object representing Achievements
  *
  * @author MartinFrick
  * @version 250416_0

@@ -1,8 +1,8 @@
-package Client.Model.Module.InitiativeParent;
+package Client.Model.InitiativeParent;
 
-import Client.Model.Module.Achievement;
-import Client.Model.Module.PLACEHOLDERcategory;
-import Client.Model.Module.User;
+import Client.Model.Achievement;
+import Client.Model.PLACEHOLDERcategory;
+import Client.Model.User;
 
 import java.util.ArrayList;
 import java.util.List;

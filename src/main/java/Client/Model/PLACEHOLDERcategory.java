@@ -1,4 +1,4 @@
-package Client.Model.Module;
+package Client.Model;
 
 public enum PLACEHOLDERcategory {
     bla,

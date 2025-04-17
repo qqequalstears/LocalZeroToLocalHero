@@ -1,4 +1,4 @@
-package Client.Model.Module;
+package Client.Model;
 
 /**
  * Interface requiring classes to implement and realize logging functionalities.

@@ -15,7 +15,7 @@
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>
-        <Button fx:id="offlineUsersButton" layoutX="68.0" layoutY="285.0" mnemonicParsing="false" style="-fx-background-color: #A3D1C6;" text="Online users" textFill="WHITE">
+        <Button fx:id="onlineUsersButton" layoutX="68.0" layoutY="285.0" mnemonicParsing="false" style="-fx-background-color: #A3D1C6;" text="Online users" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>

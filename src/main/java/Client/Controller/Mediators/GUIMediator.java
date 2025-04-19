@@ -1,5 +1,6 @@
 package Client.Controller.Mediators;
 
+import Client.Controller.GUIControllers.Intitiative.InitiativeController;
 import Client.Controller.GUIControllers.LoginController;
 import Client.Model.GUIEvents;
 import Client.View.Home.HomeStage;
@@ -21,6 +22,7 @@ public class GUIMediator implements Mediator{
 
         stageCreators.put("HOMESTAGE", () -> new HomeStage().createStage());
         stageCreators.put("LOGINSTAGE", () -> new LogInStage().createStage());
+        stageCreators.put("INITIATIVESTAGE", () -> new InitiativeController());
     }
 
     @Override

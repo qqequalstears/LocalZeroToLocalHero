@@ -1,5 +1,7 @@
 package Client.Controller.GUIControllers.Home;
 
+import Client.Controller.Mediators.Mediator;
+import Client.Controller.Mediators.MediatorManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,10 +15,13 @@ public class HomeLeftController {
     @FXML
     private Button createButton;
     private ObservableList<String> intitiatives = FXCollections.observableArrayList();
+    private Mediator mediator;
 
 
     @FXML
     public void initialize() {
+        mediator = MediatorManager.getInstance().getMediator("GUI");
+
         initiativesListview.setItems(intitiatives);
         initiativesListview.setCellFactory(listView -> new ListCell<String>() {
             @Override
@@ -32,5 +37,12 @@ public class HomeLeftController {
         intitiatives.add("hej");
         intitiatives.add("på");
         intitiatives.add("DIG");
+
+        initiativesListview.setOnMouseClicked(event -> {
+            String selectedInitiative = (String) initiativesListview.getSelectionModel().getSelectedItem();
+            if (selectedInitiative != null) {
+                //mediator.notify("NEWSTAGE",);
+            }
+        });
     }
 }

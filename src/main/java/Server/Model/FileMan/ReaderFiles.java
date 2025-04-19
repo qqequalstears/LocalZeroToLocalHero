@@ -6,7 +6,7 @@ import java.util.List;
 import Server.Model.User;
 
 /**
- * The ReadFromFile class provides methods for reading data from a file.
+ * The FileReader class provides methods for reading data from a file.
  * It follows the Singleton design pattern, ensuring only one instance of the
  * class exists at any time.
  * The class offers functionality to read the entire content of a file as a
@@ -23,58 +23,29 @@ import Server.Model.User;
  * @date 2025-04-07
  */
 
-public class ReadFromFile implements IDataFetcher {
+public class ReaderFiles implements IDataFetcher {
 
-    private static ReadFromFile instance;
+    private static ReaderFiles instance;
 
-    private static final String destinationUser = "src\\main\\java\\server\\fileStorage\\users.csv"; // TODO the path
-                                                                                                     // will prob.
-                                                                                                     // change. This is
-                                                                                                     // from @Janssons
-                                                                                                     // local testing
-    private static final String destinationAchievements = "src\\main\\java\\server\\fileStorage\\achievements.csv"; // TODO
-                                                                                                                    // the
-                                                                                                                    // path
-                                                                                                                    // will
-                                                                                                                    // prob.
-                                                                                                                    // change.
-                                                                                                                    // This
-                                                                                                                    // is
-                                                                                                                    // from
-                                                                                                                    // @Janssons
-                                                                                                                    // local
-                                                                                                                    // testing
-    private static final String destinationLog = "src\\main\\java\\server\\fileStorage\\log.csv";// TODO the path will
-                                                                                                 // prob. change. This
-                                                                                                 // is from @Janssons
-                                                                                                 // local testing
-    private static final String destinationActiveIntiative = "src\\main\\java\\server\\fileStorage\\activeIntiative.csv"; // TODO
-                                                                                                                          // the
-                                                                                                                          // path
-                                                                                                                          // will
-                                                                                                                          // prob.
-                                                                                                                          // change.
-                                                                                                                          // This
-                                                                                                                          // is
-                                                                                                                          // from
-                                                                                                                          // @Janssons
-                                                                                                                          // local
-                                                                                                                          // testing
+    private static final File destinationUser = FileDestinationFactory.getUserDataFile();
+    private static final File destinationAchievements = FileDestinationFactory.getAchievementDataFile();
+    private static final File destinationLog = FileDestinationFactory.getLogDataFile();
+    private static final File destinationActiveIntiative=FileDestinationFactory.getActiveInitiativeDataFile();
 
     /**
-     * Provides a singleton instance of the ReadFromFile class.
-     * This method ensures that only one instance of ReadFromFile exists at any
+     * Provides a singleton instance of the FileReader class.
+     * This method ensures that only one instance of FileReader exists at any
      * given time.
      * If an instance does not already exist, it creates a new one; otherwise, it
      * returns the existing instance.
      *
-     * @return The singleton instance of the ReadFromFile class.
+     * @return The singleton instance of the FileReader class.
      * @author Jansson Anton
      * @Date 2025-04-07
      */
-    public static ReadFromFile getInstance() {
+    public static ReaderFiles getInstance() {
         if (instance == null) {
-            instance = new ReadFromFile();
+            instance = new ReaderFiles();
         }
         return instance;
     }
@@ -86,8 +57,8 @@ public class ReadFromFile implements IDataFetcher {
      * If the file does not exist or an error occurs during reading, an error
      * message is returned.
      *
-     * @param destination The path to the file to be read. This can be an absolute
-     *                    or relative file path.
+     * @param file The path to the file to be read. This can be an absolute
+     *             or relative file path.
      * @return A string containing the entire content of the file. If an error
      *         occurs, an error message is returned.
      *         Returns "File not found at: <destination>" if the file is not found,
@@ -99,9 +70,9 @@ public class ReadFromFile implements IDataFetcher {
      * @author Jansson Anton
      * @Date 2025-04-07
      */
-    private String readWholeCSVFile(String destination) {
+    private String readWholeCSVFile(File file) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(destination));
+            BufferedReader br = new BufferedReader(new FileReader(file));
             StringBuilder returnString = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
@@ -112,16 +83,16 @@ public class ReadFromFile implements IDataFetcher {
 
         } catch (FileNotFoundException fnfe) {
             System.out.println(fnfe);
-            return "File not found at: " + destination;
+            return "File not found at: " + file;
         } catch (IOException e) {
             return "Error reading the file: " + e.getMessage();
         }
     }
 
     /**
-     * Reads the content of the users file and returns it as a string.
+     * Reads the content of the users file and returns it as a {@String}.
      *
-     * @return A string containing the entire content of the users file.
+     * @return A containing the entire content of the users file.
      *         If an error occurs during reading, an error message is returned.
      * @author Jansson Anton
      * @Date 2025-04-07

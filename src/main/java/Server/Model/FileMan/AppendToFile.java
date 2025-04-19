@@ -1,6 +1,7 @@
 package Server.Model.FileMan;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,46 +21,10 @@ import java.util.List;
  */
 public class AppendToFile implements IDataAppender {
     private static AppendToFile instance;
-    private static final String destinationUser = "src\\main\\java\\server\\fileStorage\\users.csv"; // TODO
-                                                                                                     // the
-                                                                                                     // path
-                                                                                                     // will
-                                                                                                     // prob.
-                                                                                                     // change.
-                                                                                                     // This is
-                                                                                                     // from
-                                                                                                     // @Janssons
-                                                                                                     // local
-                                                                                                     // testing
-    private static final String destinationAchievements = "src\\main\\java\\server\\fileStorage\\achievements.csv"; // TODO
-                                                                                                                    // the
-                                                                                                                    // path
-                                                                                                                    // will
-                                                                                                                    // prob.
-                                                                                                                    // change.
-                                                                                                                    // This
-                                                                                                                    // is
-                                                                                                                    // from
-                                                                                                                    // @Janssons
-                                                                                                                    // local
-                                                                                                                    // testing
-
-    private static final String destinationLog = "src\\main\\java\\server\\fileStorage\\log.csv"; // TODO the path will
-    // prob. change. This
-    // is from @Janssons
-    // local testing
-    private static final String destinationActiveIntiative = "src\\main\\java\\server\\fileStorage\\activeIntiative.csv"; // TODO
-                                                                                                                          // the
-                                                                                                                          // path
-                                                                                                                          // will
-                                                                                                                          // prob.
-                                                                                                                          // change.
-                                                                                                                          // This
-                                                                                                                          // is
-                                                                                                                          // from
-                                                                                                                          // @Janssons
-                                                                                                                          // local
-                                                                                                                          // testing
+    private static final File destinationUser = FileDestinationFactory.getUserDataFile();
+    private static final File destinationAchievements = FileDestinationFactory.getAchievementDataFile();
+    private static final File destinationLog = FileDestinationFactory.getLogDataFile();
+    private static final File destinationActiveIntiative=FileDestinationFactory.getActiveInitiativeDataFile();
 
     /**
      * Returns the singleton instance of the `AppendToFile` class.
@@ -82,7 +47,7 @@ public class AppendToFile implements IDataAppender {
      * If the file doesn't exist, it will be created. If the file exists, the data
      * will be appended to it.
      *
-     * @param destination The path of the file where the data should be appended.
+     * @param file The path of the file where the data should be appended.
      * @param data        The data that will be appended to the file.
      * @return A message indicating whether the data was appended successfully or if
      *         there was an error.
@@ -95,9 +60,9 @@ public class AppendToFile implements IDataAppender {
      * @author Jansson Anton
      * @Date 2025-04-16
      */
-    private String appendToFile(String destination, String data) {
+    private String appendToFile(File file, String data) {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(destination, true));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
             bw.write(data);
             bw.newLine();
             bw.flush();
@@ -127,7 +92,7 @@ public class AppendToFile implements IDataAppender {
     // dev.
     // 2025-04-16
     // @Jansson
-    private String appendCollectionToFile(String destination, List<ISavableObject> listOfObjects) {
+    private String appendCollectionToFile(File destination, List<ISavableObject> listOfObjects) {
 
         for (ISavableObject savableObject : listOfObjects) {
             String data = savableObject.getSavableString();
@@ -237,5 +202,7 @@ public class AppendToFile implements IDataAppender {
     public String appendActiveIntiativeToFile(String data) {
         return appendToActiveIntiative(data);
     }
+
+     
 
 }

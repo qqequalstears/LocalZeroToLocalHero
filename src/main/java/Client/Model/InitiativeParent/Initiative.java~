@@ -2,7 +2,7 @@ package Client.Model.InitiativeParent;
 
 import Client.Model.Achievement;
 import Client.Model.PLACEHOLDERcategory;
-import Client.User;
+import Client.Model.User;
 
 import java.util.ArrayList;
 import java.util.List;

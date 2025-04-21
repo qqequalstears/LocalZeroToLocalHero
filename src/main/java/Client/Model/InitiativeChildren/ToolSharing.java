@@ -4,7 +4,7 @@ import Client.Model.Achievement;
 import Client.Model.InitiativeParent.Initiative;
 import Client.Model.Log;
 import Client.Model.PLACEHOLDERcategory;
-import Client.Model.User;
+import Client.User;
 
 import java.util.List;
 

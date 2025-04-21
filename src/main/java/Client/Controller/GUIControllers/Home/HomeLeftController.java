@@ -41,8 +41,13 @@ public class HomeLeftController {
         initiativesListview.setOnMouseClicked(event -> {
             String selectedInitiative = (String) initiativesListview.getSelectionModel().getSelectedItem();
             if (selectedInitiative != null) {
-                //mediator.notify("NEWSTAGE",);
+                //mediator.notify("NEWSTAGE","");
             }
         });
+    }
+
+    @FXML
+    public void createInitiative() {
+        mediator.notify("NEWSTAGE", "CREATEINITIATIVE");
     }
 }

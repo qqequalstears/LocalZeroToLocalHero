@@ -1,6 +1,5 @@
-package Client.Controller.GUIControllers;
+package Client.Controller.GUIControllers.LoginController;
 
-import Client.Controller.Mediators.GUIMediator;
 import Client.Controller.Mediators.Mediator;
 import Client.Controller.Mediators.MediatorManager;
 import javafx.fxml.FXML;

@@ -1,4 +1,4 @@
-package Client.Model.InitiativeChildren;
+package Client.Model.Initiative.Children;
 
 /**
  * Interface requiring and guaranteeing a class has ability to calculate its own duration, returning it as an int.

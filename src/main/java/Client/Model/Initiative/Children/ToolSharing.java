@@ -1,11 +1,8 @@
-package Client.Model.InitiativeChildren;
+package Client.Model.Initiative.Children;
 
 import Client.Model.Achievement;
-import Client.Model.InitiativeParent.Initiative;
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Log;
-import Client.Model.PLACEHOLDERcategory;
-import Client.User;
-
 import java.util.List;
 
 /**
@@ -17,8 +14,8 @@ import java.util.List;
  */
 public class ToolSharing extends Initiative implements durationCalculation, Log {
 
-    public ToolSharing(String title, String description, String location, String duration, String startTime, List<PLACEHOLDERcategory> categories, List<User> participants, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
-        super(title, description, location, duration, startTime, categories, participants, comments, likes, isPublic, achievements);
+    public ToolSharing(String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
+        super(title, description, location, duration, startTime, comments, likes, isPublic, achievements);
     }
 
     @Override

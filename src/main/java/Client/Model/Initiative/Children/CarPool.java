@@ -1,25 +1,23 @@
-package Client.Model.InitiativeChildren;
+package Client.Model.Initiative.Children;
 
 import Client.Model.Achievement;
-import Client.Model.InitiativeParent.Initiative;
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Log;
-import Client.Model.PLACEHOLDERcategory;
-import Client.User;
 import java.util.List;
 
 /**
- *  Object representing initiative of some form of transportation.
- *
+ *  Object representing initiative of a car pool.
+ *  Changed 24/4 to be "CarPool" from "transportation". /MartinFrick
+ *  21/4 Updated according to superclass changes. /MartinFrick
  *
  * @author MartinFrick
- * @version 250417_0
+ * @version 250421_1
  */
 
-public class Transportation extends Initiative implements durationCalculation, Log {
+public class CarPool extends Initiative implements durationCalculation, Log {
 
-    public Transportation(String title, String description, String location, String duration, String startTime, List<PLACEHOLDERcategory> categories, List<User> participants, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
-        super(title, description, location, duration, startTime, categories, participants, comments, likes, isPublic, achievements);
-
+    public CarPool(String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
+        super(title, description, location, duration, startTime, comments, likes, isPublic, achievements);
     }
 
     @Override

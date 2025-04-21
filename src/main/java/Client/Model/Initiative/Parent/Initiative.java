@@ -1,18 +1,17 @@
-package Client.Model.InitiativeParent;
-
+package Client.Model.Initiative.Parent;
 import Client.Model.Achievement;
-import Client.Model.PLACEHOLDERcategory;
-import Client.User;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Object utilizing Template Design Pattern to represent initiative or actions that actors in the system can take depending (on its role).
+ *  Object utilizing Template Design Pattern to represent initiatives that actors in the system can take (depending on actor in question role).
  *  Includes abstract method(s) "startActivity" & "improveAchievements".
  *
+ *  12/4 Removed participants variable to be implemented in subclasses if/as needed.
+ *  12/4 Removed categories variable as it is represented as the implementation of this class subclasses and is not necessary to save.
+ *
  * @author MartinFrick
- * @version 250416_0
+ * @version 250421_0
  */
 
 public abstract class Initiative {
@@ -22,22 +21,18 @@ public abstract class Initiative {
     private String location;
     private String duration;
     private String startTime;
-    private List<PLACEHOLDERcategory> categories;
-    private List<User> participants;
     private List<String> comments;
     private List<String> likes;
     private List<Achievement> achievements;
     private boolean isPublic = false;
 
 
-    public Initiative(String title, String description, String location, String duration, String startTime, List<PLACEHOLDERcategory> categories, List<User> participants, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
+    public Initiative(String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
         this.title = title;
         this.description = description;
         this.location = location;
         this.duration = duration;
         this.startTime = startTime;
-        this.categories = new ArrayList<>(categories);
-        this.participants = new ArrayList<>(participants);
         this.comments = new ArrayList<>(comments);
         this.likes = new ArrayList<>(likes);
         this.achievements = new ArrayList<>(achievements);
@@ -86,22 +81,6 @@ public abstract class Initiative {
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
-    }
-
-    public List<PLACEHOLDERcategory> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<PLACEHOLDERcategory> categories) {
-        this.categories = categories;
-    }
-
-    public List<User> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<User> participants) {
-        this.participants = participants;
     }
 
     public List<String> getComments() {

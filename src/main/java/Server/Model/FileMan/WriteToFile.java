@@ -43,7 +43,7 @@ public class WriteToFile implements IDataWriter {
      * @author Jansson Anton
      * @Date 2025-04-15
      */
-    public static WriteToFile getInstance() {
+    public static synchronized WriteToFile getInstance() {
         if (instance == null) {
             instance = new WriteToFile();
         }

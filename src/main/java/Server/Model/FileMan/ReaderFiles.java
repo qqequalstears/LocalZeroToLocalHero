@@ -43,7 +43,7 @@ public class ReaderFiles implements IDataFetcher {
      * @author Jansson Anton
      * @Date 2025-04-07
      */
-    public static ReaderFiles getInstance() {
+    public static synchronized ReaderFiles getInstance() {
         if (instance == null) {
             instance = new ReaderFiles();
         }

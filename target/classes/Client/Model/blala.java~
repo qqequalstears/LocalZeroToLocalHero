@@ -1,0 +1,11 @@
+package Client.Model;
+
+import Client.iUser;
+
+public class blala {
+
+    iUser user = new iUser();
+    User user2 = new User();
+
+
+}

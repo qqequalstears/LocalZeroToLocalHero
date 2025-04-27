@@ -10,7 +10,7 @@ public class ConnectionController {
 
     public ConnectionController () {
         this.clientUpdater = new ClientUpdater();
-        this.connectionListener = new ConnectionListener(8080,this);
+        this.connectionListener = new ConnectionListener(2343,this);
 
     }
     public synchronized void addConnection(Socket socket) {
@@ -22,6 +22,7 @@ public class ConnectionController {
             System.out.println("Error creating client connection: " + socket.getInetAddress());
             e.printStackTrace();
         }
+        System.out.println("Client connected: " + socket.getInetAddress());
 
     }
 }

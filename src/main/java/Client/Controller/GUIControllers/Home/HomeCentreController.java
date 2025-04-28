@@ -1,5 +1,6 @@
 package Client.Controller.GUIControllers.Home;
 
+import Client.Controller.GUIControllers.FxController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,8 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
-public class HomeCentreController {
+public class HomeCentreController implements FxController {
     @FXML
     private ListView usersListview;
 
@@ -40,5 +42,11 @@ public class HomeCentreController {
         usernames.add("hej");
         usernames.add("på");
         usernames.add("DIG");
+    }
+
+    @Override
+    public void closeStage() {
+        Stage stage = (Stage) onlineUsersButton.getScene().getWindow();
+        stage.close();
     }
 }

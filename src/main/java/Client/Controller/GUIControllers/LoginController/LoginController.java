@@ -1,14 +1,15 @@
 package Client.Controller.GUIControllers.LoginController;
 
-import Client.Controller.Mediators.Mediator;
-import Client.Controller.Mediators.MediatorManager;
+import Client.Controller.GUIControllers.FxController;
+import Client.Controller.GUIControllers.GUIControllerRegistry;
+import Client.Controller.Mediators.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class LoginController {
+public class LoginController implements FxController {
     @FXML
     private ImageView background;
     @FXML
@@ -29,7 +30,8 @@ public class LoginController {
     private TextField cityTextfield;
     @FXML
     private PasswordField passwordTextfield;
-    private Mediator mediator;
+    private GUIController guiController;
+
 
     public LoginController() {}
 
@@ -41,8 +43,8 @@ public class LoginController {
         Image image = new Image("LogIn/background.png");
         background.setImage(image);
 
-        mediator = MediatorManager.getInstance().getMediator("GUI");
-        mediator.registerController(this.getClass().getName(), this);
+        guiController = GUIController.getInstance();
+        GUIControllerRegistry.getInstance().add(this.getClass().getName(), this);
     }
 
     public void setLoginMenu() {
@@ -79,10 +81,10 @@ public class LoginController {
     private void handleLogin(String mail, String password) {
         if (!mail.isEmpty() && !password.isEmpty()) {
             loginOrRegisterButton.setDisable(false);
-            mediator.notify("LOGIN",mail, password);
-            mediator.notify("NEWSTAGE","HOMESTAGE");
+            guiController.login(mail, password);
+            guiController.createStage("HOMESTAGE");
         } else {
-            mediator.notify("NOTIFYUSER", "Mail or password has not been entered, please try again");
+            guiController.notifyUser("Mail or password has not been entered, please try again");
         }
     }
 
@@ -90,12 +92,12 @@ public class LoginController {
         if (mail.contains("@")) {
             if (!password.isEmpty() && !name.isEmpty() && !city.isEmpty()) {
                 loginOrRegisterButton.setDisable(true);
-                mediator.notify("REGISTER", mail, password, name, city);
+                guiController.register(mail,password,name,city);
             } else {
-                mediator.notify("NOTIFYUSER", "Mail, password, name or city has not been entered properly, please try again");
+                guiController.notifyUser("Mail, password, name or city has not been entered properly, please try again");
             }
         } else {
-            mediator.notify("NOTIFYUSER", "The mail needs to contain @");
+            guiController.notifyUser("The mail needs to contain @");
         }
     }
 }

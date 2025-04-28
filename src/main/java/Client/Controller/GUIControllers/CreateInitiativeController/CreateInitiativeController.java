@@ -1,12 +1,12 @@
 package Client.Controller.GUIControllers.CreateInitiativeController;
 
-import Client.Controller.Mediators.Mediator;
-import Client.Controller.Mediators.MediatorManager;
+import Client.Controller.GUIControllers.FxController;
+import Client.Controller.Mediators.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
-public class CreateInitiativeController {
+public class CreateInitiativeController implements FxController {
     @FXML
     private TextField nameTextfield;
 
@@ -27,16 +27,20 @@ public class CreateInitiativeController {
 
     @FXML
     private Button createButton;
-    private Mediator mediator;
-
 
     @FXML
     public void initialize() {
-        mediator = MediatorManager.getInstance().getMediator("INITIATIVE");
+
     }
 
     @FXML
     public void createInitiative() {
 
+    }
+
+    @Override
+    public void closeStage() {
+        Stage stage = (Stage) createButton.getScene().getWindow();
+        stage.close();
     }
 }

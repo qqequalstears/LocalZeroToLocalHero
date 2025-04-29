@@ -12,4 +12,5 @@ public class Launcher {
 
         Application.launch(LogInStage.class, args);
     }
+
 }

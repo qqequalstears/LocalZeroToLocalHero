@@ -21,13 +21,14 @@ public abstract class Initiative {
     private String location;
     private String duration;
     private String startTime;
+    private String category;
     private List<String> comments;
     private List<String> likes;
     private List<Achievement> achievements;
     private boolean isPublic = false;
 
 
-    public Initiative(String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
+    public Initiative(String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -35,7 +36,6 @@ public abstract class Initiative {
         this.startTime = startTime;
         this.comments = new ArrayList<>(comments);
         this.likes = new ArrayList<>(likes);
-        this.achievements = new ArrayList<>(achievements);
         this.isPublic = isPublic;
     }
 

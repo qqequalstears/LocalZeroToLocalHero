@@ -16,7 +16,10 @@ import java.util.List;
 
 public class CarPool extends Initiative implements durationCalculation, Log {
 
-    public CarPool(String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
+    private String destination;
+    private String destination;
+
+    public CarPool(String destination, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
         super(title, description, location, duration, startTime, comments, likes, isPublic, achievements);
     }
 

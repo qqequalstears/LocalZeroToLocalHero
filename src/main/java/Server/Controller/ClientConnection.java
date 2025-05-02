@@ -1,5 +1,6 @@
 package Server.Controller;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -9,23 +10,29 @@ public class ClientConnection implements Runnable {
     private Socket socket;
     private ConnectionController connectionController;
     private ObjectInputStream inputStream;
-    private OutputStream outputStream;
+    private ObjectOutputStream outputStream;
 
     public ClientConnection(Socket socket, ConnectionController connectionController){
         this.socket = socket;
         this.connectionController = connectionController;
         try {
-            this.outputStream = new ObjectOutputStream(socket.getOutputStream());
-            this.inputStream = new ObjectInputStream(socket.getInputStream());
-        } catch (Exception e) {
-            e.printStackTrace();
+            inputStream = new ObjectInputStream(socket.getInputStream());
+            outputStream = new ObjectOutputStream(socket.getOutputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void run(){
+        System.out.println("Thread started");
         try{
-            System.out.println("Hallåja");
+            while (!Thread.currentThread().isInterrupted()) {
+                System.out.println("Listening to objects");
+                Object object = inputStream.readObject();
+                System.out.println("RECIEVED OBJECT");
+                connectionController.unpackObject(object, this);
+            }
         }catch(Exception e) {
             e.printStackTrace();
         }finally{
@@ -33,11 +40,20 @@ public class ClientConnection implements Runnable {
         }
     }
 
+    public void sendObject(Object object) {
+        try {
+            System.out.println("SENT OBJECT");
+            outputStream.writeObject(object);
+            outputStream.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private void closeConnection(){
         try{
-            if(socket != null){
-                socket.close();
-            }
+
             if(inputStream != null){
                 inputStream.close();
             }

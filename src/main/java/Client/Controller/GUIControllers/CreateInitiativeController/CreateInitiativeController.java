@@ -1,7 +1,6 @@
 package Client.Controller.GUIControllers.CreateInitiativeController;
 
 import Client.Controller.GUIControllers.FxController;
-import Client.Controller.Mediators.GUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;

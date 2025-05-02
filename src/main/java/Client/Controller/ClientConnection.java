@@ -1,5 +1,7 @@
 package Client.Controller;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -37,6 +39,7 @@ public class ClientConnection extends Thread {
     }
 
     public void disconnect() {
+        System.out.println("Disconecting");
         try {
             if (socket != null) {
                 socket.close();
@@ -59,16 +62,22 @@ public class ClientConnection extends Thread {
                 connectSocket();
             }
             while (!Thread.currentThread().isInterrupted()) {
-                if (inputStream.available() <= 0) {
-                    Thread.sleep(100);
-                } else {
                     Object object = inputStream.readObject();
                     connectionController.unpackObject(object);
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
             disconnect();
+        }
+    }
+
+    public void sendObject(Object object) {
+        try {
+            System.out.println("SENT OBJECT");
+            outputStream.writeObject(object);
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

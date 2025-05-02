@@ -1,6 +1,5 @@
 package Client.Controller.GUIControllers;
 
-import Client.Controller.Mediators.GUIController;
 import Client.Controller.Registry;
 
 import java.util.Map;

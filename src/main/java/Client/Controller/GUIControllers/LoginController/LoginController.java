@@ -2,7 +2,8 @@ package Client.Controller.GUIControllers.LoginController;
 
 import Client.Controller.GUIControllers.FxController;
 import Client.Controller.GUIControllers.GUIControllerRegistry;
-import Client.Controller.Mediators.GUIController;
+import Client.Controller.GUIControllers.GUIInController;
+import Client.Controller.GUIControllers.GUIOutController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -30,7 +31,8 @@ public class LoginController implements FxController {
     private TextField cityTextfield;
     @FXML
     private PasswordField passwordTextfield;
-    private GUIController guiController;
+    private GUIOutController guiOutController;
+    private GUIInController guiInController;
 
 
     public LoginController() {}
@@ -43,7 +45,8 @@ public class LoginController implements FxController {
         Image image = new Image("LogIn/background.png");
         background.setImage(image);
 
-        guiController = GUIController.getInstance();
+        guiOutController = GUIOutController.getInstance();
+        guiInController = GUIInController.getInstance();
         GUIControllerRegistry.getInstance().add(this.getClass().getName(), this);
     }
 
@@ -81,10 +84,10 @@ public class LoginController implements FxController {
     private void handleLogin(String mail, String password) {
         if (!mail.isEmpty() && !password.isEmpty()) {
             loginOrRegisterButton.setDisable(false);
-            guiController.login(mail, password);
-            guiController.createStage("HOMESTAGE");
+            guiOutController.login(mail, password);
+            guiInController.createStage("HOMESTAGE");
         } else {
-            guiController.notifyUser("Mail or password has not been entered, please try again");
+            guiInController.notifyUser("Mail or password has not been entered, please try again");
         }
     }
 
@@ -92,12 +95,12 @@ public class LoginController implements FxController {
         if (mail.contains("@")) {
             if (!password.isEmpty() && !name.isEmpty() && !city.isEmpty()) {
                 loginOrRegisterButton.setDisable(true);
-                guiController.register(mail,password,name,city);
+                guiOutController.register(mail,password,name,city);
             } else {
-                guiController.notifyUser("Mail, password, name or city has not been entered properly, please try again");
+                guiInController.notifyUser("Mail, password, name or city has not been entered properly, please try again");
             }
         } else {
-            guiController.notifyUser("The mail needs to contain @");
+            guiInController.notifyUser("The mail needs to contain @");
         }
     }
 }

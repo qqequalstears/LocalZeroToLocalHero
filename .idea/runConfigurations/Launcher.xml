@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Launcher" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="Launcher" type="Application" factoryName="Application" singleton="false" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="Client.Controller.Launcher" />
     <module name="LocalZeroToLocalHero" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="Client.Controller.Mediators.*" />
+        <option name="PATTERN" value="Client.Controller.GUIControllers.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

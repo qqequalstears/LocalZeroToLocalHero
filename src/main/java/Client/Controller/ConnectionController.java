@@ -1,20 +1,25 @@
 package Client.Controller;
-import Client.Controller.Mediators.GUIController;
+import Client.Controller.GUIControllers.GUIInController;
+import Client.Controller.GUIControllers.GUIOutController;
 import Client.Model.LoginCredentials;
+import Common.Controller.Utility.Packager;
+import Common.Controller.Utility.Unpacker;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 public class ConnectionController {
     private ClientConnection clientConnection;
-    private ConnectionController instance;
-    private GUIController guiController;
+    private GUIInController guiInController;
+    private Packager packager;
+    private Unpacker unpacker;
 
-    private ConnectionController(){
+    public ConnectionController(){
         try {
+            GUIOutController.getInstance().setConnectionController(this);
+            guiInController = GUIInController.getInstance();
+            packager = new Packager();
+            unpacker = new Unpacker();
             connectToServer();
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,7 +38,13 @@ public class ConnectionController {
     }
 
     public void unpackObject(Object object) {
-
+        String jsonString = (String) object;
+        JSONObject jsonObject = new JSONObject(jsonString);
+        String objectType = (String) jsonObject.get("type");
+        if (objectType.equals("successfulLogin")) {
+            System.out.println("FEEEESSSTTTT");
+            guiInController.successfulLogIn();
+        }
     }
 
     public void sendUserToServer(String mail, String password, String name, String city) {
@@ -47,22 +58,20 @@ public class ConnectionController {
     }
 
     public void sendLoginToServer(String mail, String password) {
-        LoginCredentials loginCredentials = new LoginCredentials(mail,password);
-        //todo Skicka till servern
+        JSONObject loginJson = packager.createLoginJSON(mail, password);
+        sendJsonObject(loginJson);
     }
 
     public void successfulLogin(boolean success) {
         if (success) {
-            guiController.successfulLogIn();
+            guiInController.successfulLogIn();
         } else {
-            guiController.notifyUser("Wrong mail or password entered");
+            guiInController.notifyUser("Wrong mail or password entered");
         }
     }
 
-    public ConnectionController getInstance() {
-        if (instance == null) {
-            instance = new ConnectionController();
-        }
-        return instance;
+    private void sendJsonObject(JSONObject jsonObject) {
+        String dataToSend = jsonObject.toString();
+        clientConnection.sendObject(dataToSend);
     }
 }

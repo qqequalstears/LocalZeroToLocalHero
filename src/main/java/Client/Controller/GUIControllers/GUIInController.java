@@ -1,25 +1,23 @@
-package Client.Controller.Mediators;
+package Client.Controller.GUIControllers;
 
 import Client.Controller.ConnectionController;
-import Client.Controller.GUIControllers.FxController;
-import Client.Controller.GUIControllers.GUIControllerRegistry;
 import Client.Controller.GUIControllers.Intitiative.InitiativeController;
+import Client.Controller.GUIControllers.LoginController.LoginController;
 import Client.View.CreateInitiative.CreateInitiativeStage;
 import Client.View.Home.HomeStage;
 import Client.View.Login.LogInStage;
 import Client.View.StageCreator;
 import Client.View.UserNotifier;
+import javafx.application.Platform;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class GUIController {
+public class GUIInController {
     private Map<String, StageCreator> stageCreators;
-    private static GUIController instance;
-    private ConnectionController connectionController;
+    private static GUIInController instance;
 
-
-    private GUIController() {
+    private GUIInController() {
         stageCreators = new ConcurrentHashMap<>();
 
         stageCreators.put("HOMESTAGE", () -> new HomeStage().createStage());
@@ -38,22 +36,14 @@ public class GUIController {
         userNotifier.informUser(message);
     }
 
-    public void login(String mail, String password) { // todo Flytta till en annan klass?
-
-    }
-
-    public void register(String mail, String password, String name, String city) { //todo Flytta till en annan klass?
-
-    }
-
     public void successfulLogIn() {
-        FxController loginController = GUIControllerRegistry.getInstance().get(UserNotifier.class.getName());
-        loginController.closeStage();
+        FxController loginController = GUIControllerRegistry.getInstance().get(LoginController.class.getName());
+        Platform.runLater(() -> loginController.closeStage());
     }
 
-    public static GUIController getInstance() {
+    public static GUIInController getInstance() {
         if (instance == null) {
-            instance = new GUIController();
+            instance = new GUIInController();
         }
         return instance;
     }

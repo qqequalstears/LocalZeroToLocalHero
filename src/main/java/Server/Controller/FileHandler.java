@@ -1,7 +1,11 @@
 package Server.Controller;
 
+import Client.Model.User;
 import Server.Model.FileMan.IDataSaver;
+import Server.Model.FileMan.ReaderFiles;
 import Server.Model.FileMan.WriteToFile;
+
+import java.util.List;
 
 //TODO denna klassen är inte klar. Syftet är att den ska hantera filhantering för att 
 //spara data samt läsa/hämta data (med hjälp av IDataSaver och IDataFetcher).
@@ -32,5 +36,9 @@ public class FileHandler {
         IDataSaver dataSaver = new WriteToFile();
         dataSaver.saveUser(dString);
         return "Data saved successfully";
+    }
+
+    public List<User> getUsers() {
+        return ReaderFiles.getInstance().fetchAllUsers();
     }
 }

@@ -38,7 +38,10 @@ public class GUIInController {
 
     public void successfulLogIn() {
         FxController loginController = GUIControllerRegistry.getInstance().get(LoginController.class.getName());
-        Platform.runLater(() -> loginController.closeStage());
+        Platform.runLater(() -> {
+            loginController.closeStage();
+            createStage("HOMESTAGE");
+        });
     }
 
     public static GUIInController getInstance() {

@@ -31,7 +31,7 @@ public class ClientConnection implements Runnable {
                 System.out.println("Listening to objects");
                 Object object = inputStream.readObject();
                 System.out.println("RECIEVED OBJECT");
-                connectionController.unpackObject(object, this);
+                connectionController.revealIntention(object, this);
             }
         }catch(Exception e) {
             e.printStackTrace();

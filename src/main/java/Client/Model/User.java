@@ -49,6 +49,19 @@ public class User implements Log {
         this.loginCredentials = new LoginCredentials(email,password);
     }
 
+    public User(String name, String location, String email, String password, List<Role> roles) {
+        this.name = name;
+        this.location = location;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String mail, String password) {
+        this.email = mail;
+        this.password = password;
+    }
+
     public String getLocation() {
         return location;
     }

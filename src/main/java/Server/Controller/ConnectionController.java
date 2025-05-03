@@ -2,9 +2,9 @@ package Server.Controller;
 
 import Common.Controller.Utility.Packager;
 import Common.Controller.Utility.Unpacker;
+import Server.Controller.Authorization.AuthorizationController;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.net.Socket;
 
 public class ConnectionController {
@@ -13,8 +13,10 @@ public class ConnectionController {
     private ClientUpdater clientUpdater;
     private Unpacker unpacker;
     private Packager packager;
+    private AuthorizationController authorizationController;
 
     public ConnectionController () {
+        authorizationController = new AuthorizationController(this);
         unpacker = new Unpacker();
         packager = new Packager();
         this.clientUpdater = new ClientUpdater();
@@ -33,17 +35,30 @@ public class ConnectionController {
         System.out.println("Client connected: " + socket.getInetAddress());
     }
 
-    public void unpackObject(Object object, ClientConnection sender) {
+    public void revealIntention(Object object, ClientConnection sender) {
         String jsonString = (String) object;
-        System.out.println("OBJECT IS " + jsonString);
         JSONObject jsonObject = new JSONObject(jsonString);
         System.out.println(jsonObject);
-        String objectType = (String) jsonObject.get("type");
-        if (objectType.equals("login")) {
-            System.out.println("IT WORKED");
-            JSONObject sucess = new JSONObject();
-            sucess.put("type","successfulLogin");
-            sender.sendObject(sucess.toString());
+        String intention = (String) jsonObject.get("type");
+
+        switch (intention) {
+            case "login":
+                sendLoginStatus(sender, authorizationController.tryLogin(jsonObject, clientUpdater));
+               break;
+            default:
+                System.out.println("Intention was not found");
+                break;
         }
     }
+
+    private void sendLoginStatus(ClientConnection sender, boolean successfulLogin) {
+        JSONObject sucess = new JSONObject();
+        String status = "unSuccessfulLogin";
+        if (successfulLogin) {
+            status = "successfulLogin";
+        }
+        sucess.put("type",status);
+        sender.sendObject(sucess.toString());
+    }
+
 }

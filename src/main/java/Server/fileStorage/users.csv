@@ -1,4 +1,4 @@
-userID,username,password,achievements,score,rank
-Test, User, Data, 1745480179589
-Test, User, Data, Append, 1745480179589
-Test, User, Data, Append, 1745480179589
+email,password,name,location,roles
+user@test.com, pass, Anton, Osby, Admin
+user1@test.com, pass, Martin, Malmö, Resident - Taxi
+user2@test.com, pass, Christoffer, Helsingborg, Resident

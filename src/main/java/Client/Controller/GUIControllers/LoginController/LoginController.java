@@ -85,7 +85,6 @@ public class LoginController implements FxController {
         if (!mail.isEmpty() && !password.isEmpty()) {
             loginOrRegisterButton.setDisable(false);
             guiOutController.login(mail, password);
-            guiInController.createStage("HOMESTAGE");
         } else {
             guiInController.notifyUser("Mail or password has not been entered, please try again");
         }

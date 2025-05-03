@@ -1,6 +1,7 @@
 package Client.View;
 
 import Client.Controller.GUIControllers.GUIControllerRegistry;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
 public class UserNotifier {
@@ -8,7 +9,10 @@ public class UserNotifier {
     }
 
     public void informUser(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, message);
-        alert.show();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, message);
+            alert.setTitle("Information");
+            alert.show();
+        });
     }
 }

@@ -37,13 +37,20 @@ public class ConnectionController {
         }
     }
 
-    public void unpackObject(Object object) {
+    public void revealIntention(Object object) {
         String jsonString = (String) object;
         JSONObject jsonObject = new JSONObject(jsonString);
-        String objectType = (String) jsonObject.get("type");
-        if (objectType.equals("successfulLogin")) {
-            System.out.println("FEEEESSSTTTT");
-            guiInController.successfulLogIn();
+        String intention = (String) jsonObject.get("type");
+
+        switch (intention) {
+            case "successfulLogin" :
+                guiInController.successfulLogIn();
+                break;
+            case "unSuccessfulLogin" :
+                guiInController.notifyUser("You are already online or you gave wrong credentials");
+                break;
+            default:
+                guiInController.notifyUser("Something went wrong in the application");
         }
     }
 
@@ -60,14 +67,6 @@ public class ConnectionController {
     public void sendLoginToServer(String mail, String password) {
         JSONObject loginJson = packager.createLoginJSON(mail, password);
         sendJsonObject(loginJson);
-    }
-
-    public void successfulLogin(boolean success) {
-        if (success) {
-            guiInController.successfulLogIn();
-        } else {
-            guiInController.notifyUser("Wrong mail or password entered");
-        }
     }
 
     private void sendJsonObject(JSONObject jsonObject) {

@@ -1,9 +1,13 @@
 package Server.Model.FileMan;
 
-import java.io.*;
-import java.util.List;
+import Client.Model.Role;
+import Client.Model.User;
 
-import Server.Model.User;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The FileReader class provides methods for reading data from a file.
@@ -160,7 +164,31 @@ public class ReaderFiles implements IDataFetcher {
      */
     @Override
     public List<User> fetchAllUsers() {
-        throw new UnsupportedOperationException("Unimplemented method 'fetchAllUsers'");
+        List<User> users = new ArrayList<>();
+        String csvContent = readWholeCSVFile(destinationUser);
+        String[] lines = csvContent.split("\n");
+
+        for (int i = 1; i < lines.length; i++) {
+            String[] contents = lines[i].split(",");
+            if (contents.length < 5) {
+                continue;
+            }
+            String email = contents[0].trim();
+            String password = contents[1].trim();
+            String name = contents[2].trim();
+            String location = contents[3].trim();
+            String rolesString = contents[4].trim();
+
+            List<Role> roles = new ArrayList<>();
+            String[] roleContents = rolesString.split("-");
+            for (String role : roleContents) {
+                role = role.trim();
+                roles.add(Role.valueOf(role));
+
+            }
+            users.add(new User(name, location, email, password, roles));
+        }
+        return users;
     }
 
     /**

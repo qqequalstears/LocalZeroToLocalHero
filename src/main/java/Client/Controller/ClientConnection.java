@@ -63,7 +63,7 @@ public class ClientConnection extends Thread {
             }
             while (!Thread.currentThread().isInterrupted()) {
                     Object object = inputStream.readObject();
-                    connectionController.unpackObject(object);
+                    connectionController.revealIntention(object);
             }
         } catch (Exception e) {
             e.printStackTrace();

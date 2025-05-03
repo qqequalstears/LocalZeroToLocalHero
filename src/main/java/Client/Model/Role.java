@@ -9,8 +9,10 @@ package Client.Model;
 
 public enum Role {
 
-    ADMIN,
-    REGULAR,
+    Admin,
+    Resident,
+    CommunityManager,
+    Taxi;
 
 
 }

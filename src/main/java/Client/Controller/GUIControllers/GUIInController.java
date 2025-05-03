@@ -1,11 +1,14 @@
 package Client.Controller.GUIControllers;
 
-import Client.Controller.ConnectionController;
+import Client.Controller.GUIControllers.Home.HomeTopController;
 import Client.Controller.GUIControllers.Intitiative.InitiativeController;
 import Client.Controller.GUIControllers.LoginController.LoginController;
+import Client.Controller.GUIControllers.Notifications.NotificationController;
+import Client.Model.Notifications;
 import Client.View.CreateInitiative.CreateInitiativeStage;
 import Client.View.Home.HomeStage;
 import Client.View.Login.LogInStage;
+import Client.View.Notification.NotificationStage;
 import Client.View.StageCreator;
 import Client.View.UserNotifier;
 import javafx.application.Platform;
@@ -24,6 +27,7 @@ public class GUIInController {
         stageCreators.put("LOGINSTAGE", () -> new LogInStage().createStage());
         stageCreators.put("INITIATIVESTAGE", () -> new InitiativeController());
         stageCreators.put("CREATEINITIATIVE", () -> new CreateInitiativeStage().createStage());
+        stageCreators.put("NOTIFICATIONS", () -> new NotificationStage().createStage());
     }
 
     public void createStage(String stageToCreate) {
@@ -49,5 +53,17 @@ public class GUIInController {
             instance = new GUIInController();
         }
         return instance;
+    }
+
+    public void newNotification() {
+        if (GUIControllerRegistry.getInstance().contains(NotificationController.class.getName())) {
+            NotificationController notificationController = (NotificationController) GUIControllerRegistry.getInstance().get(NotificationController.class.getName());
+            Platform.runLater(notificationController::updateNotifcations);
+        } else {
+            HomeTopController homeTopController = (HomeTopController) GUIControllerRegistry.getInstance().get(HomeTopController.class.getName());
+            if (homeTopController != null) {
+                Platform.runLater(homeTopController::notifyUser);
+            }
+        }
     }
 }

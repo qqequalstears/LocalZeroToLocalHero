@@ -34,4 +34,9 @@ public class ClientUpdater{
         return onlineClients.containsKey(email);
     }
 
+    public ClientConnection getClientConnection(String mail) {
+        System.out.println("*******************************************");
+        System.out.println(onlineClients.entrySet());
+        return onlineClients.get(mail);
+    }
 }

@@ -21,6 +21,10 @@ public class GUIControllerRegistry implements Registry {
         return controllerMap.get(key);
     }
 
+    public boolean contains(String key) {
+        return controllerMap.containsKey(key);
+    }
+
     public void remove(String key) {
         controllerMap.remove(key);
     }

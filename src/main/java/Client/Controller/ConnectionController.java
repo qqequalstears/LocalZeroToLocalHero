@@ -1,7 +1,7 @@
 package Client.Controller;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
-import Client.Model.LoginCredentials;
+import Client.Model.Notifications;
 import Common.Controller.Utility.Packager;
 import Common.Controller.Utility.Unpacker;
 import org.json.JSONObject;
@@ -41,6 +41,7 @@ public class ConnectionController {
         String jsonString = (String) object;
         JSONObject jsonObject = new JSONObject(jsonString);
         String intention = (String) jsonObject.get("type");
+        System.out.println("Gained an object" + jsonObject);
 
         switch (intention) {
             case "successfulLogin" :
@@ -48,6 +49,9 @@ public class ConnectionController {
                 break;
             case "unSuccessfulLogin" :
                 guiInController.notifyUser("You are already online or you gave wrong credentials");
+                break;
+            case "notification" :
+                newNotification(jsonObject);
                 break;
             default:
                 guiInController.notifyUser("Something went wrong in the application");
@@ -72,5 +76,12 @@ public class ConnectionController {
     private void sendJsonObject(JSONObject jsonObject) {
         String dataToSend = jsonObject.toString();
         clientConnection.sendObject(dataToSend);
+    }
+
+    private void newNotification(JSONObject jsonObject) {
+        System.out.println("REACHED NOTIFICATION METHOD");
+        String notification = (String) jsonObject.get("notification");
+        Notifications.notifications.add(notification);
+        guiInController.newNotification();
     }
 }

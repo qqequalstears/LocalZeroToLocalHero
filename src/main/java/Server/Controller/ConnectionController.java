@@ -43,7 +43,8 @@ public class ConnectionController {
 
         switch (intention) {
             case "login":
-                sendLoginStatus(sender, authorizationController.tryLogin(jsonObject, clientUpdater));
+                String mail = (String) jsonObject.get("mail");
+                sendLoginStatus(sender, mail ,authorizationController.tryLogin(jsonObject, clientUpdater));
                break;
             default:
                 System.out.println("Intention was not found");
@@ -51,14 +52,27 @@ public class ConnectionController {
         }
     }
 
-    private void sendLoginStatus(ClientConnection sender, boolean successfulLogin) {
+    public void sendNotification(String notification,String mailToReceiver) {
+        ClientConnection receiver = clientUpdater.getClientConnection(mailToReceiver);
+        System.out.println("Sending notification to " + receiver);
+        if (receiver != null) {
+            JSONObject notificationPackage = new JSONObject();
+            notificationPackage.put("type", "notification");
+            notificationPackage.put("notification", notification);
+            receiver.sendObject(notificationPackage.toString());
+        } else {
+            //todo Hantera offline klienter
+        }
+    }
+
+    private void sendLoginStatus(ClientConnection sender, String mail, boolean successfulLogin) {
         JSONObject sucess = new JSONObject();
         String status = "unSuccessfulLogin";
         if (successfulLogin) {
             status = "successfulLogin";
+            clientUpdater.addOnlineClient(mail, sender);
         }
         sucess.put("type",status);
         sender.sendObject(sucess.toString());
     }
-
 }

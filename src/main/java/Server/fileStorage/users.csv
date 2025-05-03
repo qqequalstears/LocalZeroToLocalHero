@@ -1,4 +1,4 @@
 email,password,name,location,roles
 user@test.com, pass, Anton, Osby, Admin
 user1@test.com, pass, Martin, Malmö, Resident - Taxi
-user2@test.com, pass, Christoffer, Helsingborg, Resident
+user2@test.com, password, Christoffer, Helsingborg, Resident

@@ -3,6 +3,7 @@ package Client.Model.Initiative.Children;
 import Client.Model.Achievement;
 import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Log;
+import Server.Model.AchievementTracker;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class GarageSale extends Initiative implements Sale, Log {
 
     @Override
     public void improveAchievements() {
-        System.out.println("Im GARAGE SALE, I AM TOLD TO 'IMPROVE ACHIEVEMENTS' WHICH I AM, ITS JUST THAT THIS METHOD DOESNT DO ANYTHING YET");
+        AchievementTracker.getInstance().improveAchievements(super.getAchievements(), this);
     }
 
     @Override

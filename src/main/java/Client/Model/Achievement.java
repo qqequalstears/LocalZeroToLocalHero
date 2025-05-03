@@ -1,4 +1,5 @@
 package Client.Model;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
@@ -16,6 +17,12 @@ public class Achievement {
     private Integer progress;
     private List<Integer> milestones;
     private String description;
+
+    //Constructor for testing
+    public Achievement(String name) {
+        this.name=name;
+        this.progress=0;
+    }
 
     public Achievement(Image image, String name, Integer progress, List<Integer> milestones, String description) {
         this.image = image;

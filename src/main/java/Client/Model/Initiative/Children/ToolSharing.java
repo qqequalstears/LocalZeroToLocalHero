@@ -20,6 +20,10 @@ public class ToolSharing extends Initiative implements durationCalculation, Log 
         super(title, description, location, duration, startTime, comments, likes, isPublic, achievements);
     }
 
+    public ToolSharing(String title, String description, String location, String duration, String startTime, String category, boolean isPublic) {
+        super(title, description, location, duration, startTime, category, isPublic);
+    }
+
     @Override
     public void startActivity() {
         System.out.println("HI, MY NAME IS TOOLSHARING, I AM TOLD TO 'START ACTIVITY' WHICH I AM, ITS JUST THAT THIS METHOD DOESNT DO ANYTHING YET");

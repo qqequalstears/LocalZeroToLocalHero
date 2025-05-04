@@ -58,6 +58,12 @@ public class ConnectionController {
             case "notification" :
                 newNotification(jsonObject);
                 break;
+            case "unSuccessfulInitiativeCreation":
+                guiInController.notifyUser("The initiative could not be created. Please make sure no commas in included anywhere and that every field has text");
+                break;
+            case "SuccessfulInitiativeCreation":
+                guiInController.successfulInitiativeCreation();
+                break;
             default:
                 guiInController.notifyUser("Something went wrong in the application");
         }
@@ -85,6 +91,11 @@ public class ConnectionController {
         sendJsonObject(logoutJson);
     }
 
+    public void sendNewInitiativeToServer(String name, String description, String location, String duration, String startTime, String numberOfSeats, String sellList, String category, boolean ispublic) {
+        JSONObject newInitiative = packager.createNewInitiative(name, description, location, duration, startTime, numberOfSeats, sellList, category, ispublic, connectedUser.getEmail());
+        sendJsonObject(newInitiative);
+    }
+
     private void sendJsonObject(JSONObject jsonObject) {
         String dataToSend = jsonObject.toString();
         clientConnection.sendObject(dataToSend);
@@ -95,10 +106,5 @@ public class ConnectionController {
         String notification = (String) jsonObject.get("notification");
         Notifications.notifications.add(notification);
         guiInController.newNotification();
-    }
-
-    public void sendNewInitiativeToServer(String name, String description, String location, String duration, String startTime, String numberOfSeats, String sellList, String category, boolean ispublic) {
-        JSONObject newInitiative = packager.createNewInitiative(name, description, location, duration, startTime, numberOfSeats, sellList, category, ispublic);
-        sendJsonObject(newInitiative);
     }
 }

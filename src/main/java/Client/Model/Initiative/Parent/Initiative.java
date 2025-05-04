@@ -21,10 +21,11 @@ public abstract class Initiative {
     private String location;
     private String duration;
     private String startTime;
+    private String category;
     private List<String> comments;
     private List<String> likes;
     private List<Achievement> achievements;
-    private boolean isPublic = false;
+    private boolean isPublic;
 
 
     public Initiative(String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
@@ -36,6 +37,16 @@ public abstract class Initiative {
         this.comments = new ArrayList<>(comments);
         this.likes = new ArrayList<>(likes);
         this.achievements = new ArrayList<>(achievements);
+        this.isPublic = isPublic;
+    }
+
+    public Initiative(String title, String description, String location, String duration, String startTime, String category, boolean isPublic) {
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.category = category;
         this.isPublic = isPublic;
     }
 
@@ -113,5 +124,9 @@ public abstract class Initiative {
 
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public String getCategory() {
+        return category;
     }
 }

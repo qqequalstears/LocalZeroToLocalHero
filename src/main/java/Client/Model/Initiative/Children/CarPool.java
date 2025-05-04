@@ -3,8 +3,10 @@ package Client.Model.Initiative.Children;
 import Client.Model.Achievement;
 import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Log;
+import Client.Model.User;
 import Server.Model.AchievementTracker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +19,18 @@ import java.util.List;
  */
 
 public class CarPool extends Initiative implements durationCalculation, Log {
+    private User driver;
+    private List<User> passengers;
+    private String numberOfSeats;
 
     public CarPool(String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
         super(title, description, location, duration, startTime, comments, likes, isPublic, achievements);
+    }
+
+    public CarPool(String title, String description, String location, String duration, String startTime, String numberOfSeats, String category, boolean isPublic) {
+        super(title, description, location, duration, startTime, category, isPublic);
+        this.numberOfSeats = numberOfSeats;
+        passengers = new ArrayList<>();
     }
 
     @Override
@@ -41,5 +52,9 @@ public class CarPool extends Initiative implements durationCalculation, Log {
     @Override
     public void Log() {
         System.out.println("HI, MY NAME IS TRANSPORTATION, I R GOOT KLOGGER LOGG LOGG LOGGGGGER HEHEHEHETITIHTIHTI");
+    }
+
+    public String getNumberOfSeats() {
+        return numberOfSeats;
     }
 }

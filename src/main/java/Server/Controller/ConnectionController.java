@@ -1,7 +1,6 @@
 package Server.Controller;
 
 import Common.Controller.Utility.Packager;
-import Common.Controller.Utility.Unpacker;
 import Server.Controller.Authorization.AuthorizationController;
 import org.json.JSONObject;
 
@@ -11,13 +10,13 @@ public class ConnectionController {
 
     private ConnectionListener connectionListener;
     private ClientUpdater clientUpdater;
-    private Unpacker unpacker;
     private Packager packager;
     private AuthorizationController authorizationController;
+    private InitiativeManager initiativeManager;
 
     public ConnectionController () {
         authorizationController = new AuthorizationController(this);
-        unpacker = new Unpacker();
+        initiativeManager = new InitiativeManager();
         packager = new Packager();
         this.clientUpdater = new ClientUpdater();
         this.connectionListener = new ConnectionListener(2343,this);
@@ -57,6 +56,10 @@ public class ConnectionController {
                 mail = (String) jsonObject.get("mail");
                 sendRegisterStatus(sender, mail, successfulRegister);
                 break;
+            case "createInitiative" :
+                boolean success = initiativeManager.createNewInitiative(jsonObject);
+                sendCreateInitiativeStatus(success, sender);
+                break;
             default:
                 System.out.println("Intention was not found");
                 break;
@@ -74,6 +77,17 @@ public class ConnectionController {
         } else {
             //todo Hantera offline klienter
         }
+    }
+
+
+    private void sendCreateInitiativeStatus(boolean success, ClientConnection creator) {
+        JSONObject sucess = new JSONObject();
+        String status = "unSuccessfulInitiativeCreation";
+        if (success) {
+            status = "SuccessfulInitiativeCreation";
+        }
+        sucess.put("type",status);
+        creator.sendObject(sucess.toString());
     }
 
     private void sendRegisterStatus(ClientConnection sender, String mail, boolean successfulRegister) {

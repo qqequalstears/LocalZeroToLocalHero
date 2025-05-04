@@ -1,5 +1,6 @@
 package Server.Controller;
 
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.User;
 import Server.Model.FileMan.AppendToFile;
 import Server.Model.FileMan.IDataSaver;
@@ -45,5 +46,9 @@ public class FileHandler {
 
     public void registerUser(String csvContent) {
         AppendToFile.getInstance().appendToUsersFile(csvContent);
+    }
+
+    public void createInitiative(String csvContent) {
+        AppendToFile.getInstance().appendActiveIntiativeToFile(csvContent);
     }
 }

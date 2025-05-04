@@ -1,9 +1,11 @@
 package Client.Controller.GUIControllers;
 
+import Client.Controller.GUIControllers.CreateInitiativeController.CreateInitiativeController;
 import Client.Controller.GUIControllers.Home.HomeTopController;
 import Client.Controller.GUIControllers.Intitiative.InitiativeController;
 import Client.Controller.GUIControllers.LoginController.LoginController;
 import Client.Controller.GUIControllers.Notifications.NotificationController;
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Notifications;
 import Client.View.CreateInitiative.CreateInitiativeStage;
 import Client.View.Home.HomeStage;
@@ -71,5 +73,12 @@ public class GUIInController {
         FxController homeController = GUIControllerRegistry.getInstance().get(HomeTopController.class.getName());
         homeController.closeStage();
         createStage("LOGINSTAGE");
+    }
+
+    public void successfulInitiativeCreation() {
+        FxController createInitiativeController = GUIControllerRegistry.getInstance().get(CreateInitiativeController.class.getName());
+        Platform.runLater(() -> {
+            createInitiativeController.closeStage();
+        });
     }
 }

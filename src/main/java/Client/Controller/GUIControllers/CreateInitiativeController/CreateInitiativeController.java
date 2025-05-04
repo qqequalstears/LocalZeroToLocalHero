@@ -1,6 +1,7 @@
 package Client.Controller.GUIControllers.CreateInitiativeController;
 
 import Client.Controller.GUIControllers.FxController;
+import Client.Controller.GUIControllers.GUIControllerRegistry;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
 import javafx.fxml.FXML;
@@ -47,6 +48,7 @@ public class CreateInitiativeController implements FxController {
 
     @FXML
     public void initialize() {
+        GUIControllerRegistry.getInstance().add(this.getClass().getName(), this);
         guiInController = GUIInController.getInstance();
         guiOutController = GUIOutController.getInstance();
 
@@ -56,6 +58,9 @@ public class CreateInitiativeController implements FxController {
         categories.add("ToolSharing");
         categories.add("Garage Sale");
         categoryChoiceBox.getItems().addAll(categories);
+
+        sellTextfield.setVisible(false);
+        numberOfSeatsTextfield.setVisible(false);
     }
 
     @FXML
@@ -67,15 +72,32 @@ public class CreateInitiativeController implements FxController {
         String startTime = startTimeTextfield.getText();
         String numberOfSeats = numberOfSeatsTextfield.getText();
         String sellList = sellTextfield.getText();
-        String category = categoryChoiceBox.getValue().toString();
         boolean ispublic = isPublicCheckbox.isSelected();
 
-        guiOutController.createInitiative(name, description, location, duration, startTime, numberOfSeats, sellList, category, ispublic);
+        if (categoryChoiceBox.getValue() != null) {
+            String category = categoryChoiceBox.getValue().toString();
+            guiOutController.createInitiative(name, description, location, duration, startTime, numberOfSeats, sellList, category, ispublic);
+        } else {
+            guiInController.notifyUser("Make sure to select a category");
+        }
     }
 
     @FXML
     public void changeFields() {
-        System.out.println("this happened");
+        String category = categoryChoiceBox.getValue().toString();
+        switch (category) {
+            case "Carpool":
+                numberOfSeatsTextfield.setVisible(true);
+                sellTextfield.setVisible(false);
+                break;
+            case "Garage Sale":
+                numberOfSeatsTextfield.setVisible(false);
+                sellTextfield.setVisible(true);
+                break;
+            default:
+                numberOfSeatsTextfield.setVisible(false);
+                sellTextfield.setVisible(false);
+        }
     }
 
     @Override

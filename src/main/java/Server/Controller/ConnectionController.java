@@ -35,7 +35,7 @@ public class ConnectionController {
         System.out.println("Client connected: " + socket.getInetAddress());
     }
 
-    public void revealIntention(Object object, ClientConnection sender) {
+    public synchronized void revealIntention(Object object, ClientConnection sender) {
         String jsonString = (String) object;
         JSONObject jsonObject = new JSONObject(jsonString);
         System.out.println(jsonObject);
@@ -46,6 +46,10 @@ public class ConnectionController {
                 String mail = (String) jsonObject.get("mail");
                 sendLoginStatus(sender, mail ,authorizationController.tryLogin(jsonObject, clientUpdater));
                break;
+            case "logout":
+                mail = (String) jsonObject.get("mail");
+                clientUpdater.removeOnlineClient(mail);
+                break;
             default:
                 System.out.println("Intention was not found");
                 break;

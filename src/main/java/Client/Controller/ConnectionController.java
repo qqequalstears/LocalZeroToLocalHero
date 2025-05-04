@@ -2,6 +2,7 @@ package Client.Controller;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
 import Client.Model.Notifications;
+import Client.Model.User;
 import Common.Controller.Utility.Packager;
 import Common.Controller.Utility.Unpacker;
 import org.json.JSONObject;
@@ -13,6 +14,7 @@ public class ConnectionController {
     private GUIInController guiInController;
     private Packager packager;
     private Unpacker unpacker;
+    private User connectedUser;
 
     public ConnectionController(){
         try {
@@ -70,7 +72,19 @@ public class ConnectionController {
 
     public void sendLoginToServer(String mail, String password) {
         JSONObject loginJson = packager.createLoginJSON(mail, password);
+        connectedUser = new User(mail,password); //todo Möjligtvis att detta behövs ske genom att servern skickar hela user objektet
         sendJsonObject(loginJson);
+    }
+
+    public void sendIntention(String intention) {
+        JSONObject jsonObject = packager.createIntentionJson(intention);
+        sendJsonObject(jsonObject);
+    }
+
+    public void sendLogout() {
+        guiInController.logout();
+        JSONObject logoutJson = packager.createLogoutJson(connectedUser.getEmail());
+        sendJsonObject(logoutJson);
     }
 
     private void sendJsonObject(JSONObject jsonObject) {

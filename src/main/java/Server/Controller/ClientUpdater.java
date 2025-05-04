@@ -34,6 +34,12 @@ public class ClientUpdater{
         return onlineClients.containsKey(email);
     }
 
+    public void removeOnlineClient(String key) {
+        System.out.println("before removing " + onlineClients.entrySet());
+        onlineClients.remove(key);
+        System.out.println("after removing " + onlineClients.entrySet());
+    }
+
     public ClientConnection getClientConnection(String mail) {
         System.out.println("*******************************************");
         System.out.println(onlineClients.entrySet());

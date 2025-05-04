@@ -16,4 +16,17 @@ public class Packager {
         loginJson.put("password", password);
         return loginJson;
     }
+
+    public JSONObject createIntentionJson(String intention) {
+        JSONObject intentnionJson = new JSONObject();
+        intentnionJson.put("type", intention);
+        return intentnionJson;
+    }
+
+    public JSONObject createLogoutJson(String userMail) {
+        JSONObject logoutJson = new JSONObject();
+        logoutJson.put("type", "logout");
+        logoutJson.put("mail", userMail);
+        return logoutJson;
+    }
 }

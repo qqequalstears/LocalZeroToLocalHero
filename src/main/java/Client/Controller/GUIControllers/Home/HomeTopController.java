@@ -3,6 +3,7 @@ package Client.Controller.GUIControllers.Home;
 import Client.Controller.GUIControllers.FxController;
 import Client.Controller.GUIControllers.GUIControllerRegistry;
 import Client.Controller.GUIControllers.GUIInController;
+import Client.Controller.GUIControllers.GUIOutController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -19,10 +20,12 @@ public class HomeTopController implements FxController {
     @FXML
     private Button notificationsButton;
     private GUIInController guiInController;
+    private GUIOutController guiOutController;
 
     @FXML
     public void initialize() {
         guiInController = GUIInController.getInstance();
+        guiOutController = GUIOutController.getInstance();
         GUIControllerRegistry.getInstance().add(this.getClass().getName(), this);
     }
 
@@ -34,7 +37,7 @@ public class HomeTopController implements FxController {
 
     @FXML
     public void logout() {
-
+        guiOutController.logout();
     }
 
     public void notifyUser() {

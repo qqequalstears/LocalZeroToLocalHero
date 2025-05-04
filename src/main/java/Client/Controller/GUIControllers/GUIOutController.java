@@ -28,4 +28,8 @@ public class GUIOutController {
         }
         return instance;
     }
+
+    public void logout() {
+        connectionController.sendLogout();
+    }
 }

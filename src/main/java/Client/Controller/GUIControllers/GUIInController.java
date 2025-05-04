@@ -66,4 +66,10 @@ public class GUIInController {
             }
         }
     }
+
+    public void logout() {
+        FxController homeController = GUIControllerRegistry.getInstance().get(HomeTopController.class.getName());
+        homeController.closeStage();
+        createStage("LOGINSTAGE");
+    }
 }

@@ -39,4 +39,19 @@ public class Packager {
         logoutJson.put("mail", userMail);
         return logoutJson;
     }
+
+    public JSONObject createNewInitiative(String name, String description, String location, String duration, String startTime, String numberOfSeats, String sellList, String category, boolean ispublic) {
+        JSONObject newInitiativeJson = new JSONObject();
+        newInitiativeJson.put("type", "create initiative");
+        newInitiativeJson.put("name", name);
+        newInitiativeJson.put("description", description);
+        newInitiativeJson.put("location", location);
+        newInitiativeJson.put("duration", duration);
+        newInitiativeJson.put("startTime", startTime);
+        newInitiativeJson.put("numberOfSeats", numberOfSeats);
+        newInitiativeJson.put("sellList", sellList);
+        newInitiativeJson.put("category", category);
+        newInitiativeJson.put("isPublic", ispublic);
+        return newInitiativeJson;
+    }
 }

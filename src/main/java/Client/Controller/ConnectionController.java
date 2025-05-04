@@ -96,4 +96,9 @@ public class ConnectionController {
         Notifications.notifications.add(notification);
         guiInController.newNotification();
     }
+
+    public void sendNewInitiativeToServer(String name, String description, String location, String duration, String startTime, String numberOfSeats, String sellList, String category, boolean ispublic) {
+        JSONObject newInitiative = packager.createNewInitiative(name, description, location, duration, startTime, numberOfSeats, sellList, category, ispublic);
+        sendJsonObject(newInitiative);
+    }
 }

@@ -32,4 +32,8 @@ public class GUIOutController {
     public void logout() {
         connectionController.sendLogout();
     }
+
+    public void createInitiative(String name, String description, String location, String duration, String startTime, String numberOfSeats, String sellList, String category, boolean ispublic) {
+        connectionController.sendNewInitiativeToServer(name, description, location, duration, startTime, numberOfSeats, sellList, category, ispublic);
+    }
 }

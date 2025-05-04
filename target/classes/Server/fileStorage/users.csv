@@ -4,7 +4,5 @@ user1@test.com, pass, Martin, Malmö, Resident - Taxi
 user2@test.com, password, Christoffer, Helsingborg, Resident
 anton@test.com,pass,Anton,Osby,Resident
 testing@test.com,pass,test,testCity,Resident
-<<<<<<< Updated upstream
 haj@test.com,haj,kalle,ysta,Resident
-=======
->>>>>>> Stashed changes
+ab,ab,ab@ab.com,ab,[]

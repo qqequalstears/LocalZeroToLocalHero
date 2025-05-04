@@ -32,13 +32,13 @@ public class AuthorizationController {
     public boolean tryRegister(JSONObject jsonObject) {
         String mail = (String) jsonObject.get("mail");
         String password = (String) jsonObject.get("password");
-        // User user = new User(mail, password);
+         User user1 = new User(mail, password);
 
         // TODO ADDED NAME AND CITY TO "user" OBJECT. THIS IS A TEMPORARY FIX/MADE FOR
         // TESTING THE INTERFACE ISAVABLEOBJECT.
         String name = (String) jsonObject.get("name");
         String city = (String) jsonObject.get("city");
-        User user = new User(mail, password, name, city);
+        User user = new User(name,city,mail, password);
 
         AuthorizationHandler registerChain = new MailContentHandler();
         AuthorizationHandler passwordContentHandler = new PasswordContentHandler();
@@ -56,6 +56,10 @@ public class AuthorizationController {
         return canRegister;
     }
 
+    private void registerUser(ISavableObject user) {
+        FileHandler.getInstance().registerUser(user.getSaveString());
+    }
+
     /*
      * private void registerUser(JSONObject jsonObject) {
      * String mail = (String) jsonObject.get("mail");
@@ -68,12 +72,5 @@ public class AuthorizationController {
      * FileHandler.getInstance().registerUser(csvRegister);
      * }
      */
-    private void registerUser(ISavableObject user) {
-        String mail = (String) jsonObject.get("mail");
-        String password = (String) jsonObject.get("password");
 
-        String csvRegister = String.join(",", mail, password, name, city, "Resident");
-
-        FileHandler.getInstance().registerUser(csvRegister);
-    }
 }

@@ -47,6 +47,7 @@ public class User implements Log, ISavableObject {
         this.password = password;
         this.roles = new ArrayList<>();
         this.loginCredentials = new LoginCredentials(email,password);
+//TODO denna
     }
 
     public User(String name, String location, String email, String password, List<Role> roles) {

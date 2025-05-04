@@ -35,7 +35,7 @@ public class ConnectionController {
         System.out.println("Client connected: " + socket.getInetAddress());
     }
 
-    //TODO add interface for this method--> Object object
+    //TODO add interface for this method--> Object object@jansson
     public synchronized void revealIntention(Object object, ClientConnection sender) {
         String jsonString = (String) object; 
         JSONObject jsonObject = new JSONObject(jsonString);

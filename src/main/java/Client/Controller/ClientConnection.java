@@ -73,7 +73,7 @@ public class ClientConnection extends Thread {
 
     public void sendObject(Object object) {
         try {
-            System.out.println("SENT OBJECT");
+            System.out.println("SENT OBJECT \n" + object);
             outputStream.writeObject(object);
             outputStream.flush();
         } catch (IOException e) {

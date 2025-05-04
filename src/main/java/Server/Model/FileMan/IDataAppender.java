@@ -7,16 +7,16 @@ package Server.Model.FileMan;
  * data,
  * achievements data, log entries, and active initiative data to their
  * respective files.
- * 
+ *
  * <p>
  * The default methods in this interface provide implementations for saving data
  * by delegating the operation to the corresponding append methods.
- * 
+ *
  * <p>
  * Note: The naming of methods in this interface is subject to potential
  * refactoring
  * for better clarity and alignment with scenarios outside of file writing.
- * 
+ *
  * @author Jansson Anton
  * @Date 2025-04-16
  */
@@ -34,7 +34,7 @@ public interface IDataAppender extends IDataSaver {
      *
      * @param data The user data to be appended to the file.
      * @return A message indicating whether the user data was appended successfully
-     *         or if there was an error.
+     * or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-14
      */
@@ -45,7 +45,7 @@ public interface IDataAppender extends IDataSaver {
      *
      * @param data The achievements data to be appended to the file.
      * @return A message indicating whether the achievements data was appended
-     *         successfully or if there was an error.
+     * successfully or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-14
      */
@@ -56,7 +56,7 @@ public interface IDataAppender extends IDataSaver {
      *
      * @param logEntry The log entry to be appended to the file.
      * @return A message indicating whether the log entry was appended successfully
-     *         or if there was an error.
+     * or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -67,7 +67,7 @@ public interface IDataAppender extends IDataSaver {
      *
      * @param data The active initiative data to be appended to the file.
      * @return A message indicating whether the active initiative data was appended
-     *         successfully or if there was an error.
+     * successfully or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -78,7 +78,7 @@ public interface IDataAppender extends IDataSaver {
      *
      * @param data The user data to be saved.
      * @return A message indicating whether the user data was saved successfully
-     *         or if there was an error.
+     * or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -92,7 +92,7 @@ public interface IDataAppender extends IDataSaver {
      *
      * @param data The achievements data to be saved.
      * @return A message indicating whether the achievements data was saved
-     *         successfully or if there was an error.
+     * successfully or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -106,7 +106,7 @@ public interface IDataAppender extends IDataSaver {
      *
      * @param logEntry The log entry to be saved.
      * @return A message indicating whether the log entry was saved successfully
-     *         or if there was an error.
+     * or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -121,7 +121,7 @@ public interface IDataAppender extends IDataSaver {
      *
      * @param data The active initiative data to be saved.
      * @return A message indicating whether the active initiative data was saved
-     *         successfully or if there was an error.
+     * successfully or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */

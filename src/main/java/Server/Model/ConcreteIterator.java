@@ -2,7 +2,7 @@ package Server.Model;
 
 import java.util.List;
 
-public class ConcreteIterator implements Iterator{
+public class ConcreteIterator implements Iterator {
     private List<Object> collection;
     private int index;
 
@@ -15,6 +15,7 @@ public class ConcreteIterator implements Iterator{
     public boolean hasNext() {
         return index < collection.size();
     }
+
     public Object next() {
         if (hasNext()) {
             return collection.get(index++);

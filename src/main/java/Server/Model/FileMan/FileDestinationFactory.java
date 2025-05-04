@@ -9,7 +9,7 @@ import java.nio.file.Paths;
  * This class provides methods to retrieve file paths for various data files
  * used in the application, such as user data, achievements, logs, and active
  * initiatives.
- * 
+ *
  * @author Jansson Anton
  * @Date 2025-04-17
  */
@@ -70,7 +70,7 @@ public class FileDestinationFactory {
      * Retrieves the achievement data file.
      *
      * @return A File object representing the achievement data file
-     *         (achievements.csv) path.
+     * (achievements.csv) path.
      * @author Jansson Anton
      * @Date 2025-04-17
      */
@@ -93,7 +93,7 @@ public class FileDestinationFactory {
      * Retrieves the active initiative data file.
      *
      * @return A File object representing the active initiative data file
-     *         (activeInitiative.csv) path.
+     * (activeInitiative.csv) path.
      * @author Jansson Anton
      * @Date 2025-04-17
      */

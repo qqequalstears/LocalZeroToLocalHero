@@ -15,29 +15,30 @@ public class ConnectionController {
     private Packager packager;
     private AuthorizationController authorizationController;
 
-    public ConnectionController () {
+    public ConnectionController() {
         authorizationController = new AuthorizationController(this);
         unpacker = new Unpacker();
         packager = new Packager();
         this.clientUpdater = new ClientUpdater();
-        this.connectionListener = new ConnectionListener(2343,this);
+        this.connectionListener = new ConnectionListener(2343, this);
 
     }
+
     public synchronized void addConnection(Socket socket) {
-        try{
+        try {
             ClientConnection clientConnection = new ClientConnection(socket, this);
             clientUpdater.addClient(clientConnection);
             new Thread(clientConnection).start();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Error creating client connection: " + socket.getInetAddress());
             e.printStackTrace();
         }
         System.out.println("Client connected: " + socket.getInetAddress());
     }
 
-    //TODO add interface for this method--> Object object@jansson
+    //TODO add interface for this method?--> Object object ==> metoden hade kunnat hantera de första delen av logiken i denna metoden? (Object>String>JSONOBJECT>String)@jansson
     public synchronized void revealIntention(Object object, ClientConnection sender) {
-        String jsonString = (String) object; 
+        String jsonString = (String) object;
         JSONObject jsonObject = new JSONObject(jsonString);
         System.out.println(jsonObject);
         String intention = (String) jsonObject.get("type");
@@ -47,8 +48,8 @@ public class ConnectionController {
             case "login":
                 String mail = (String) jsonObject.get("mail");
                 boolean successfulLogin = authorizationController.tryLogin(jsonObject, clientUpdater);
-                sendLoginStatus(sender, mail , successfulLogin);
-               break;
+                sendLoginStatus(sender, mail, successfulLogin);
+                break;
             case "logout":
                 mail = (String) jsonObject.get("mail");
                 clientUpdater.removeOnlineClient(mail);
@@ -64,7 +65,7 @@ public class ConnectionController {
         }
     }
 
-    public void sendNotification(String notification,String mailToReceiver) {
+    public void sendNotification(String notification, String mailToReceiver) {
         ClientConnection receiver = clientUpdater.getClientConnection(mailToReceiver);
         System.out.println("Sending notification to " + receiver);
         if (receiver != null) {
@@ -74,6 +75,7 @@ public class ConnectionController {
             receiver.sendObject(notificationPackage.toString());
         } else {
             //todo Hantera offline klienter
+            //TODO spara i egen fil elr? @jansson 4/may-2025
         }
     }
 
@@ -84,7 +86,7 @@ public class ConnectionController {
             status = "successfulLogin";
             clientUpdater.addOnlineClient(mail, sender);
         }
-        sucess.put("type",status);
+        sucess.put("type", status);
         sender.sendObject(sucess.toString());
     }
 
@@ -95,7 +97,7 @@ public class ConnectionController {
             status = "successfulLogin";
             clientUpdater.addOnlineClient(mail, sender);
         }
-        sucess.put("type",status);
+        sucess.put("type", status);
         sender.sendObject(sucess.toString());
     }
 }

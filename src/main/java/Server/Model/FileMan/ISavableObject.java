@@ -5,7 +5,7 @@ package Server.Model.FileMan;
  * serialized into a savable string format. Implementing classes should provide
  * a mechanism to convert their state into a string representation that can be
  * stored or transmitted.
- * 
+ *
  * @author Jansson Anton
  * @Date 2025-04-16
  */

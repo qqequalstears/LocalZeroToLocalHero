@@ -12,7 +12,7 @@ public class ClientConnection implements Runnable {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
-    public ClientConnection(Socket socket, ConnectionController connectionController){
+    public ClientConnection(Socket socket, ConnectionController connectionController) {
         this.socket = socket;
         this.connectionController = connectionController;
         try {
@@ -24,18 +24,18 @@ public class ClientConnection implements Runnable {
     }
 
     @Override
-    public void run(){
+    public void run() {
         System.out.println("Thread started");
-        try{
+        try {
             while (!Thread.currentThread().isInterrupted()) {
                 System.out.println("Listening to objects");
                 Object object = inputStream.readObject();
                 System.out.println("RECIEVED OBJECT");
-                connectionController.revealIntention(object, this);
+                connectionController.revealIntention(object, this); //TODo seöver ifall "object" kan bli något interface / castas till typ jsonObject ist. ==>
             }
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             closeConnection();
         }
     }
@@ -51,16 +51,16 @@ public class ClientConnection implements Runnable {
     }
 
 
-    private void closeConnection(){
-        try{
+    private void closeConnection() {
+        try {
 
-            if(inputStream != null){
+            if (inputStream != null) {
                 inputStream.close();
             }
-            if(outputStream != null){
+            if (outputStream != null) {
                 outputStream.close();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

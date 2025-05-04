@@ -15,7 +15,7 @@ import java.util.List;
  * from files or databases. It abstracts the details of data retrieval, allowing
  * for flexibility in the underlying
  * implementation.
- * 
+ *
  * @author Jansson Anton
  * @Date 2025-04-14
  */

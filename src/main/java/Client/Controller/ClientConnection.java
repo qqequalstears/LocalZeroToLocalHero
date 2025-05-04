@@ -25,13 +25,12 @@ public class ClientConnection extends Thread {
         start();
     }
 
-    public void connectSocket(){
+    public void connectSocket() {
         try {
             socket = new Socket(serverAddress, serverPort);
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             inputStream = new ObjectInputStream(socket.getInputStream());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error connecting to server: " + serverAddress + ":" + serverPort);
             e.printStackTrace();
         }
@@ -50,7 +49,7 @@ public class ClientConnection extends Thread {
             if (inputStream != null) {
                 inputStream.close();
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             System.out.println("Error closing connection: " + serverAddress + ":" + serverPort);
             e.printStackTrace();
         }
@@ -62,8 +61,8 @@ public class ClientConnection extends Thread {
                 connectSocket();
             }
             while (!Thread.currentThread().isInterrupted()) {
-                    Object object = inputStream.readObject();
-                    connectionController.revealIntention(object);
+                Object object = inputStream.readObject();
+                connectionController.revealIntention(object);
             }
         } catch (Exception e) {
             e.printStackTrace();

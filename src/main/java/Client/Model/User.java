@@ -10,7 +10,7 @@ import java.util.List;
  * @author MartinFrick
  * @version 250416_0
  */
-public class User implements Log {
+public class User implements Log, ISavableObject {
 
     private String name;
     private String location;
@@ -114,5 +114,11 @@ public class User implements Log {
     @Override
     public void Log() {
         System.out.println("I R GOOD CLASS IMPLAMANTING LOUGGING TIHI! I AM USER OBJECKT HIHIHI");
+    }
+
+
+    @Override
+    public String getSaveString() {
+        return String.join(",", email, password, name, location, roles.toString());
     }
 }

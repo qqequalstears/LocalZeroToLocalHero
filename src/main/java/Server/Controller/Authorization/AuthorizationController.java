@@ -1,10 +1,15 @@
 package Server.Controller.Authorization;
 
+import Client.Model.Role;
 import Client.Model.User;
 import Server.Controller.ClientConnection;
 import Server.Controller.ClientUpdater;
 import Server.Controller.ConnectionController;
+import Server.Controller.FileHandler;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthorizationController {
     private ConnectionController connectionController;
@@ -27,5 +32,36 @@ public class AuthorizationController {
         userExistsHandler.setNext(passwordMatchHandler);
 
         return loginChain.handleAuthorization(user);
+    }
+
+    public boolean tryRegister(JSONObject jsonObject) {
+        String mail = (String) jsonObject.get("mail");
+        String password = (String) jsonObject.get("password");
+        User user = new User(mail, password);
+
+        AuthorizationHandler registerChain = new MailContentHandler();
+        AuthorizationHandler passwordContentHandler = new PasswordContentHandler();
+        AuthorizationHandler emailInUserHandler = new EmailInUseHandler();
+
+        registerChain.setNext(passwordContentHandler);
+        passwordContentHandler.setNext(emailInUserHandler);
+
+        boolean canRegister = registerChain.handleAuthorization(user);
+
+        if (canRegister) {
+            registerUser(jsonObject);
+        }
+
+        return canRegister;
+    }
+
+    private void registerUser(JSONObject jsonObject) {
+        String mail = (String) jsonObject.get("mail");
+        String password = (String) jsonObject.get("password");
+        String name = (String) jsonObject.get("name");
+        String city = (String) jsonObject.get("city");
+        String csvRegister = String.join(",", mail, password, name, city, "Resident");
+
+        FileHandler.getInstance().registerUser(csvRegister);
     }
 }

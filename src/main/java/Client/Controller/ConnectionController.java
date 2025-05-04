@@ -52,6 +52,9 @@ public class ConnectionController {
             case "unSuccessfulLogin" :
                 guiInController.notifyUser("You are already online or you gave wrong credentials");
                 break;
+            case "unSuccessfulRegister" :
+                guiInController.notifyUser("Mail is already in use, or you gave wrong credentials. Remember that , is not allowed");
+                break;
             case "notification" :
                 newNotification(jsonObject);
                 break;
@@ -60,14 +63,9 @@ public class ConnectionController {
         }
     }
 
-    public void sendUserToServer(String mail, String password, String name, String city) {
-        JSONObject registerJson = new JSONObject();
-        registerJson.put("mail"     ,    mail);
-        registerJson.put("password" ,    password);
-        registerJson.put("name"     ,    name);
-        registerJson.put("city"     ,    city);
-
-        //todo Skicka till servern
+    public void sendRegisterToServer(String mail, String password, String name, String city) {
+        JSONObject registerJson = packager.createRegisterJSON(mail,password,name,city);
+        sendJsonObject(registerJson);
     }
 
     public void sendLoginToServer(String mail, String password) {

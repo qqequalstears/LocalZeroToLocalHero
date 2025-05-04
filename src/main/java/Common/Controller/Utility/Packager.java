@@ -17,6 +17,16 @@ public class Packager {
         return loginJson;
     }
 
+    public JSONObject createRegisterJSON(String mail, String password, String name, String city) {
+        JSONObject registerJson = new JSONObject();
+        registerJson.put("type"     ,    "register");
+        registerJson.put("mail"     ,    mail);
+        registerJson.put("password" ,    password);
+        registerJson.put("name"     ,    name);
+        registerJson.put("city"     ,    city);
+        return registerJson;
+    }
+
     public JSONObject createIntentionJson(String intention) {
         JSONObject intentnionJson = new JSONObject();
         intentnionJson.put("type", intention);

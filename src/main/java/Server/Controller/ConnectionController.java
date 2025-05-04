@@ -40,15 +40,22 @@ public class ConnectionController {
         JSONObject jsonObject = new JSONObject(jsonString);
         System.out.println(jsonObject);
         String intention = (String) jsonObject.get("type");
+        System.out.println("Intention is " + intention);
 
         switch (intention) {
             case "login":
                 String mail = (String) jsonObject.get("mail");
-                sendLoginStatus(sender, mail ,authorizationController.tryLogin(jsonObject, clientUpdater));
+                boolean successfulLogin = authorizationController.tryLogin(jsonObject, clientUpdater);
+                sendLoginStatus(sender, mail , successfulLogin);
                break;
             case "logout":
                 mail = (String) jsonObject.get("mail");
                 clientUpdater.removeOnlineClient(mail);
+                break;
+            case "register":
+                boolean successfulRegister = authorizationController.tryRegister(jsonObject);
+                mail = (String) jsonObject.get("mail");
+                sendRegisterStatus(sender, mail, successfulRegister);
                 break;
             default:
                 System.out.println("Intention was not found");
@@ -67,6 +74,17 @@ public class ConnectionController {
         } else {
             //todo Hantera offline klienter
         }
+    }
+
+    private void sendRegisterStatus(ClientConnection sender, String mail, boolean successfulRegister) {
+        JSONObject sucess = new JSONObject();
+        String status = "unSuccessfulRegister";
+        if (successfulRegister) {
+            status = "successfulLogin";
+            clientUpdater.addOnlineClient(mail, sender);
+        }
+        sucess.put("type",status);
+        sender.sendObject(sucess.toString());
     }
 
     private void sendLoginStatus(ClientConnection sender, String mail, boolean successfulLogin) {

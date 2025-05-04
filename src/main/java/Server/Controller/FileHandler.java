@@ -1,6 +1,7 @@
 package Server.Controller;
 
 import Client.Model.User;
+import Server.Model.FileMan.AppendToFile;
 import Server.Model.FileMan.IDataSaver;
 import Server.Model.FileMan.ReaderFiles;
 import Server.Model.FileMan.WriteToFile;
@@ -40,5 +41,9 @@ public class FileHandler {
 
     public List<User> getUsers() {
         return ReaderFiles.getInstance().fetchAllUsers();
+    }
+
+    public void registerUser(String csvContent) {
+        AppendToFile.getInstance().appendToUsersFile(csvContent);
     }
 }

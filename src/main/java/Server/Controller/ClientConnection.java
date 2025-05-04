@@ -42,7 +42,7 @@ public class ClientConnection implements Runnable {
 
     public void sendObject(Object object) {
         try {
-            System.out.println("SENT OBJECT");
+            System.out.println("SENT OBJECT" + object);
             outputStream.writeObject(object);
             outputStream.flush();
         } catch (IOException e) {

@@ -15,7 +15,7 @@ public class GUIOutController {
     }
 
     public void register(String mail, String password, String name, String city) {
-
+        connectionController.sendRegisterToServer(mail, password, name, city);
     }
 
     public void setConnectionController(ConnectionController connectionController) {

@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * Object representing initiative of a garage sale.
- *
- *  21/4 Updated according to superclass changes. /MartinFrick
+ * <p>
+ * 21/4 Updated according to superclass changes. /MartinFrick
  *
  * @author MartinFrick
  * @version 250421_0

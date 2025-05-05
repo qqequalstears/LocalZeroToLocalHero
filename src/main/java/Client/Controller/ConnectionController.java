@@ -1,4 +1,5 @@
 package Client.Controller;
+
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
 import Client.Model.Achievement;
@@ -18,7 +19,7 @@ public class ConnectionController {
     private Unpacker unpacker;
     private User connectedUser;
 
-    public ConnectionController(){
+    public ConnectionController() {
         try {
             GUIOutController.getInstance().setConnectionController(this);
             guiInController = GUIInController.getInstance();
@@ -29,14 +30,16 @@ public class ConnectionController {
             e.printStackTrace();
         }
     }
-    public void connectToServer() throws IOException{
+
+    public void connectToServer() throws IOException {
         String serverAddress = "127.0.0.1";
         int serverPort = 2343;
         clientConnection = new ClientConnection(serverAddress, serverPort, this);
         clientConnection.connect();
     }
-    public void disconnectFromServer() throws IOException{
-        if(clientConnection != null){
+
+    public void disconnectFromServer() throws IOException {
+        if (clientConnection != null) {
             clientConnection.disconnect();
         }
     }
@@ -48,16 +51,16 @@ public class ConnectionController {
         System.out.println("Gained an object" + jsonObject);
 
         switch (intention) {
-            case "successfulLogin" :
+            case "successfulLogin":
                 guiInController.successfulLogIn();
                 break;
-            case "unSuccessfulLogin" :
+            case "unSuccessfulLogin":
                 guiInController.notifyUser("You are already online or you gave wrong credentials");
                 break;
-            case "unSuccessfulRegister" :
+            case "unSuccessfulRegister":
                 guiInController.notifyUser("Mail is already in use, or you gave wrong credentials. Remember that , is not allowed");
                 break;
-            case "notification" :
+            case "notification":
                 newNotification(jsonObject);
                 break;
             case "unSuccessfulInitiativeCreation":
@@ -72,13 +75,13 @@ public class ConnectionController {
     }
 
     public void sendRegisterToServer(String mail, String password, String name, String city) {
-        JSONObject registerJson = packager.createRegisterJSON(mail,password,name,city);
+        JSONObject registerJson = packager.createRegisterJSON(mail, password, name, city);
         sendJsonObject(registerJson);
     }
 
     public void sendLoginToServer(String mail, String password) {
         JSONObject loginJson = packager.createLoginJSON(mail, password);
-        connectedUser = new User(mail,password); //todo Möjligtvis att detta behövs ske genom att servern skickar hela user objektet
+        connectedUser = new User(mail, password); //todo Möjligtvis att detta behövs ske genom att servern skickar hela user objektet
         sendJsonObject(loginJson);
     }
 

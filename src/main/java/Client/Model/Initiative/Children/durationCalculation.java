@@ -9,6 +9,6 @@ package Client.Model.Initiative.Children;
 
 public interface durationCalculation {
 
-    int durationCalc ();
+    int durationCalc();
 
 }

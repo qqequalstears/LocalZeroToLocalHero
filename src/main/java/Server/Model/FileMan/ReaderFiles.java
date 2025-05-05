@@ -34,7 +34,7 @@ public class ReaderFiles implements IDataFetcher {
     private static final File destinationUser = FileDestinationFactory.getUserDataFile();
     private static final File destinationAchievements = FileDestinationFactory.getAchievementDataFile();
     private static final File destinationLog = FileDestinationFactory.getLogDataFile();
-    private static final File destinationActiveIntiative=FileDestinationFactory.getActiveInitiativeDataFile();
+    private static final File destinationActiveIntiative = FileDestinationFactory.getActiveInitiativeDataFile();
 
     /**
      * Provides a singleton instance of the FileReader class.
@@ -64,10 +64,10 @@ public class ReaderFiles implements IDataFetcher {
      * @param file The path to the file to be read. This can be an absolute
      *             or relative file path.
      * @return A string containing the entire content of the file. If an error
-     *         occurs, an error message is returned.
-     *         Returns "File not found at: <destination>" if the file is not found,
-     *         or "Error reading the file: <message>" if an error occurs during
-     *         reading.
+     * occurs, an error message is returned.
+     * Returns "File not found at: <destination>" if the file is not found,
+     * or "Error reading the file: <message>" if an error occurs during
+     * reading.
      * @throws FileNotFoundException If the file does not exist at the specified
      *                               destination.
      * @throws IOException           If an I/O error occurs while reading the file.
@@ -97,7 +97,7 @@ public class ReaderFiles implements IDataFetcher {
      * Reads the content of the users file and returns it as a {@String}.
      *
      * @return A containing the entire content of the users file.
-     *         If an error occurs during reading, an error message is returned.
+     * If an error occurs during reading, an error message is returned.
      * @author Jansson Anton
      * @Date 2025-04-07
      */
@@ -109,7 +109,7 @@ public class ReaderFiles implements IDataFetcher {
      * Reads the content of the achievements file and returns it as a string.
      *
      * @return A string containing the entire content of the achievements file.
-     *         If an error occurs during reading, an error message is returned.
+     * If an error occurs during reading, an error message is returned.
      * @author Jansson Anton
      * @Date 2025-04-07
      */
@@ -121,7 +121,7 @@ public class ReaderFiles implements IDataFetcher {
      * Reads the content of the log file and returns it as a string.
      *
      * @return A string containing the entire content of the log file.
-     *         If an error occurs during reading, an error message is returned.
+     * If an error occurs during reading, an error message is returned.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -133,7 +133,7 @@ public class ReaderFiles implements IDataFetcher {
      * Reads the content of the active initiative file and returns it as a string.
      *
      * @return A string containing the entire content of the active initiative file.
-     *         If an error occurs during reading, an error message is returned.
+     * If an error occurs during reading, an error message is returned.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -145,7 +145,7 @@ public class ReaderFiles implements IDataFetcher {
      * Fetches all user data from the users file.
      *
      * @return A string containing all user data.
-     *         If an error occurs during reading, an error message is returned.
+     * If an error occurs during reading, an error message is returned.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -195,7 +195,7 @@ public class ReaderFiles implements IDataFetcher {
      * Fetches all achievement data from the achievements file.
      *
      * @return A string containing all achievement data.
-     *         If an error occurs during reading, an error message is returned.
+     * If an error occurs during reading, an error message is returned.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -235,7 +235,7 @@ public class ReaderFiles implements IDataFetcher {
      * Fetches all log data from the log file.
      *
      * @return A string containing all log data.
-     *         If an error occurs during reading, an error message is returned.
+     * If an error occurs during reading, an error message is returned.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -248,7 +248,7 @@ public class ReaderFiles implements IDataFetcher {
      * Fetches all active initiative data from the active initiative file.
      *
      * @return A string containing all active initiative data.
-     *         If an error occurs during reading, an error message is returned.
+     * If an error occurs during reading, an error message is returned.
      * @author Jansson Anton
      * @Date 2025-04-16
      */

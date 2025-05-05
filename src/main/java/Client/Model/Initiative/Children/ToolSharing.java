@@ -8,8 +8,7 @@ import Server.Model.AchievementTracker;
 import java.util.List;
 
 /**
- *  Object representing initiative of loaning a tool.
- *
+ * Object representing initiative of loaning a tool.
  *
  * @author MartinFrick
  * @version 250417_0

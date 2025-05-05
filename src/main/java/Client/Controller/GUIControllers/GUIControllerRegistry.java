@@ -14,7 +14,7 @@ public class GUIControllerRegistry implements Registry {
     }
 
     public void add(String key, FxController controller) {
-        controllerMap.put(key,controller);
+        controllerMap.put(key, controller);
     }
 
     public FxController get(String key) {

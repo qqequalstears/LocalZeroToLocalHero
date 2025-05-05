@@ -8,9 +8,9 @@ import Server.Model.AchievementTracker;
 import java.util.List;
 
 /**
- *  Object representing initiative of gardening.
- *
- *  21/4 Updated according to superclass changes. /MartinFrick
+ * Object representing initiative of gardening.
+ * <p>
+ * 21/4 Updated according to superclass changes. /MartinFrick
  *
  * @author MartinFrick
  * @version 250421_0

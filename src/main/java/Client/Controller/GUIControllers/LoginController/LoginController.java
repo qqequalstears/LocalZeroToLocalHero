@@ -35,7 +35,8 @@ public class LoginController implements FxController {
     private GUIInController guiInController;
 
 
-    public LoginController() {}
+    public LoginController() {
+    }
 
     @FXML
     public void initialize() {
@@ -72,7 +73,7 @@ public class LoginController implements FxController {
         if (loginOrRegister.equals("Log in")) {
             handleLogin(mail, password);
         } else {
-           handleRegister(mail,password,name,city);
+            handleRegister(mail, password, name, city);
         }
     }
 
@@ -94,7 +95,7 @@ public class LoginController implements FxController {
         if (mail.contains("@")) {
             if (!password.isEmpty() && !name.isEmpty() && !city.isEmpty()) {
                 //loginOrRegisterButton.setDisable(true); //todo lägg till detta om vi villa ha bättre inloggningsprocess
-                guiOutController.register(mail,password,name,city);
+                guiOutController.register(mail, password, name, city);
             } else {
                 guiInController.notifyUser("Mail, password, name or city has not been entered properly, please try again");
             }

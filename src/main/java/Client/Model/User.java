@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Object representing a user in runtime.
- *
+ * Object representing a user in runtime.
  *
  * @author MartinFrick
  * @version 250416_0
  */
-public class User implements Log {
+public class User implements Log, ISavableObject {
 
     private String name;
     private String location;
@@ -24,7 +23,7 @@ public class User implements Log {
         this.name = name;
         this.location = location;
         this.roles = new ArrayList<>();
-        this. loginCredentials = loginCredentials;
+        this.loginCredentials = loginCredentials;
 
         setEmail(loginCredentials.getMail());
         setPassword(loginCredentials.getPassword());
@@ -35,7 +34,7 @@ public class User implements Log {
         this.name = name;
         this.location = location;
         this.roles = new ArrayList<>(roles);
-        this. loginCredentials = loginCredentials;
+        this.loginCredentials = loginCredentials;
 
         setEmail(loginCredentials.getMail());
         setPassword(loginCredentials.getPassword());
@@ -47,7 +46,12 @@ public class User implements Log {
         this.email = email;
         this.password = password;
         this.roles = new ArrayList<>();
-        this.loginCredentials = new LoginCredentials(email,password);
+        this.loginCredentials = new LoginCredentials(email, password);
+
+
+        //TODO ska det finnas ett default på role? @jansson
+        roles.add(Role.Resident);
+
     }
 
     public User(String name, String location, String email, String password, List<Role> roles) {
@@ -125,5 +129,19 @@ public class User implements Log {
     @Override
     public void Log() {
         System.out.println("I R GOOD CLASS IMPLAMANTING LOUGGING TIHI! I AM USER OBJECKT HIHIHI");
+    }
+
+
+    @Override
+    public String getSaveString() {
+        return String.join(",", email, password, name, location, getRolesAsString());
+    }
+
+    private String getRolesAsString() {
+        StringBuilder returnString = new StringBuilder(String.valueOf(roles.get(0)));
+        for (int i = 1; i < roles.size(); i++) {
+            returnString.append("-").append(roles.get(i));
+        }
+        return returnString.toString();
     }
 }

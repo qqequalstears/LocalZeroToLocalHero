@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
  * @author MartinFrick
  * @version 250416_0
  */
-public class Achievement {
+public class Achievement implements ISavableObject{
 
     private Image image;
     private String name;
@@ -76,4 +76,17 @@ public class Achievement {
         this.description = description;
     }
 
+    @Override
+    public String getSaveString() {
+        return String.join(",", name,String.valueOf(progress), description, getMilestonesAsString(), "PLACEHOLDER FOR ACHIEVEMENT IMAGE");
+
+    }
+
+    private String getMilestonesAsString() {
+        StringBuilder returnString = new StringBuilder(String.valueOf(milestones.get(0)));
+        for (int i = 1; i < milestones.size(); i++) {
+            returnString.append("-").append(milestones.get(i));
+        }
+        return returnString.toString();
+    }
 }

@@ -19,11 +19,11 @@ public class Packager {
 
     public JSONObject createRegisterJSON(String mail, String password, String name, String city) {
         JSONObject registerJson = new JSONObject();
-        registerJson.put("type"     ,    "register");
-        registerJson.put("mail"     ,    mail);
-        registerJson.put("password" ,    password);
-        registerJson.put("name"     ,    name);
-        registerJson.put("city"     ,    city);
+        registerJson.put("type", "register");
+        registerJson.put("mail", mail);
+        registerJson.put("password", password);
+        registerJson.put("name", name);
+        registerJson.put("city", city);
         return registerJson;
     }
 

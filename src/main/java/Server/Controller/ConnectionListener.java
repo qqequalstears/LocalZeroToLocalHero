@@ -3,7 +3,7 @@ package Server.Controller;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ConnectionListener extends Thread{
+public class ConnectionListener extends Thread {
 
     private ServerSocket serverSocket;
     private ConnectionController connectionController;
@@ -20,7 +20,7 @@ public class ConnectionListener extends Thread{
     }
 
     @Override
-    public synchronized void run(){
+    public synchronized void run() {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();

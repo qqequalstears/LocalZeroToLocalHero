@@ -55,9 +55,9 @@ public class WriteToFile implements IDataWriter {
      * The file is overwritten (not appended) when this method is called.
      * If the file does not exist, it will be created.
      *
-     * @param file The path of the file where the data should be written.
-     * @param header      The header to be written at the top of the file.
-     * @param data        The content to be written to the file.
+     * @param file   The path of the file where the data should be written.
+     * @param header The header to be written at the top of the file.
+     * @param data   The content to be written to the file.
      * @return A message indicating the result of the operation.
      * @author Jansson Anton
      * @Date 2025-04-15
@@ -86,20 +86,19 @@ public class WriteToFile implements IDataWriter {
     }
 
     /**
-     * 
      * /**
      * Writes the given data to the users file, (this without appending).
      *
      * @param data The data that will be written to the users file.
      * @return A message indicating whether the data was written successfully or if
-     *         an error occurred.
+     * an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-07
      */
     private String writeToUsers(String data) {
-        String header = "userID,username,password,achievements,score,rank\n"; // TODO this is a placeholder. The header
-                                                                              // needs to be changed to the
-                                                                              // corresponding header.
+        String header = "email,password,name,location,roles\n"; // TODO this is a placeholder. The header
+        // needs to be changed to the
+        // corresponding header.
 
         return writeToCSVFile(destinationUser, header, data);
     }
@@ -109,17 +108,17 @@ public class WriteToFile implements IDataWriter {
      *
      * @param data The data that will be written to the achievements file.
      * @return A message indicating whether the data was written successfully or if
-     *         an error occurred.
+     * an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-07
      */
     private String writeToAchievements(String data) {
         String header = "achievementID,achievementName,achievementDescription,achievementPoints\n"; // TODO this is a
-                                                                                                    // placeholder. The
-                                                                                                    // header needs to
-                                                                                                    // be changed to the
-                                                                                                    // corresponding
-                                                                                                    // header.
+        // placeholder. The
+        // header needs to
+        // be changed to the
+        // corresponding
+        // header.
         return writeToCSVFile(destinationAchievements, header, data);
     }
 
@@ -130,13 +129,13 @@ public class WriteToFile implements IDataWriter {
      *
      * @param logEntery The log entry to be written to the log file.
      * @return A message indicating whether the log entry was written successfully
-     *         or if an error occurred.
+     * or if an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
     private String writeToLog(String logEntery) {
         String header = " logID,logEntery\n"; // TODO this is a placeholder. The header needs to be changed to the
-                                              // corresponding header.
+        // corresponding header.
         return writeToCSVFile(destinationLog, header, logEntery);
     }
 
@@ -147,15 +146,15 @@ public class WriteToFile implements IDataWriter {
      *
      * @param data The data to be written to the active initiative file.
      * @return A message indicating whether the data was written successfully or if
-     *         an error occurred.
+     * an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
     private String writeToActiveIntiative(String data) {
         String header = "intiativeID,intiativeName,intiativeDescription,intiativePoints\n"; // TODO this is a
-                                                                                            // placeholder. The header
-                                                                                            // needs to be changed to
-                                                                                            // the corresponding header.
+        // placeholder. The header
+        // needs to be changed to
+        // the corresponding header.
         return writeToCSVFile(destinationActiveIntiative, header, data);
     }
 
@@ -164,7 +163,7 @@ public class WriteToFile implements IDataWriter {
      *
      * @param data The user data to be written to the file.
      * @return A message indicating whether the user data was written successfully
-     *         or if an error occurred.
+     * or if an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-07
      */
@@ -178,7 +177,7 @@ public class WriteToFile implements IDataWriter {
      *
      * @param data The achievements data to be written to the file.
      * @return A message indicating whether the achievements data was written
-     *         successfully or if an error occurred.
+     * successfully or if an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-07
      */
@@ -192,7 +191,7 @@ public class WriteToFile implements IDataWriter {
      *
      * @param data The active initiative data to be written to the file.
      * @return A message indicating whether the active initiative data was written
-     *         successfully or if an error occurred.
+     * successfully or if an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -206,7 +205,7 @@ public class WriteToFile implements IDataWriter {
      *
      * @param logEntry The log entry to be written to the file.
      * @return A message indicating whether the log entry was written successfully
-     *         or if an error occurred.
+     * or if an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-16
      */

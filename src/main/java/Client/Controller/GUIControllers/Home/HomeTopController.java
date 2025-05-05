@@ -36,6 +36,11 @@ public class HomeTopController implements FxController {
     }
 
     @FXML
+    public void openAchievements() {
+        guiInController.createStage("ACHIEVEMENTSTAGE");
+    }
+
+    @FXML
     public void logout() {
         guiOutController.logout();
     }

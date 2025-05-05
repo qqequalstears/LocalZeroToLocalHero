@@ -5,6 +5,7 @@ import Client.Controller.GUIControllers.Intitiative.InitiativeController;
 import Client.Controller.GUIControllers.LoginController.LoginController;
 import Client.Controller.GUIControllers.Notifications.NotificationController;
 import Client.Model.Notifications;
+import Client.View.Achievement.AchievementStage;
 import Client.View.CreateInitiative.CreateInitiativeStage;
 import Client.View.Home.HomeStage;
 import Client.View.Login.LogInStage;
@@ -28,6 +29,7 @@ public class GUIInController {
         stageCreators.put("INITIATIVESTAGE", () -> new InitiativeController());
         stageCreators.put("CREATEINITIATIVE", () -> new CreateInitiativeStage().createStage());
         stageCreators.put("NOTIFICATIONS", () -> new NotificationStage().createStage());
+        stageCreators.put("ACHIEVEMENTSTAGE", () -> new AchievementStage().createStage());
     }
 
     public void createStage(String stageToCreate) {
@@ -65,6 +67,14 @@ public class GUIInController {
                 Platform.runLater(homeTopController::notifyUser);
             }
         }
+    }
+
+    public void achievement(){
+        FxController loginController = GUIControllerRegistry.getInstance().get(LoginController.class.getName());
+        Platform.runLater(() -> {
+            loginController.closeStage();
+            createStage("ACHIEVEMENTSTAGE");
+        });
     }
 
     public void logout() {

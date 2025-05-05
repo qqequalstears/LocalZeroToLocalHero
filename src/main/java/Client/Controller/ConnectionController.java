@@ -1,6 +1,7 @@
 package Client.Controller;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
+import Client.Model.Achievement;
 import Client.Model.Notifications;
 import Client.Model.User;
 import Common.Controller.Utility.Packager;
@@ -8,6 +9,7 @@ import Common.Controller.Utility.Unpacker;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ConnectionController {
     private ClientConnection clientConnection;
@@ -95,5 +97,8 @@ public class ConnectionController {
         String notification = (String) jsonObject.get("notification");
         Notifications.notifications.add(notification);
         guiInController.newNotification();
+    }
+    public List<Achievement> getAchievements() {
+        return connectedUser.getAchievements();
     }
 }

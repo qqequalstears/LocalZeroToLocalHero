@@ -13,7 +13,7 @@
                 <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button fx:id="achievemntsButton" layoutX="430.0" layoutY="20.0" mnemonicParsing="false" style="-fx-background-color: #A3D1C6;" text="Achievements" textFill="WHITE">
+        <Button fx:id="achievemntsButton" layoutX="430.0" layoutY="20.0" mnemonicParsing="false" onAction="#openAchievements" style="-fx-background-color: #A3D1C6;" text="Achievements" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>

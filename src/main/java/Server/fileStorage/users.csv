@@ -4,3 +4,5 @@ user1@test.com, pass, Martin, Malmö, Resident - Taxi
 user2@test.com, password, Christoffer, Helsingborg, Resident
 anton@test.com,pass,Anton,Osby,Resident
 testing@test.com,pass,test,testCity,Resident
+Frank@lampard.chelsea,Lampard,Lampard,London,Resident
+frank@lampard.chelsea,Lampard,Frank,London,Resident

@@ -2,7 +2,7 @@ package Client.Model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.*;
+import javafx.scene.image.Image;
 
 /**
  * Object representing Achievements
@@ -19,9 +19,13 @@ public class Achievement {
     private String description;
 
     //Constructor for testing
+    public Achievement(String name, Integer progress) {
+        this.name=name;
+        this.progress= progress;
+    }
     public Achievement(String name) {
         this.name=name;
-        this.progress=0;
+        this.progress= 0;
     }
 
     public Achievement(Image image, String name, Integer progress, List<Integer> milestones, String description) {

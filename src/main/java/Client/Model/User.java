@@ -18,6 +18,7 @@ public class User implements Log {
     private String password;
     private List<Role> roles;
     private LoginCredentials loginCredentials;
+    private List<Achievement> achievements;
 
     public User(String name, String location, LoginCredentials loginCredentials) {
         this.name = name;
@@ -108,6 +109,16 @@ public class User implements Log {
 
     public void setLoginCredentials(LoginCredentials loginCredentials) {
         this.loginCredentials = loginCredentials;
+    }
+
+    public void addAchievement(Achievement achievement) {
+        if (achievements == null) {
+            achievements = new ArrayList<>();
+        }
+        achievements.add(achievement);
+    }
+    public List<Achievement> getAchievements() {
+        return achievements;
     }
 
 

@@ -1,6 +1,9 @@
 package Client.Controller.GUIControllers;
 
 import Client.Controller.ConnectionController;
+import Client.Model.Achievement;
+
+import java.util.List;
 
 public class GUIOutController {
     private static GUIOutController instance;
@@ -27,6 +30,10 @@ public class GUIOutController {
             instance = new GUIOutController();
         }
         return instance;
+    }
+    public List<Achievement> getConnectedUser() {
+
+        return connectionController.getAchievements();
     }
 
     public void logout() {

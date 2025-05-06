@@ -115,4 +115,8 @@ public class ConnectionController {
     public List<Achievement> getAchievements() {
         return connectedUser.getAchievements();
     }
+
+    public User getConnectedUser() {
+        return connectedUser;
+    }
 }

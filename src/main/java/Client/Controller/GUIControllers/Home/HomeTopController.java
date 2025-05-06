@@ -54,4 +54,12 @@ public class HomeTopController implements FxController {
         Stage stage = (Stage) logButton.getScene().getWindow();
         stage.close();
     }
+
+    @FXML
+    public void openInbox() {
+        // You may need to adjust how you get the current user's email/ID
+        String currentUserId = guiOutController.getConnectedUserEmail();
+        Client.View.Email.EmailView emailView = new Client.View.Email.EmailView(currentUserId);
+        emailView.show();
+    }
 }

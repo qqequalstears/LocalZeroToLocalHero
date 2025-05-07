@@ -4,6 +4,7 @@ import Client.Controller.GUIControllers.FxController;
 import Client.Controller.GUIControllers.GUIControllerRegistry;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
+import Client.View.Message.MessageView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -57,9 +58,7 @@ public class HomeTopController implements FxController {
 
     @FXML
     public void openInbox() {
-        // You may need to adjust how you get the current user's email/ID
         String currentUserId = guiOutController.getConnectedUserEmail();
-        Client.View.Email.EmailView emailView = new Client.View.Email.EmailView(currentUserId);
-        emailView.show();
+        MessageView messageView = new MessageView(currentUserId);
     }
 }

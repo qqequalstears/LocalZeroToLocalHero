@@ -45,6 +45,7 @@ public class ConnectionController {
     }
 
     public void revealIntention(Object object) {
+        System.out.println("[DEBUG] revealIntention called with: " + object);
         String jsonString = (String) object;
         JSONObject jsonObject = new JSONObject(jsonString);
         String intention = (String) jsonObject.get("type");
@@ -101,7 +102,7 @@ public class ConnectionController {
         sendJsonObject(newInitiative);
     }
 
-    private void sendJsonObject(JSONObject jsonObject) {
+    public void sendJsonObject(JSONObject jsonObject) {
         String dataToSend = jsonObject.toString();
         clientConnection.sendObject(dataToSend);
     }
@@ -109,7 +110,7 @@ public class ConnectionController {
     private void newNotification(JSONObject jsonObject) {
         System.out.println("REACHED NOTIFICATION METHOD");
         String notification = (String) jsonObject.get("notification");
-        Notifications.notifications.add(notification);
+        Notifications.addNotification(notification);
         guiInController.newNotification();
     }
     public List<Achievement> getAchievements() {

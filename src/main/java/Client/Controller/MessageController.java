@@ -7,6 +7,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import org.json.JSONObject;
+import Client.Controller.ConnectionController;
+import Client.Controller.GUIControllers.GUIOutController;
 
 public class MessageController {
     private static MessageController instance;
@@ -81,21 +84,15 @@ public class MessageController {
     }
 
     public void sendMessage(String senderId, String recipientId, String subject, String content) {
-        Message message = new Message(senderId, recipientId, subject, content);
-        
-        // Add to recipient's inbox
-        userInboxes.computeIfAbsent(recipientId, k -> new ArrayList<>()).add(message);
-        
-        // Add to sender's sent messages
-        userSentMessages.computeIfAbsent(senderId, k -> new ArrayList<>()).add(message);
-        
-        // Trigger notification
-        NotificationController.getInstance().createNotification(
-            recipientId,
-            "New Message",
-            "You have received a new message from " + senderId
-        );
-        saveMessagesToFile();
+        // Send message to server for delivery and notification
+        JSONObject json = new JSONObject();
+        json.put("type", "sendMessage");
+        json.put("senderId", senderId);
+        json.put("recipientId", recipientId);
+        json.put("subject", subject);
+        json.put("content", content);
+        ConnectionController connectionController = GUIOutController.getInstance().getConnectionController();
+        connectionController.sendJsonObject(json);
     }
 
     public List<Message> getInbox(String userId) {

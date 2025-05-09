@@ -5,6 +5,7 @@ import Server.Controller.Authorization.AuthorizationController;
 import org.json.JSONObject;
 
 import java.net.Socket;
+import java.io.*;
 
 public class ConnectionController {
 
@@ -48,6 +49,24 @@ public class ConnectionController {
                 String mail = (String) jsonObject.get("mail");
                 boolean successfulLogin = authorizationController.tryLogin(jsonObject, clientUpdater);
                 sendLoginStatus(sender, mail, successfulLogin);
+                // After successful login, deliver any stored notifications
+                if (successfulLogin) {
+                    File file = new File("notifications_" + mail + ".txt");
+                    if (file.exists()) {
+                        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                            String line;
+                            while ((line = reader.readLine()) != null) {
+                                JSONObject notificationPackage = new JSONObject();
+                                notificationPackage.put("type", "notification");
+                                notificationPackage.put("notification", line);
+                                sender.sendObject(notificationPackage.toString());
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        file.delete(); // Clear notifications after sending
+                    }
+                }
                 break;
             case "logout":
                 mail = (String) jsonObject.get("mail");
@@ -62,6 +81,14 @@ public class ConnectionController {
                 boolean success = initiativeManager.createNewInitiative(jsonObject);
                 sendCreateInitiativeStatus(success, sender);
                 break;
+            case "sendMessage":
+                String senderId = jsonObject.getString("senderId");
+                String recipientId = jsonObject.getString("recipientId");
+                String subject = jsonObject.getString("subject");
+                String content = jsonObject.getString("content");
+                // Optionally: Save the message to a file or database here
+                sendNotification("You have received a new message from " + senderId, recipientId);
+                break;
             default:
                 System.out.println("Intention was not found");
                 break;
@@ -69,6 +96,7 @@ public class ConnectionController {
     }
 
     public void sendNotification(String notification, String mailToReceiver) {
+        System.out.println("[DEBUG] sendNotification called for: " + mailToReceiver + " with: " + notification);
         ClientConnection receiver = clientUpdater.getClientConnection(mailToReceiver);
         System.out.println("Sending notification to " + receiver);
         if (receiver != null) {
@@ -77,8 +105,16 @@ public class ConnectionController {
             notificationPackage.put("notification", notification);
             receiver.sendObject(notificationPackage.toString());
         } else {
-            //todo Hantera offline klienter
-            //TODO spara i egen fil elr? @jansson 4/may-2025
+            // Store notification in a file for offline users
+            try {
+                File file = new File("notifications_" + mailToReceiver + ".txt");
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                    writer.write(notification);
+                    writer.newLine();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -50,4 +50,8 @@ public class GUIOutController {
         }
         return null;
     }
+
+    public ConnectionController getConnectionController() {
+        return connectionController;
+    }
 }

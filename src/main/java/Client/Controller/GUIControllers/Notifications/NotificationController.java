@@ -38,6 +38,7 @@ public class NotificationController implements FxController {
     public void updateNotifcations() {
         notifications.clear();
         notifications.addAll(Notifications.notifications);
+        System.out.println("[DEBUG] Notification list updated, size: " + notifications.size());
     }
 
     @Override

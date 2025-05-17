@@ -22,6 +22,8 @@ public class FileDestinationFactory {
 
     private static FileDestinationFactory instance;
 
+    private FileDestinationFactory() {    }
+
     /**
      * Retrieves the singleton instance of the FileDestinationFactory.
      * Ensures that only one instance of the factory is created.
@@ -33,10 +35,8 @@ public class FileDestinationFactory {
     public static FileDestinationFactory getInstance() {
         if (instance == null) {
             synchronized (FileDestinationFactory.class) {
-                if (instance == null) {
                     instance = new FileDestinationFactory();
                 }
-            }
         }
         return instance;
     }

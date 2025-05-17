@@ -36,6 +36,8 @@ public class ReaderFiles implements IDataFetcher {
     private static final File destinationLog = FileDestinationFactory.getLogDataFile();
     private static final File destinationActiveIntiative = FileDestinationFactory.getActiveInitiativeDataFile();
 
+    private ReaderFiles() {    }
+
     /**
      * Provides a singleton instance of the FileReader class.
      * This method ensures that only one instance of FileReader exists at any

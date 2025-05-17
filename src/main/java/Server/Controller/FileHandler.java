@@ -1,11 +1,10 @@
 package Server.Controller;
 
-import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.User;
-import Server.Model.FileMan.AppendToFile;
-import Server.Model.FileMan.IDataSaver;
-import Server.Model.FileMan.ReaderFiles;
-import Server.Model.FileMan.WriteToFile;
+import Server.Model.FileMan.*;
+import Server.Model.FileMan.Proxy.FileAppenderProxy;
+import Server.Model.FileMan.Proxy.FileReaderProxy;
+import Server.Model.FileMan.Proxy.FileWriterProxy;
 
 import java.util.List;
 
@@ -22,11 +21,9 @@ public class FileHandler {
     }
 
     public static synchronized FileHandler getInstance() {
-        if (instance == null) {
-            synchronized (FileHandler.class) {
-                if (instance == null) {
-                    instance = new FileHandler();
-                }
+        synchronized (FileHandler.class) {
+            if (instance == null) {
+                instance = new FileHandler();
             }
         }
         return instance;
@@ -34,21 +31,31 @@ public class FileHandler {
 
     // Mock method for this class. This is not a real method, but it is used to
     // demonstrate how one might save data to a file.
-    public String saveAllUsersc(String dString) {
-        IDataSaver dataSaver = new WriteToFile();
+    public String saveAllUsers(String dString) {
+        IDataSaver dataSaver = FileWriterProxy.getInstance();
         dataSaver.saveUser(dString);
         return "Data saved successfully";
     }
 
     public List<User> getUsers() {
-        return ReaderFiles.getInstance().fetchAllUsers();
+        //  return ReaderFiles.getInstance().fetchAllUsers();
+        //return FileReaderProxy.getInstance().fetchAllUsers();
+        IDataFetcher dataFetcher = FileReaderProxy.getInstance();
+        return dataFetcher.fetchAllUsers();
     }
 
-    public void registerUser(String csvContent) {
-        AppendToFile.getInstance().appendToUsersFile(csvContent);
+    public String registerUser(String csvContent) {
+        IDataSaver dataAppender = FileAppenderProxy.getInstance();
+        //test.appendToUsersFile(csvContent);
+        dataAppender.saveUser(csvContent);
+        return "Data saved successfully";
+
     }
 
-    public void createInitiative(String csvContent) {
-        AppendToFile.getInstance().appendActiveIntiativeToFile(csvContent);
+    public String createInitiative(String csvContent) {
+        IDataSaver dataAppender = FileAppenderProxy.getInstance();
+        dataAppender.saveActiveIntiative(csvContent);
+        return "Data saved successfully";
+
     }
 }

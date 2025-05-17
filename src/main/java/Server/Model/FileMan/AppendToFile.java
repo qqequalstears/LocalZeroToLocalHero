@@ -26,6 +26,9 @@ public class AppendToFile implements IDataAppender {
     private static final File destinationLog = FileDestinationFactory.getLogDataFile();
     private static final File destinationActiveIntiative = FileDestinationFactory.getActiveInitiativeDataFile();
 
+    private AppendToFile() {
+    }
+
     /**
      * Returns the singleton instance of the `AppendToFile` class.
      * This method ensures that only one instance of the class is created and shared

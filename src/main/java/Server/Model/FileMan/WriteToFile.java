@@ -33,6 +33,8 @@ public class WriteToFile implements IDataWriter {
 
     private static WriteToFile instance;
 
+
+    private WriteToFile(){}
     /**
      * Provides a singleton instance of the WriteToFile class.
      * Ensures that only one instance of WriteToFile exists at any given time.

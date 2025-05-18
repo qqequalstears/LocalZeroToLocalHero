@@ -13,10 +13,11 @@ import java.util.List;
  * @author MartinFrick
  * @version 250421_0
  */
+
 public class Gardening extends Initiative implements Log {
 
-    public Gardening(String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
-        super(title, description, location, duration, startTime, comments, likes, isPublic, achievements);
+    public Gardening(String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
+        super(category, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
     }
 
     @Override

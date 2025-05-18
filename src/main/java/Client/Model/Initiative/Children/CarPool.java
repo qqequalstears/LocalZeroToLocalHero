@@ -17,10 +17,10 @@ import java.util.List;
 public class CarPool extends Initiative implements durationCalculation, Log {
 
     private String destination;
-    private String destination;
 
-    public CarPool(String destination, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
-        super(title, description, location, duration, startTime, comments, likes, isPublic, achievements);
+
+    public CarPool(String destination, String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
+        super(category,  title,  description,  location,  duration,  startTime,  comments, likes,  isPublic, achievements);
     }
 
     @Override

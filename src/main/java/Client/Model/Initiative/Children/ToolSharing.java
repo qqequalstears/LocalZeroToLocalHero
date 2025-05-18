@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class ToolSharing extends Initiative implements durationCalculation, Log {
 
-    public ToolSharing(String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
-        super(title, description, location, duration, startTime, comments, likes, isPublic, achievements);
+    public ToolSharing(String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
+        super(category, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
     }
 
     @Override

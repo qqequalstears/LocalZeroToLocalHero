@@ -15,7 +15,7 @@ import java.util.List;
  * and active initiatives. The class ensures that data is appended to the
  * specified files
  * and handles file creation if the files do not already exist.
- * 
+ *
  * @author Jansson Anton
  * @date 2025-04-16
  */
@@ -24,13 +24,13 @@ public class AppendToFile implements IDataAppender {
     private static final File destinationUser = FileDestinationFactory.getUserDataFile();
     private static final File destinationAchievements = FileDestinationFactory.getAchievementDataFile();
     private static final File destinationLog = FileDestinationFactory.getLogDataFile();
-    private static final File destinationActiveIntiative=FileDestinationFactory.getActiveInitiativeDataFile();
+    private static final File destinationActiveIntiative = FileDestinationFactory.getActiveInitiativeDataFile();
 
     /**
      * Returns the singleton instance of the `AppendToFile` class.
      * This method ensures that only one instance of the class is created and shared
      * across the application.
-     * 
+     *
      * @return The singleton instance of the `AppendToFile` class.
      * @author Jansson Anton
      * @date 2025-04-07
@@ -48,10 +48,9 @@ public class AppendToFile implements IDataAppender {
      * will be appended to it.
      *
      * @param file The path of the file where the data should be appended.
-     * @param data        The data that will be appended to the file.
+     * @param data The data that will be appended to the file.
      * @return A message indicating whether the data was appended successfully or if
-     *         there was an error.
-     *
+     * there was an error.
      * @throws IOException           If an I/O error occurs while writing to the
      *                               file.
      * @throws FileNotFoundException If the specified file cannot be found (although
@@ -106,7 +105,7 @@ public class AppendToFile implements IDataAppender {
      *
      * @param data The data that will be appended to the users file.
      * @return A message indicating whether the data was appended successfully or if
-     *         an error occurred.
+     * an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-07
      */
@@ -119,7 +118,7 @@ public class AppendToFile implements IDataAppender {
      *
      * @param data The data that will be appended to the achievements file.
      * @return A message indicating whether the data was appended successfully or if
-     *         an error occurred.
+     * an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-07
      */
@@ -203,6 +202,5 @@ public class AppendToFile implements IDataAppender {
         return appendToActiveIntiative(data);
     }
 
-     
 
 }

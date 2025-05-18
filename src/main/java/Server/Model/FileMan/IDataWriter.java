@@ -13,7 +13,7 @@ package Server.Model.FileMan;
  * for handling objects
  * (e.g., {@code User}) or collections of objects (e.g., {@code List<User>}) may
  * be added.
- * 
+ *
  * @author Jansson Anton
  * @Date 2025-04-14
  */
@@ -32,7 +32,7 @@ public interface IDataWriter extends IDataSaver {
      *
      * @param data The user data to be written to the file.
      * @return A message indicating whether the user data was written successfully
-     *         or if there was an error.
+     * or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-14
      */
@@ -43,7 +43,7 @@ public interface IDataWriter extends IDataSaver {
      *
      * @param data The achievements data to be written to the file.
      * @return A message indicating whether the achievements data was written
-     *         successfully or if there was an error.
+     * successfully or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-14
      */
@@ -54,7 +54,7 @@ public interface IDataWriter extends IDataSaver {
      *
      * @param logEntry The log entry to be written to the file.
      * @return A message indicating whether the log entry was written successfully
-     *         or if there was an error.
+     * or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -65,7 +65,7 @@ public interface IDataWriter extends IDataSaver {
      *
      * @param data The active initiative data to be written to the file.
      * @return A message indicating whether the active initiative data was written
-     *         successfully or if there was an error.
+     * successfully or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -76,7 +76,7 @@ public interface IDataWriter extends IDataSaver {
      *
      * @param data The user data to be saved.
      * @return A message indicating whether the user data was saved successfully
-     *         or if there was an error.
+     * or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -90,7 +90,7 @@ public interface IDataWriter extends IDataSaver {
      *
      * @param data The achievements data to be saved.
      * @return A message indicating whether the achievements data was saved
-     *         successfully or if there was an error.
+     * successfully or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -104,7 +104,7 @@ public interface IDataWriter extends IDataSaver {
      *
      * @param logEntry The log entry to be saved.
      * @return A message indicating whether the log entry was saved successfully
-     *         or if there was an error.
+     * or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
@@ -118,7 +118,7 @@ public interface IDataWriter extends IDataSaver {
      *
      * @param data The active initiative data to be saved.
      * @return A message indicating whether the active initiative data was saved
-     *         successfully or if there was an error.
+     * successfully or if there was an error.
      * @author Jansson Anton
      * @Date 2025-04-16
      */

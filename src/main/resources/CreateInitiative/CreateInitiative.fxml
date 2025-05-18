@@ -10,20 +10,23 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="334.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.Controller.GUIControllers.CreateInitiativeController.CreateInitiativeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="543.0" prefWidth="334.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.Controller.GUIControllers.CreateInitiativeController.CreateInitiativeController">
    <center>
-      <AnchorPane prefHeight="334.0" prefWidth="593.0" style="-fx-background-color: #FCFFF0;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="444.0" prefWidth="334.0" style="-fx-background-color: #FCFFF0;" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="nameTextfield" layoutX="32.0" layoutY="14.0" prefHeight="26.0" prefWidth="270.0" promptText="Enter name of initiative" />
             <TextArea fx:id="desciptionTextfield" layoutX="33.0" layoutY="47.0" prefHeight="104.0" prefWidth="268.0" promptText="Enter desciption of initiative" />
             <TextField fx:id="locationTextfield" layoutX="32.0" layoutY="167.0" prefHeight="26.0" prefWidth="270.0" promptText="Enter location of initiative" />
             <TextField fx:id="timeTextfield" layoutX="31.0" layoutY="200.0" prefHeight="26.0" prefWidth="270.0" promptText="Enter duration of inititative in minutes" />
-            <ComboBox fx:id="categoryChoiceBox" layoutX="30.0" layoutY="235.0" prefHeight="26.0" prefWidth="272.0" promptText="Choose category" style="-fx-background-color: #A3D1C6;" />
-            <CheckBox fx:id="isPublicCheckbox" layoutX="106.0" layoutY="269.0" mnemonicParsing="false" text="Intitiative is public" />
-            <Button fx:id="createButton" layoutX="115.0" layoutY="294.0" mnemonicParsing="false" onAction="#createInitiative" style="-fx-background-color: #A3D1C6;" text="Create Initiative" textFill="WHITE">
+            <ComboBox fx:id="categoryChoiceBox" layoutX="30.0" layoutY="277.0" onAction="#changeFields" prefHeight="26.0" prefWidth="272.0" promptText="Choose category" style="-fx-background-color: #A3D1C6;" />
+            <CheckBox fx:id="isPublicCheckbox" layoutX="108.0" layoutY="413.0" mnemonicParsing="false" text="Intitiative is public" />
+            <Button fx:id="createButton" layoutX="113.0" layoutY="438.0" mnemonicParsing="false" onAction="#createInitiative" style="-fx-background-color: #A3D1C6;" text="Create Initiative" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
+            <TextField fx:id="startTimeTextfield" layoutX="31.0" layoutY="239.0" prefHeight="26.0" prefWidth="270.0" promptText="Enter when intiative starts" />
+            <TextField fx:id="numberOfSeatsTextfield" layoutX="31.0" layoutY="316.0" prefHeight="26.0" prefWidth="270.0" promptText="Enter number of seats" />
+            <TextArea fx:id="sellTextfield" layoutX="31.0" layoutY="352.0" prefHeight="78.0" prefWidth="270.0" promptText="Enter what you are selling" />
          </children>
       </AnchorPane>
    </center>

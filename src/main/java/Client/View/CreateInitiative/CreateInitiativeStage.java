@@ -18,7 +18,7 @@ public class CreateInitiativeStage implements StageCreator {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        recipeStage.setScene(new Scene(root, 334, 400));
+        recipeStage.setScene(new Scene(root, 334, 543));
         recipeStage.setResizable(false);
         recipeStage.show();
     }

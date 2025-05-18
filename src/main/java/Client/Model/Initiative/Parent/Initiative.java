@@ -1,20 +1,23 @@
 package Client.Model.Initiative.Parent;
+
 import Client.Model.Achievement;
+import Client.Model.ISavableObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Object utilizing Template Design Pattern to represent initiatives that actors in the system can take (depending on actor in question role).
- *  Includes abstract method(s) "startActivity" & "improveAchievements".
- *
- *  12/4 Removed participants variable to be implemented in subclasses if/as needed.
- *  12/4 Removed categories variable as it is represented as the implementation of this class subclasses and is not necessary to save.
+ * Object utilizing Template Design Pattern to represent initiatives that actors in the system can take (depending on actor in question role).
+ * Includes abstract method(s) "startActivity" & "improveAchievements".
+ * <p>
+ * 12/4 Removed participants variable to be implemented in subclasses if/as needed.
+ * 12/4 Removed categories variable as it is represented as the implementation of this class subclasses and is not necessary to save.
  *
  * @author MartinFrick
  * @version 250421_0
  */
 
-public abstract class Initiative {
+public abstract class Initiative implements ISavableObject {
 
     private String title;
     private String description;
@@ -25,7 +28,7 @@ public abstract class Initiative {
     private List<String> comments;
     private List<String> likes;
     private List<Achievement> achievements;
-    private boolean isPublic = false;
+    private boolean isPublic;
 
 
     public Initiative(String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements)
@@ -37,6 +40,16 @@ public abstract class Initiative {
         this.startTime = startTime;
         this.comments = new ArrayList<>(comments);
         this.likes = new ArrayList<>(likes);
+        this.isPublic = isPublic;
+    }
+
+    public Initiative(String title, String description, String location, String duration, String startTime, String category, boolean isPublic) {
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.category = category;
         this.isPublic = isPublic;
     }
 
@@ -114,5 +127,39 @@ public abstract class Initiative {
 
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
+    }
+
+
+    @Override
+    public String getSaveString() {
+        return String.join(",", title, description, location, duration, startTime, getCommentsAsString(), getLikesAsString(), getAchievementsAsString(), String.valueOf(isPublic));
+    }
+
+    private CharSequence getCommentsAsString() {
+        StringBuilder returnString = new StringBuilder(String.valueOf(comments.get(0)));
+        for (int i = 1; i < comments.size(); i++) {
+            returnString.append("-").append(comments.get(i));
+        }
+        return returnString.toString();
+    }
+
+    private CharSequence getLikesAsString() {
+        StringBuilder returnString = new StringBuilder(String.valueOf(likes.get(0)));
+        for (int i = 1; i < likes.size(); i++) {
+            returnString.append("-").append(likes.get(i));
+        }
+        return returnString.toString();
+    }
+
+    private CharSequence getAchievementsAsString() {
+        StringBuilder returnString = new StringBuilder(String.valueOf(achievements.get(0)));
+        for (int i = 1; i < achievements.size(); i++) {
+            returnString.append("-").append(achievements.get(i));
+        }
+        return returnString.toString();
+    }
+
+    public String getCategory() {
+        return category;
     }
 }

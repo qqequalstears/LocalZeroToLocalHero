@@ -1,15 +1,18 @@
 package Client.View;
 
-import Client.Controller.Mediators.MediatorManager;
+import Client.Controller.GUIControllers.GUIControllerRegistry;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
 public class UserNotifier {
     public UserNotifier() {
-        MediatorManager.getInstance().getMediator("GUI").registerController(this.getClass().getName(),this);
     }
 
     public void informUser(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, message);
-        alert.show();
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, message);
+            alert.setTitle("Information");
+            alert.show();
+        });
     }
 }

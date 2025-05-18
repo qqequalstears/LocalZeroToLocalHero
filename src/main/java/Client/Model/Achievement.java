@@ -1,7 +1,8 @@
 package Client.Model;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.*;
+import javafx.scene.image.Image;
 
 /**
  * Object representing Achievements
@@ -9,13 +10,23 @@ import java.awt.*;
  * @author MartinFrick
  * @version 250416_0
  */
-public class Achievement {
+public class Achievement implements ISavableObject{
 
     private Image image;
     private String name;
     private Integer progress;
     private List<Integer> milestones;
     private String description;
+
+    //Constructor for testing
+    public Achievement(String name, Integer progress) {
+        this.name=name;
+        this.progress= progress;
+    }
+    public Achievement(String name) {
+        this.name=name;
+        this.progress= 0;
+    }
 
     public Achievement(Image image, String name, Integer progress, List<Integer> milestones, String description) {
         this.image = image;
@@ -65,4 +76,17 @@ public class Achievement {
         this.description = description;
     }
 
+    @Override
+    public String getSaveString() {
+        return String.join(",", name,String.valueOf(progress), description, getMilestonesAsString(), "PLACEHOLDER FOR ACHIEVEMENT IMAGE");
+
+    }
+
+    private String getMilestonesAsString() {
+        StringBuilder returnString = new StringBuilder(String.valueOf(milestones.get(0)));
+        for (int i = 1; i < milestones.size(); i++) {
+            returnString.append("-").append(milestones.get(i));
+        }
+        return returnString.toString();
+    }
 }

@@ -1,8 +1,8 @@
 package Server.Model.FileMan;
 
-import java.util.List;
+import Client.Model.User;
 
-import Server.Model.User;
+import java.util.List;
 
 /**
  * The {@code IDataFetcher} interface defines methods for retrieving user and
@@ -15,7 +15,7 @@ import Server.Model.User;
  * from files or databases. It abstracts the details of data retrieval, allowing
  * for flexibility in the underlying
  * implementation.
- * 
+ *
  * @author Jansson Anton
  * @Date 2025-04-14
  */

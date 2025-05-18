@@ -8,6 +8,7 @@ public class ConcreteAggregate implements Aggregate {
     public Iterator createIterator() {
         return new ConcreteIterator(collection);
     }
+
     public void add(Object object) {
         collection.add(object);
     }

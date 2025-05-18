@@ -3,12 +3,14 @@ package Client.Model.Initiative.Children;
 import Client.Model.Achievement;
 import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Log;
+import Server.Model.AchievementTracker;
+
 import java.util.List;
 
 /**
- *  Object representing initiative of gardening.
- *
- *  21/4 Updated according to superclass changes. /MartinFrick
+ * Object representing initiative of gardening.
+ * <p>
+ * 21/4 Updated according to superclass changes. /MartinFrick
  *
  * @author MartinFrick
  * @version 250421_0
@@ -27,7 +29,7 @@ public class Gardening extends Initiative implements Log {
 
     @Override
     public void improveAchievements() {
-        System.out.println("HI, MY NAME IS GARDENING, I AM TOLD TO 'IMPROVE ACHIEVEMENTS' WHICH I AM, ITS JUST THAT THIS METHOD DOESNT DO ANYTHING YET");
+        AchievementTracker.getInstance().improveAchievements(super.getAchievements(), this);
     }
 
     @Override

@@ -1,12 +1,57 @@
 package Client.Controller.GUIControllers.Home;
 
+import Client.Controller.GUIControllers.FxController;
+import Client.Controller.GUIControllers.GUIControllerRegistry;
+import Client.Controller.GUIControllers.GUIInController;
+import Client.Controller.GUIControllers.GUIOutController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
-public class HomeTopController {
+public class HomeTopController implements FxController {
+    @FXML
+    private Button logoutButton;
+    @FXML
+    private Button achievemntsButton;
+    @FXML
+    private Button logButton;
+    @FXML
+    private Button inbocButton;
+    @FXML
+    private Button notificationsButton;
+    private GUIInController guiInController;
+    private GUIOutController guiOutController;
 
     @FXML
     public void initialize() {
-
+        guiInController = GUIInController.getInstance();
+        guiOutController = GUIOutController.getInstance();
+        GUIControllerRegistry.getInstance().add(this.getClass().getName(), this);
     }
 
+    @FXML
+    public void openNotifications() {
+        notificationsButton.setText("Notifications");
+        guiInController.createStage("NOTIFICATIONS");
+    }
+
+    @FXML
+    public void openAchievements() {
+        guiInController.createStage("ACHIEVEMENTSTAGE");
+    }
+
+    @FXML
+    public void logout() {
+        guiOutController.logout();
+    }
+
+    public void notifyUser() {
+        notificationsButton.setText("Notifications*");
+    }
+
+    @Override
+    public void closeStage() {
+        Stage stage = (Stage) logButton.getScene().getWindow();
+        stage.close();
+    }
 }

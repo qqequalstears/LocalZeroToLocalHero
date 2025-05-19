@@ -5,11 +5,13 @@ import Client.Controller.GUIControllers.GUIOutController;
 import Client.Model.Achievement;
 import Client.Model.Notifications;
 import Client.Model.User;
+import Client.Model.Message;
 import Common.Controller.Utility.Packager;
 import Common.Controller.Utility.Unpacker;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ConnectionController {
@@ -63,6 +65,24 @@ public class ConnectionController {
                 break;
             case "notification":
                 newNotification(jsonObject);
+                break;
+            case "newMessage":
+                String senderId = jsonObject.getString("senderId");
+                String recipientId = jsonObject.getString("recipientId");
+                String subject = jsonObject.getString("subject");
+                String content = jsonObject.getString("content");
+                String timestamp = jsonObject.getString("timestamp");
+                
+                Message message = new Message(senderId, recipientId, subject, content);
+                try {
+                    java.lang.reflect.Field tsField = Message.class.getDeclaredField("timestamp");
+                    tsField.setAccessible(true);
+                    tsField.set(message, LocalDateTime.parse(timestamp));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
+                MessageController.getInstance().addMessage(message);
                 break;
             case "unSuccessfulInitiativeCreation":
                 guiInController.notifyUser("The initiative could not be created. Please make sure no commas in included anywhere and that every field has text");

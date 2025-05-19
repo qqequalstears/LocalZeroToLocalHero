@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.net.Socket;
 import java.io.*;
+import java.time.LocalDateTime;
 
 public class ConnectionController {
 
@@ -86,7 +87,41 @@ public class ConnectionController {
                 String recipientId = jsonObject.getString("recipientId");
                 String subject = jsonObject.getString("subject");
                 String content = jsonObject.getString("content");
-                // Optionally: Save the message to a file or database here
+                
+                // Create message package to forward to recipient
+                JSONObject messagePackage = new JSONObject();
+                messagePackage.put("type", "newMessage");
+                messagePackage.put("senderId", senderId);
+                messagePackage.put("recipientId", recipientId);
+                messagePackage.put("subject", subject);
+                messagePackage.put("content", content);
+                messagePackage.put("timestamp", LocalDateTime.now().toString());
+                
+                // Forward message to recipient if online
+                ClientConnection receiver = clientUpdater.getClientConnection(recipientId);
+                if (receiver != null) {
+                    receiver.sendObject(messagePackage.toString());
+                }
+                
+                // Store message in file for persistence
+                try {
+                    File file = new File("messages.txt");
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                        writer.write(String.join("|",
+                            senderId,
+                            recipientId,
+                            subject,
+                            content,
+                            LocalDateTime.now().toString(),
+                            "false"
+                        ));
+                        writer.newLine();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                
+                // Send notification
                 sendNotification("You have received a new message from " + senderId, recipientId);
                 break;
             default:

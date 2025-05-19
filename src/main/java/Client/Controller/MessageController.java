@@ -109,6 +109,12 @@ public class MessageController {
         }
     }
 
+    public void addMessage(Message message) {
+        userInboxes.computeIfAbsent(message.getRecipientId(), k -> new ArrayList<>()).add(message);
+        userSentMessages.computeIfAbsent(message.getSenderId(), k -> new ArrayList<>()).add(message);
+        saveMessagesToFile();
+    }
+
     public int getUnreadMessageCount(String userId) {
         return (int) getInbox(userId).stream()
             .filter(message -> !message.isRead())

@@ -10,6 +10,17 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
+
+/**
+ *
+ *
+ *
+ * @author Martin Frick
+ * Updated to add "editInitiativeButton" and functionality associated with it.
+ * @date 2022-05-06
+ * @author Anton Persson
+ */
+
 public class HomeLeftController implements FxController {
     @FXML
     private ListView initiativesListview;
@@ -17,6 +28,8 @@ public class HomeLeftController implements FxController {
     private Button createButton;
     private ObservableList<String> intitiatives = FXCollections.observableArrayList();
     private GUIInController guiInController;
+    @FXML
+    private Button openInitiativeButton;
 
 
     @FXML
@@ -42,8 +55,10 @@ public class HomeLeftController implements FxController {
             String selectedInitiative = (String) initiativesListview.getSelectionModel().getSelectedItem();
             if (selectedInitiative != null) {
                 //mediator.notify("NEWSTAGE","");
+
             }
         });
+
     }
 
     @FXML
@@ -56,4 +71,18 @@ public class HomeLeftController implements FxController {
         Stage stage = (Stage) createButton.getScene().getWindow();
         stage.close();
     }
+
+    /**
+     * Opens the selected initiative
+     * @autor Martin Frick
+     */
+    @FXML
+    private void openSelectedInitiative() {
+        String selected = (String) initiativesListview.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+
+        guiInController.setCurrentlySelectedInitiative(selected);
+        guiInController.createStage("OPENINITIATIVESTAGE");
+    }
+
 }

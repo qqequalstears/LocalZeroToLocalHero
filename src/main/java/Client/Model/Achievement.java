@@ -20,8 +20,8 @@ public class Achievement implements ISavableObject{
 
     //Constructor for testing
     public Achievement(String name, Integer progress) {
-        this.name=name;
-        this.progress= progress;
+        this.name = name;
+        this.progress = progress;
     }
     public Achievement(String name) {
         this.name=name;

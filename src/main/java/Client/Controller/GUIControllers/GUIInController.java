@@ -14,6 +14,7 @@ import Client.View.Login.LogInStage;
 import Client.View.Notification.NotificationStage;
 import Client.View.StageCreator;
 import Client.View.UserNotifier;
+import Client.View.ViewInitiative.ViewInitiativeStage;
 import javafx.application.Platform;
 
 import java.util.Map;
@@ -22,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GUIInController {
     private Map<String, StageCreator> stageCreators;
     private static GUIInController instance;
+    private String currentlySelectedInitiative = null;
 
     private GUIInController() {
         stageCreators = new ConcurrentHashMap<>();
@@ -32,6 +34,7 @@ public class GUIInController {
         stageCreators.put("CREATEINITIATIVE", () -> new CreateInitiativeStage().createStage());
         stageCreators.put("NOTIFICATIONS", () -> new NotificationStage().createStage());
         stageCreators.put("ACHIEVEMENTSTAGE", () -> new AchievementStage().createStage());
+        stageCreators.put("OPENINITIATIVESTAGE", () -> new ViewInitiativeStage(currentlySelectedInitiative).createStage());
     }
 
     public void createStage(String stageToCreate) {
@@ -90,5 +93,13 @@ public class GUIInController {
         Platform.runLater(() -> {
             createInitiativeController.closeStage();
         });
+    }
+
+    public String getCurrentlySelectedInitiative() {
+        return currentlySelectedInitiative;
+    }
+
+    public void setCurrentlySelectedInitiative(String currentlySelectedInitiative) {
+        this.currentlySelectedInitiative = currentlySelectedInitiative;
     }
 }

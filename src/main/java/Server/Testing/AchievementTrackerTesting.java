@@ -44,8 +44,9 @@ public class AchievementTrackerTesting {
 
 
     private static String test1() {
-        CarPool cp = new CarPool("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("cp"));
+//        CarPool cp = new CarPool("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("cp"));
 
+/*
 
         for (Achievement achievement : cp.getAchievements()) {
             System.out.println(achievement.getProgress());
@@ -58,6 +59,7 @@ public class AchievementTrackerTesting {
         for (Achievement achievement : cp.getAchievements()) {
             System.out.println(achievement.getProgress());
         }
+*/
 
         return "Done";
 
@@ -65,16 +67,16 @@ public class AchievementTrackerTesting {
 
 
     private static String test2() {
-        CarPool cp = new CarPool("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("cp"));
-        Gardening g = new Gardening("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("g"));
-        ToolSharing ts = new ToolSharing("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("ts"));
-        GarageSale gs = new GarageSale("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("gs"));
+//        CarPool cp = new CarPool("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("cp"));
+//        Gardening g = new Gardening("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("g"));
+//        ToolSharing ts = new ToolSharing("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("ts"));
+//        GarageSale gs = new GarageSale("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("gs"));
 
         ArrayList<Initiative> list = new ArrayList<>();
-        list.add(cp);
-        list.add(gs);
-        list.add(g);
-        list.add(ts);
+//        list.add(cp);
+//        list.add(gs);
+//        list.add(g);
+//        list.add(ts);
 
         for (Initiative initiative : list) {
             for (Achievement achievement : initiative.getAchievements()) {

@@ -43,4 +43,15 @@ public class GUIOutController {
     public void createInitiative(String name, String description, String location, String duration, String startTime, String numberOfSeats, String sellList, String category, boolean ispublic) {
         connectionController.sendNewInitiativeToServer(name, description, location, duration, startTime, numberOfSeats, sellList, category, ispublic);
     }
+
+    public String getConnectedUserEmail() {
+        if (connectionController != null && connectionController.getConnectedUser() != null) {
+            return connectionController.getConnectedUser().getEmail();
+        }
+        return null;
+    }
+
+    public ConnectionController getConnectionController() {
+        return connectionController;
+    }
 }

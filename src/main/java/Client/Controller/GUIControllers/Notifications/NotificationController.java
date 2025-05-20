@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.event.ActionEvent;
 
 
 public class NotificationController implements FxController {
@@ -38,6 +39,14 @@ public class NotificationController implements FxController {
     public void updateNotifcations() {
         notifications.clear();
         notifications.addAll(Notifications.notifications);
+        System.out.println("[DEBUG] Notification list updated, size: " + notifications.size());
+    }
+
+    @FXML
+    public void clearNotifications(ActionEvent event) {
+        Notifications.notifications.clear();
+        Notifications.resetUnreadCount();
+        updateNotifcations();
     }
 
     @Override

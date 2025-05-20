@@ -4,9 +4,11 @@ import Client.Controller.GUIControllers.FxController;
 import Client.Controller.GUIControllers.GUIControllerRegistry;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
+import Client.View.Message.MessageView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import Client.Model.Notifications;
 
 public class HomeTopController implements FxController {
     @FXML
@@ -27,11 +29,13 @@ public class HomeTopController implements FxController {
         guiInController = GUIInController.getInstance();
         guiOutController = GUIOutController.getInstance();
         GUIControllerRegistry.getInstance().add(this.getClass().getName(), this);
+        updateNotificationsButton();
     }
 
     @FXML
     public void openNotifications() {
-        notificationsButton.setText("Notifications");
+        Notifications.resetUnreadCount();
+        updateNotificationsButton();
         guiInController.createStage("NOTIFICATIONS");
     }
 
@@ -45,13 +49,30 @@ public class HomeTopController implements FxController {
         guiOutController.logout();
     }
 
+    public void updateNotificationsButton() {
+        int unread = Notifications.getUnreadCount();
+        if (unread > 0) {
+            notificationsButton.setText("Notifications (" + unread + ")");
+        } else {
+            notificationsButton.setText("Notifications");
+        }
+        System.out.println("[DEBUG] Notifications button updated, unread: " + unread);
+    }
+
     public void notifyUser() {
-        notificationsButton.setText("Notifications*");
+        System.out.println("[DEBUG] notifyUser called");
+        updateNotificationsButton();
     }
 
     @Override
     public void closeStage() {
         Stage stage = (Stage) logButton.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    public void openInbox() {
+        String currentUserId = guiOutController.getConnectedUserEmail();
+        MessageView messageView = new MessageView(currentUserId);
     }
 }

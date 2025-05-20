@@ -44,11 +44,15 @@ public class AchievementTrackerTesting {
 
 
     private static String test1() {
+<<<<<<< Updated upstream
 //        CarPool cp = new CarPool("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("cp"));
+=======
+//        CarPool cp = new CarPool("Title1", "a desc", "haj chaparral", "4?", "00", "01", "6", "Carpool", true);
+>>>>>>> Stashed changes
 
 /*
 
-        for (Achievement achievement : cp.getAchievements()) {
+      /*  for (Achievement achievement : cp.getAchievements()) {
             System.out.println(achievement.getProgress());
         }
 
@@ -58,8 +62,12 @@ public class AchievementTrackerTesting {
 
         for (Achievement achievement : cp.getAchievements()) {
             System.out.println(achievement.getProgress());
+<<<<<<< Updated upstream
         }
 */
+=======
+        }*/
+>>>>>>> Stashed changes
 
         return "Done";
 
@@ -67,6 +75,7 @@ public class AchievementTrackerTesting {
 
 
     private static String test2() {
+<<<<<<< Updated upstream
 //        CarPool cp = new CarPool("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("cp"));
 //        Gardening g = new Gardening("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("g"));
 //        ToolSharing ts = new ToolSharing("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("ts"));
@@ -78,6 +87,19 @@ public class AchievementTrackerTesting {
 //        list.add(g);
 //        list.add(ts);
 
+=======
+        /*CarPool cp = new CarPool("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("cp"));
+        Gardening g = new Gardening("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("g"));
+        ToolSharing ts = new ToolSharing("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("ts"));
+        GarageSale gs = new GarageSale("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("gs"));
+*/
+        ArrayList<Initiative> list = new ArrayList<>();
+  /*      list.add(cp);
+        list.add(gs);
+        list.add(g);
+        list.add(ts);
+*/
+>>>>>>> Stashed changes
         for (Initiative initiative : list) {
             for (Achievement achievement : initiative.getAchievements()) {
                 System.out.println(achievement.getName() + " imp:" + achievement.getProgress());

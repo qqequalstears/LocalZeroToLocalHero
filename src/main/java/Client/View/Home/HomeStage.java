@@ -22,4 +22,5 @@ public class HomeStage implements StageCreator {
         recipeStage.setResizable(false);
         recipeStage.show();
     }
+
 }

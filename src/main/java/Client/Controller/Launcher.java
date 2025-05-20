@@ -8,4 +8,5 @@ public class Launcher {
         new ConnectionController();
         Application.launch(LogInStage.class, args);
     }
+
 }

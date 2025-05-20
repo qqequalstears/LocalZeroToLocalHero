@@ -1,0 +1,11 @@
+email,password,name,location,roles
+user@test.com, pass, Anton, Osby, Admin
+user1@test.com, pass, Martin, Malmö, Resident - Taxi
+user2@test.com, password, Christoffer, Helsingborg, Resident
+anton@test.com,pass,Anton,Osby,Resident
+testing@test.com,pass,test,testCity,Resident
+haj@test.com,haj,kalle,ysta,Resident
+bert@bert.com,pas,bert,bstad,Resident
+e@e,e,e,e,Resident
+Frank@lampard.chelsea,Lampard,Lampard,London,Resident
+frank@lampard.chelsea,Lampard,Frank,London,Resident

@@ -31,7 +31,8 @@ public abstract class Initiative implements ISavableObject {
     private boolean isPublic;
 
 
-    public Initiative(String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
+    public Initiative(String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements)
+    {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -39,7 +40,6 @@ public abstract class Initiative implements ISavableObject {
         this.startTime = startTime;
         this.comments = new ArrayList<>(comments);
         this.likes = new ArrayList<>(likes);
-        this.achievements = new ArrayList<>(achievements);
         this.isPublic = isPublic;
     }
 

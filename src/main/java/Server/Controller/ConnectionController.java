@@ -6,10 +6,12 @@ import Server.Service.MessageService;
 import Server.Service.FileStorageService;
 import Server.Service.NotificationService;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.net.Socket;
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class ConnectionController {
 
@@ -67,6 +69,9 @@ public class ConnectionController {
                 break;
             case "sendMessage":
                 messageService.handleNewMessage(jsonObject);
+                break;
+            case "updateOnlineClients":
+                updateOnlineClients(jsonObject);
                 break;
             default:
                 System.out.println("Intention was not found");
@@ -170,4 +175,17 @@ public class ConnectionController {
         sucess.put("type", status);
         sender.sendObject(sucess.toString());
     }
+
+    private void updateOnlineClients(JSONObject jsonObject) {
+        List<String> userMails = new ArrayList<>();
+
+        JSONArray userArray = jsonObject.getJSONArray("listOfUsers");
+        for (int i = 0; i < userArray.length(); i++) {
+            JSONObject userJson = userArray.getJSONObject(i);
+            userMails.add(userJson.getString("email"));
+        }
+
+        guiInController.updateClients(userMails);
+    }
+
 }

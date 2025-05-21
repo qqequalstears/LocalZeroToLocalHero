@@ -1,6 +1,7 @@
 package Client.Controller.GUIControllers;
 
 import Client.Controller.GUIControllers.CreateInitiativeController.CreateInitiativeController;
+import Client.Controller.GUIControllers.Home.HomeCentreController;
 import Client.Controller.GUIControllers.Home.HomeTopController;
 import Client.Controller.GUIControllers.Intitiative.InitiativeController;
 import Client.Controller.GUIControllers.LoginController.LoginController;
@@ -19,6 +20,8 @@ import javafx.application.Platform;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUIInController {
     private Map<String, StageCreator> stageCreators;
@@ -101,5 +104,12 @@ public class GUIInController {
 
     public void setCurrentlySelectedInitiative(String currentlySelectedInitiative) {
         this.currentlySelectedInitiative = currentlySelectedInitiative;
+    }
+
+    public void updateClients(List<String> onlineClients) {
+        HomeCentreController homeCentreController = (HomeCentreController) GUIControllerRegistry.getInstance().get(HomeCentreController.class.getName());
+        Platform.runLater(() -> {
+            homeCentreController.setOnlineUsers(onlineClients);
+        });
     }
 }

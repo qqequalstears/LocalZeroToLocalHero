@@ -54,9 +54,8 @@ public class HomeLeftController implements FxController {
         initiativesListview.setOnMouseClicked(event -> {
             String selectedInitiative = (String) initiativesListview.getSelectionModel().getSelectedItem();
             if (selectedInitiative != null) {
-                System.out.println("Yoyoyoyoy");
+//                System.out.println("Yoyoyoyoy");
                 //mediator.notify("NEWSTAGE","");
-
             }
         });
 

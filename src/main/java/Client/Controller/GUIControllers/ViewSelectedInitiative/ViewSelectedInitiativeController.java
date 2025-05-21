@@ -27,8 +27,7 @@ public class ViewSelectedInitiativeController {
 
         String initiative = GUIInController.getInstance().getCurrentlySelectedInitiative();
 
-        // TEMP: Simulate a few comments — replace with real data later
-        List<String> comments = List.of("Welcome to the initiative!", "Looks good", "Needs improvement");
+        List<String> comments = List.of("init", "ser bra ut", "Needs improvement");
 
         for (String comment : comments) {
             Label commentLabel = new Label(comment);
@@ -64,6 +63,10 @@ public class ViewSelectedInitiativeController {
 
         // Optionally add to model too
         // GUIInController.getInstance().getSelectedInitiative().addComment(newComment);
+    }
+
+    private void getInitiative() {
+        String initiative = GUIInController.getInstance().getCurrentlySelectedInitiative();
     }
 
 }

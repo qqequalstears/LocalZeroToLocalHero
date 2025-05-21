@@ -2,6 +2,7 @@ package Client.Controller.GUIControllers;
 
 import Client.Controller.ConnectionController;
 import Client.Model.Achievement;
+import Client.Model.Initiative.Parent.Initiative;
 
 import java.util.List;
 
@@ -53,5 +54,13 @@ public class GUIOutController {
 
     public ConnectionController getConnectionController() {
         return connectionController;
+    }
+
+    /**
+     * Initiatiates request to populate initiatives with info from server.
+     * @autor Martin Frick
+     */
+    public void getAllInitiativesFromServer() {
+        connectionController.sendRequestForInitiatives();
     }
 }

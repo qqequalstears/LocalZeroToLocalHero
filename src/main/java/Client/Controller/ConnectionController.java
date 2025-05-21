@@ -3,6 +3,7 @@ package Client.Controller;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
 import Client.Model.Achievement;
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Notifications;
 import Client.Model.User;
 import Client.Model.Message;
@@ -139,5 +140,15 @@ public class ConnectionController {
 
     public User getConnectedUser() {
         return connectedUser;
+    }
+
+    /**
+     * Builds and sends JSON request for all initiatives.
+     * @autor Martin Frick
+     */
+    public void sendRequestForInitiatives(){
+
+        JSONObject getInitJson = packager.createIntentionJson("getInitiatives");
+        sendJsonObject(getInitJson);
     }
 }

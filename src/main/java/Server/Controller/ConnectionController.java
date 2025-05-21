@@ -78,7 +78,7 @@ public class ConnectionController {
                 mail = (String) jsonObject.get("mail");
                 sendRegisterStatus(sender, mail, successfulRegister);
                 break;
-            case "createInitiative" :
+            case "createInitiative":
                 boolean success = initiativeManager.createNewInitiative(jsonObject);
                 sendCreateInitiativeStatus(success, sender);
                 break;
@@ -87,7 +87,7 @@ public class ConnectionController {
                 String recipientId = jsonObject.getString("recipientId");
                 String subject = jsonObject.getString("subject");
                 String content = jsonObject.getString("content");
-                
+
                 // Create message package to forward to recipient
                 JSONObject messagePackage = new JSONObject();
                 messagePackage.put("type", "newMessage");
@@ -124,6 +124,11 @@ public class ConnectionController {
                 // Send notification
                 sendNotification("You have received a new message from " + senderId, recipientId);
                 break;
+            case "getInitiative":
+                String initiativeId = jsonObject.getString("messageId");
+
+                // Get message from file
+
             default:
                 System.out.println("Intention was not found");
                 break;
@@ -185,4 +190,7 @@ public class ConnectionController {
         sucess.put("type", status);
         sender.sendObject(sucess.toString());
     }
+
+
+
 }

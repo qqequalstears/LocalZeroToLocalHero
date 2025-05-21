@@ -134,7 +134,7 @@ public class User implements Log, ISavableObject {
 
     @Override
     public String getSaveString() {
-        return String.join(",", email, password, name, location, getRolesAsString());
+        return String.join(",", email, password, name, location, getRolesAsString() );
     }
 
     private String getRolesAsString() {
@@ -144,4 +144,5 @@ public class User implements Log, ISavableObject {
         }
         return returnString.toString();
     }
+
 }

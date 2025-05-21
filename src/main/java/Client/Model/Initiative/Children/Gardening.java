@@ -3,6 +3,7 @@ package Client.Model.Initiative.Children;
 import Client.Model.Achievement;
 import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Log;
+import Client.Model.User;
 import Server.Model.AchievementTracker;
 
 import java.util.List;
@@ -17,6 +18,9 @@ import java.util.List;
  */
 
 public class Gardening extends Initiative implements Log {
+
+    private User needsHelp;
+    private List<User> helpers;
 
     public Gardening(String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
         super(category, title, description, location, duration, startTime, comments, likes, isPublic, achievements);

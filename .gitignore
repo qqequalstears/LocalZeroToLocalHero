@@ -116,3 +116,9 @@ target/classes/Client/Controller/GUIControllers/UserInfo/UserInfoController.clas
 target/classes/Client/View/UserInfo/UserInfoStage.class
 target/classes/Server/Controller/UserManager.class
 target/classes/UserInfo/UserInfoStage.fxml
+target/classes/Server/Model/FileMan/Proxy/FileAppenderProxy.class
+target/classes/Server/Model/FileMan/Proxy/FileReaderProxy.class
+target/classes/Server/Model/FileMan/Proxy/FileWriterProxy.class
+target/classes/Server/Service/FileStorageService.class
+target/classes/Server/Service/MessageService.class
+target/classes/Server/Service/NotificationService.class

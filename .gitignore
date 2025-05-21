@@ -122,3 +122,9 @@ target/classes/Server/Model/FileMan/Proxy/FileWriterProxy.class
 target/classes/Server/Service/FileStorageService.class
 target/classes/Server/Service/MessageService.class
 target/classes/Server/Service/NotificationService.class
+target/classes/Server/Model/FileMan/Proxy/FileAppenderProxy.class
+target/classes/Server/Model/FileMan/Proxy/FileReaderProxy.class
+target/classes/Server/Model/FileMan/Proxy/FileWriterProxy.class
+target/classes/Server/Service/FileStorageService.class
+target/classes/Server/Service/MessageService.class
+target/classes/Server/Service/NotificationService.class

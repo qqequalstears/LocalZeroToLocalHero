@@ -10,6 +10,7 @@ public class MessageService {
     private final ClientUpdater clientUpdater;
     private final FileStorageService fileStorageService;
     private final NotificationService notificationService;
+    private static final String MESSAGES_FILE = "messages.txt";
 
     public MessageService(ClientUpdater clientUpdater, FileStorageService fileStorageService, NotificationService notificationService) {
         this.clientUpdater = clientUpdater;
@@ -56,7 +57,7 @@ public class MessageService {
             LocalDateTime.now().toString(),
             "false"
         );
-        fileStorageService.appendToFile("messages.txt", messageData);
+        fileStorageService.appendToFile(MESSAGES_FILE, messageData);
     }
 
     private void notifyRecipient(String senderId, String recipientId) {

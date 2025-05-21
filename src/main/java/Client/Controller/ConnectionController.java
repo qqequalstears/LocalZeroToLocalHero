@@ -3,7 +3,6 @@ package Client.Controller;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
 import Client.Model.Achievement;
-import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Notifications;
 import Client.Model.User;
 import Client.Model.Message;
@@ -94,8 +93,8 @@ public class ConnectionController {
             case "SuccessfulInitiativeCreation":
                 guiInController.successfulInitiativeCreation();
                 break;
-            case "updateOnlineClients":
-                updateOnlineClients(jsonObject);
+            case "updateClients":
+                updateClients(jsonObject);
                 break;
             default:
                 guiInController.notifyUser("Something went wrong in the application");
@@ -148,7 +147,7 @@ public class ConnectionController {
         return connectedUser;
     }
 
-    private void updateOnlineClients(JSONObject jsonObject) {
+    private void updateClients(JSONObject jsonObject) {
         List<String> userMails = new ArrayList<>();
 
         JSONArray userArray = jsonObject.getJSONArray("listOfUsers");

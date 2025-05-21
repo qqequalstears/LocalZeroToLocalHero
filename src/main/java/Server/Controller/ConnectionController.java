@@ -195,7 +195,7 @@ public class ConnectionController {
         }
 
         JSONObject listOfUsers = new JSONObject();
-        listOfUsers.put("type", "updateOnlineClients");
+        listOfUsers.put("type", "updateClients");
         listOfUsers.put("listOfUsers", userArray);
 
         List<ClientConnection> onlineClients = clientUpdater.getClientConnections();

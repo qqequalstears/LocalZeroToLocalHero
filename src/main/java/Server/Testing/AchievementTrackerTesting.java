@@ -44,10 +44,10 @@ public class AchievementTrackerTesting {
 
 
     private static String test1() {
-        CarPool cp = new CarPool("haj chaparral", "Carpool", "Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<String>(), new ArrayList<String>(), false, helpSetup("cp"));
+//        CarPool cp = new CarPool("Title1", "a desc", "haj chaparral", "4?", "00", "01", "6", "Carpool", true);
 
 
-        for (Achievement achievement : cp.getAchievements()) {
+      /*  for (Achievement achievement : cp.getAchievements()) {
             System.out.println(achievement.getProgress());
         }
 
@@ -57,7 +57,7 @@ public class AchievementTrackerTesting {
 
         for (Achievement achievement : cp.getAchievements()) {
             System.out.println(achievement.getProgress());
-        }
+        }*/
 
         return "Done";
 
@@ -65,17 +65,17 @@ public class AchievementTrackerTesting {
 
 
     private static String test2() {
-        CarPool cp = new CarPool("haj chaparral", "Carpool", "Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<String>(), new ArrayList<String>(), false, helpSetup("cp"));
-        Gardening g = new Gardening("Gardening", "Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<String>(), new ArrayList<String>(), false, helpSetup("g"));
-        ToolSharing ts = new ToolSharing("ToolSharing", "Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<String>(), new ArrayList<String>(), false, helpSetup("ts"));
-        GarageSale gs = new GarageSale("Garage Sale", "Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<String>(), new ArrayList<String>(), false, helpSetup("gs"));
-
+        /*CarPool cp = new CarPool("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("cp"));
+        Gardening g = new Gardening("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("g"));
+        ToolSharing ts = new ToolSharing("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("ts"));
+        GarageSale gs = new GarageSale("Title1", "a desc", "haj chaparral", "4?", "00", new ArrayList<>(), new ArrayList<>(), false, helpSetup("gs"));
+*/
         ArrayList<Initiative> list = new ArrayList<>();
-        list.add(cp);
+  /*      list.add(cp);
         list.add(gs);
         list.add(g);
         list.add(ts);
-
+*/
         for (Initiative initiative : list) {
             for (Achievement achievement : initiative.getAchievements()) {
                 System.out.println(achievement.getName() + " imp:" + achievement.getProgress());

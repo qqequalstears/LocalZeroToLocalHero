@@ -9,9 +9,12 @@ import Client.Model.Message;
 import Common.Controller.Utility.Packager;
 import Common.Controller.Utility.Unpacker;
 import org.json.JSONObject;
+import org.json.JSONArray;
+
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectionController {
@@ -90,6 +93,12 @@ public class ConnectionController {
             case "SuccessfulInitiativeCreation":
                 guiInController.successfulInitiativeCreation();
                 break;
+            case "updateClients":
+                updateClients(jsonObject);
+                break;
+            case "showUserRoles":
+                showUserRoles(jsonObject);
+                break;
             default:
                 guiInController.notifyUser("Something went wrong in the application");
         }
@@ -139,5 +148,55 @@ public class ConnectionController {
 
     public User getConnectedUser() {
         return connectedUser;
+    }
+
+    private void updateClients(JSONObject jsonObject) {
+        List<String> userMails = new ArrayList<>();
+
+        JSONArray userArray = jsonObject.getJSONArray("listOfUsers");
+        for (int i = 0; i < userArray.length(); i++) {
+            JSONObject userJson = userArray.getJSONObject(i);
+            userMails.add(userJson.getString("email"));
+        }
+
+        guiInController.updateClients(userMails);
+    }
+
+    /**
+     * Builds and sends JSON request for all initiatives.
+     * @autor Martin Frick
+     */
+    public void sendRequestForInitiatives(){
+
+        JSONObject getInitJson = packager.createIntentionJson("getInitiatives");
+        sendJsonObject(getInitJson);
+    }
+
+    public void getUserInfo(String mailOfUser) {
+        JSONObject mailToUser = packager.createCollectUserInfoJSON(mailOfUser, connectedUser.getEmail());
+        sendJsonObject(mailToUser);
+    }
+
+    private void showUserRoles(JSONObject roles) {
+        String userMail = (String) roles.get("userMail");
+        String userName = (String) roles.get("name");
+        String userLocation = (String) roles.get("location");
+        boolean isAdmin = (boolean) roles.get("isAdmin");
+        List<String> userRoles = new ArrayList<>();
+
+        JSONArray rolesJSONArray = (JSONArray) roles.get("roles");
+
+        for (int i = 0; i < rolesJSONArray.length(); i++) {
+            JSONObject roleJSON = rolesJSONArray.getJSONObject(i);
+            String role = roleJSON.getString("role");
+            userRoles.add(role);
+        }
+        guiInController.showUserInfo(userMail, userName, userLocation, userRoles, isAdmin);
+
+    }
+
+    public void updateUsersRoles(String[] roles, String mail) {
+        JSONObject updateRoles = packager.createUpdateRolesJSON(roles, mail);
+        sendJsonObject(updateRoles);
     }
 }

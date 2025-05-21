@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.*;
 
 public class ClientUpdater {
     private ArrayList<ClientConnection> clientConnections;
@@ -27,8 +28,8 @@ public class ClientUpdater {
         this.clientConnections.remove(clientConnection);
     }
 
-    public ArrayList<ClientConnection> getClientConnections() {
-        return clientConnections;
+    public List<ClientConnection> getClientConnections() {
+        return new ArrayList<>(onlineClients.values());
     }
 
     public boolean userOnline(String email) {

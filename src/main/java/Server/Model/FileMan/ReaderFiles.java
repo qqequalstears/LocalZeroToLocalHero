@@ -5,9 +5,7 @@ import Client.Model.User;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The FileReader class provides methods for reading data from a file.
@@ -161,7 +159,7 @@ public class ReaderFiles implements IDataFetcher {
      *
      * @return A list of {@code User} objects.
      * @throws UnsupportedOperationException This method is not yet implemented.
-     * @author Jansson Anton
+     * @author Anton Persson
      * @Date 2025-04-16
      */
     @Override
@@ -259,4 +257,38 @@ public class ReaderFiles implements IDataFetcher {
         return readActiveIntiative();
     }
 
+    /**
+     * @author Anton Persson
+     * @param mail
+     * @param newRoles
+     * @return
+     */
+    public String updateUsersNewRoles(String mail, List<String> newRoles) {
+        List<User> users = new ArrayList<>();
+        String csvContent = readWholeCSVFile(destinationUser);
+        String[] lines = csvContent.split("\n");
+
+        StringBuilder updatedCSV = new StringBuilder();
+        updatedCSV.append(lines[0]).append("\n");
+
+        for (int i = 1; i < lines.length; i++) {
+            String[] contents = lines[i].split(",");
+            if (contents.length < 5) {
+                continue;
+            }
+            String email = contents[0].trim();
+            if (email.equals(mail)) {
+                String joinedRoles = String.join(" - ", newRoles);
+                StringBuilder updatedLine = new StringBuilder();
+                for (int j = 0; j < 4; j++) {
+                    updatedLine.append(contents[j]).append(",");
+                }
+                updatedLine.append(joinedRoles);
+                updatedCSV.append(updatedLine).append("\n");
+            } else {
+                updatedCSV.append(lines[i]).append("\n");
+            }
+        }
+        return updatedCSV.toString();
+    }
 }

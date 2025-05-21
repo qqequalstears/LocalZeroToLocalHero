@@ -58,4 +58,9 @@ public class FileHandler {
         return "Data saved successfully";
 
     }
+
+    public void replaceRoles(String mail, List<String> newRoles) {
+        String csvContent = ReaderFiles.getInstance().updateUsersNewRoles(mail, newRoles);
+        WriteToFile.getInstance().replaceUsers(csvContent);
+    }
 }

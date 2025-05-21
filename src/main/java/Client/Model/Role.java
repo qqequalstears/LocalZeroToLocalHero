@@ -10,7 +10,8 @@ public enum Role {
     Admin,
     Resident,
     CommunityManager,
-    Taxi;
+    Taxi,
+    Handyman;
 
 
 }

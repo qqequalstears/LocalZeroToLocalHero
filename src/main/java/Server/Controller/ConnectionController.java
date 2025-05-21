@@ -2,6 +2,9 @@ package Server.Controller;
 
 import Common.Controller.Utility.Packager;
 import Server.Controller.Authorization.AuthorizationController;
+import Server.Service.MessageService;
+import Server.Service.FileStorageService;
+import Server.Service.NotificationService;
 import org.json.JSONObject;
 
 import java.net.Socket;
@@ -15,6 +18,9 @@ public class ConnectionController {
     private Packager packager;
     private AuthorizationController authorizationController;
     private InitiativeManager initiativeManager;
+    private MessageService messageService;
+    private FileStorageService fileStorageService;
+    private NotificationService notificationService;
 
     public ConnectionController() {
         authorizationController = new AuthorizationController(this);
@@ -22,7 +28,9 @@ public class ConnectionController {
         packager = new Packager();
         this.clientUpdater = new ClientUpdater();
         this.connectionListener = new ConnectionListener(2343, this);
-
+        this.fileStorageService = new FileStorageService();
+        this.notificationService = new NotificationService(clientUpdater, fileStorageService);
+        this.messageService = new MessageService(clientUpdater, fileStorageService, notificationService);
     }
 
     public synchronized void addConnection(Socket socket) {
@@ -37,7 +45,6 @@ public class ConnectionController {
         System.out.println("Client connected: " + socket.getInetAddress());
     }
 
-    //TODO add interface for this method?--> Object object ==> metoden hade kunnat hantera de första delen av logiken i denna metoden? (Object>String>JSONOBJECT>String)@jansson
     public synchronized void revealIntention(Object object, ClientConnection sender) {
         String jsonString = (String) object;
         JSONObject jsonObject = new JSONObject(jsonString);
@@ -47,92 +54,66 @@ public class ConnectionController {
 
         switch (intention) {
             case "login":
-                String mail = (String) jsonObject.get("mail");
-                boolean successfulLogin = authorizationController.tryLogin(jsonObject, clientUpdater);
-                sendLoginStatus(sender, mail, successfulLogin);
-                // After successful login, deliver any stored notifications
-                if (successfulLogin) {
-                    File file = new File("notifications_" + mail + ".txt");
-                    if (file.exists()) {
-                        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                            String line;
-                            while ((line = reader.readLine()) != null) {
-                                JSONObject notificationPackage = new JSONObject();
-                                notificationPackage.put("type", "notification");
-                                notificationPackage.put("notification", line);
-                                sender.sendObject(notificationPackage.toString());
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        file.delete(); // Clear notifications after sending
-                    }
-                }
+                handleLogin(jsonObject, sender);
                 break;
             case "logout":
-                mail = (String) jsonObject.get("mail");
-                clientUpdater.removeOnlineClient(mail);
+                handleLogout(jsonObject);
                 break;
             case "register":
-                boolean successfulRegister = authorizationController.tryRegister(jsonObject);
-                mail = (String) jsonObject.get("mail");
-                sendRegisterStatus(sender, mail, successfulRegister);
+                handleRegister(jsonObject, sender);
                 break;
             case "createInitiative":
-                boolean success = initiativeManager.createNewInitiative(jsonObject);
-                sendCreateInitiativeStatus(success, sender);
+                handleCreateInitiative(jsonObject, sender);
                 break;
             case "sendMessage":
-                String senderId = jsonObject.getString("senderId");
-                String recipientId = jsonObject.getString("recipientId");
-                String subject = jsonObject.getString("subject");
-                String content = jsonObject.getString("content");
-
-                // Create message package to forward to recipient
-                JSONObject messagePackage = new JSONObject();
-                messagePackage.put("type", "newMessage");
-                messagePackage.put("senderId", senderId);
-                messagePackage.put("recipientId", recipientId);
-                messagePackage.put("subject", subject);
-                messagePackage.put("content", content);
-                messagePackage.put("timestamp", LocalDateTime.now().toString());
-                
-                // Forward message to recipient if online
-                ClientConnection receiver = clientUpdater.getClientConnection(recipientId);
-                if (receiver != null) {
-                    receiver.sendObject(messagePackage.toString());
-                }
-                
-                // Store message in file for persistence
-                try {
-                    File file = new File("messages.txt");
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-                        writer.write(String.join("|",
-                            senderId,
-                            recipientId,
-                            subject,
-                            content,
-                            LocalDateTime.now().toString(),
-                            "false"
-                        ));
-                        writer.newLine();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                
-                // Send notification
-                sendNotification("You have received a new message from " + senderId, recipientId);
+                messageService.handleNewMessage(jsonObject);
                 break;
-            case "getInitiative":
-                String initiativeId = jsonObject.getString("messageId");
-
-                // Get message from file
-
             default:
                 System.out.println("Intention was not found");
                 break;
         }
+    }
+
+    private void handleLogin(JSONObject jsonObject, ClientConnection sender) {
+        String mail = (String) jsonObject.get("mail");
+        boolean successfulLogin = authorizationController.tryLogin(jsonObject, clientUpdater);
+        sendLoginStatus(sender, mail, successfulLogin);
+        
+        if (successfulLogin) {
+            deliverStoredNotifications(mail, sender);
+        }
+    }
+
+    private void deliverStoredNotifications(String mail, ClientConnection sender) {
+        String filename = "notifications_" + mail + ".txt";
+        String notifications = fileStorageService.readFile(filename);
+        if (!notifications.isEmpty()) {
+            for (String notification : notifications.split("\n")) {
+                if (!notification.trim().isEmpty()) {
+                    JSONObject notificationPackage = new JSONObject();
+                    notificationPackage.put("type", "notification");
+                    notificationPackage.put("notification", notification);
+                    sender.sendObject(notificationPackage.toString());
+                }
+            }
+            fileStorageService.deleteFile(filename);
+        }
+    }
+
+    private void handleLogout(JSONObject jsonObject) {
+        String mail = (String) jsonObject.get("mail");
+        clientUpdater.removeOnlineClient(mail);
+    }
+
+    private void handleRegister(JSONObject jsonObject, ClientConnection sender) {
+        boolean successfulRegister = authorizationController.tryRegister(jsonObject);
+        String mail = (String) jsonObject.get("mail");
+        sendRegisterStatus(sender, mail, successfulRegister);
+    }
+
+    private void handleCreateInitiative(JSONObject jsonObject, ClientConnection sender) {
+        boolean success = initiativeManager.createNewInitiative(jsonObject);
+        sendCreateInitiativeStatus(success, sender);
     }
 
     public void sendNotification(String notification, String mailToReceiver) {
@@ -157,7 +138,6 @@ public class ConnectionController {
             }
         }
     }
-
 
     private void sendCreateInitiativeStatus(boolean success, ClientConnection creator) {
         JSONObject sucess = new JSONObject();
@@ -190,7 +170,4 @@ public class ConnectionController {
         sucess.put("type", status);
         sender.sendObject(sucess.toString());
     }
-
-
-
 }

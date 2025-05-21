@@ -1,6 +1,7 @@
 package Client.Controller.GUIControllers.Home;
 
 import Client.Controller.GUIControllers.FxController;
+import Client.Controller.GUIControllers.GUIControllerRegistry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,6 +11,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class HomeCentreController implements FxController {
     @FXML
@@ -27,6 +30,7 @@ public class HomeCentreController implements FxController {
 
     @FXML
     public void initialize() {
+        GUIControllerRegistry.getInstance().add(this.getClass().getName(), this);
         usersListview.setItems(usernames);
         usersListview.setCellFactory(listView -> new ListCell<String>() {
             @Override
@@ -43,6 +47,11 @@ public class HomeCentreController implements FxController {
         usernames.add("på");
         usernames.add("DIG");
     }
+
+    public void setOnlineUsers(List<String> listOfUser) {
+        usernames.setAll(listOfUser);
+    }
+
 
     @Override
     public void closeStage() {

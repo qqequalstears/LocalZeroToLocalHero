@@ -7,6 +7,7 @@ import org.json.JSONObject;
 public class NotificationService {
     private final ClientUpdater clientUpdater;
     private final FileStorageService fileStorageService;
+    private static final String NOTIFICATION_FILE_PREFIX = "notifications_";
 
     public NotificationService(ClientUpdater clientUpdater, FileStorageService fileStorageService) {
         this.clientUpdater = clientUpdater;
@@ -30,7 +31,7 @@ public class NotificationService {
     }
 
     private void storeOfflineNotification(String recipientId, String notification) {
-        String filename = "notifications_" + recipientId + ".txt";
+        String filename = NOTIFICATION_FILE_PREFIX + recipientId + ".txt";
         fileStorageService.appendToFile(filename, notification);
     }
 } 

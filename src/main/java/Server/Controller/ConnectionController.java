@@ -174,6 +174,13 @@ public class ConnectionController {
         }
         sucess.put("type", status);
         sender.sendObject(sucess.toString());
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         sendEveryUser();
     }
 
@@ -197,5 +204,5 @@ public class ConnectionController {
                 client.sendObject(listOfUsers.toString());
             }
         }
-
+    }
 }

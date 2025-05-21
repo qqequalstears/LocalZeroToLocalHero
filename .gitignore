@@ -108,3 +108,7 @@ target/classes/Server/Model/Iterator.class
 target/classes/Server/Start.class
 target/classes/Server/Testing/AchievementTrackerTesting.class
 target/classes/Server/Testing/FileManTesting.class
+target/classes/Server/Service/MessageService.class
+target/classes/Server/Service/MessageService.class
+target/classes/Server/Service/NotificationService.class
+target/classes/Server/Service/FileStorageService.class

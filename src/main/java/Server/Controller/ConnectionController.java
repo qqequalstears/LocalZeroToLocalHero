@@ -1,5 +1,6 @@
 package Server.Controller;
 
+import Client.Model.User;
 import Common.Controller.Utility.Packager;
 import Server.Controller.Authorization.AuthorizationController;
 import Server.Service.MessageService;
@@ -12,6 +13,7 @@ import java.net.Socket;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ConnectionController {
 
@@ -69,9 +71,6 @@ public class ConnectionController {
                 break;
             case "sendMessage":
                 messageService.handleNewMessage(jsonObject);
-                break;
-            case "updateOnlineClients":
-                updateOnlineClients(jsonObject);
                 break;
             default:
                 System.out.println("Intention was not found");
@@ -163,6 +162,7 @@ public class ConnectionController {
         }
         sucess.put("type", status);
         sender.sendObject(sucess.toString());
+        sendEveryUser();
     }
 
     private void sendLoginStatus(ClientConnection sender, String mail, boolean successfulLogin) {
@@ -174,18 +174,28 @@ public class ConnectionController {
         }
         sucess.put("type", status);
         sender.sendObject(sucess.toString());
+        sendEveryUser();
     }
 
-    private void updateOnlineClients(JSONObject jsonObject) {
-        List<String> userMails = new ArrayList<>();
+    private void sendEveryUser() {
+        List<User> users = FileHandler.getInstance().getUsers();
 
-        JSONArray userArray = jsonObject.getJSONArray("listOfUsers");
-        for (int i = 0; i < userArray.length(); i++) {
-            JSONObject userJson = userArray.getJSONObject(i);
-            userMails.add(userJson.getString("email"));
+        JSONArray userArray = new JSONArray();
+        for (User user : users) {
+            JSONObject userJson = new JSONObject();
+            userJson.put("email", user.getEmail());
+            userArray.put(userJson);
         }
 
-        guiInController.updateClients(userMails);
-    }
+        JSONObject listOfUsers = new JSONObject();
+        listOfUsers.put("type", "updateOnlineClients");
+        listOfUsers.put("listOfUsers", userArray);
+
+        List<ClientConnection> onlineClients = clientUpdater.getClientConnections();
+        if (onlineClients != null) {
+            for (ClientConnection client : onlineClients) {
+                client.sendObject(listOfUsers.toString());
+            }
+        }
 
 }

@@ -29,7 +29,7 @@ public class GUIControllerRegistry implements Registry {
         controllerMap.remove(key);
     }
 
-    public static GUIControllerRegistry getInstance() {
+    public static synchronized GUIControllerRegistry getInstance() {
         if (instance == null) {
             instance = new GUIControllerRegistry();
         }

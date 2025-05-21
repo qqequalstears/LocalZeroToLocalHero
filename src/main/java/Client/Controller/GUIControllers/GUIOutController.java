@@ -26,7 +26,7 @@ public class GUIOutController {
         this.connectionController = connectionController;
     }
 
-    public static GUIOutController getInstance() {
+    public static synchronized GUIOutController getInstance() {
         if (instance == null) {
             instance = new GUIOutController();
         }

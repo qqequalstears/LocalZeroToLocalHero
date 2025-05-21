@@ -63,4 +63,18 @@ public class GUIOutController {
     public void getAllInitiativesFromServer() {
         connectionController.sendRequestForInitiatives();
     }
+
+    public void seeUserInfo(String mailOfUser) {
+        connectionController.getUserInfo(mailOfUser);
+    }
+
+    public void updateUsersRoles(String roles, String mail) {
+        String[] rolesList = roles.split(",");
+
+        for (int i = 0; i < rolesList.length; i++) {
+            rolesList[i] = rolesList[i].trim();
+        }
+
+        connectionController.updateUsersRoles(rolesList, mail);
+    }
 }

@@ -55,4 +55,12 @@ public class Packager {
         newInitiativeJson.put("creator", creator);
         return newInitiativeJson;
     }
+
+    public JSONObject createCollectUserInfoJSON(String mailOfUser, String connectionMail) {
+        JSONObject collectUserJSON = new JSONObject();
+        collectUserJSON.put("type","collectUserInfo");
+        collectUserJSON.put("mail", mailOfUser);
+        collectUserJSON.put("connectionMail", connectionMail);
+        return  collectUserJSON;
+    }
 }

@@ -112,3 +112,7 @@ target/classes/Server/Service/MessageService.class
 target/classes/Server/Service/MessageService.class
 target/classes/Server/Service/NotificationService.class
 target/classes/Server/Service/FileStorageService.class
+target/classes/Client/Controller/GUIControllers/UserInfo/UserInfoController.class
+target/classes/Client/View/UserInfo/UserInfoStage.class
+target/classes/Server/Controller/UserManager.class
+target/classes/UserInfo/UserInfoStage.fxml

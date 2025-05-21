@@ -96,6 +96,9 @@ public class ConnectionController {
             case "updateClients":
                 updateClients(jsonObject);
                 break;
+            case "showUserRoles":
+                showUserRoles(jsonObject);
+                break;
             default:
                 guiInController.notifyUser("Something went wrong in the application");
         }
@@ -167,5 +170,32 @@ public class ConnectionController {
 
         JSONObject getInitJson = packager.createIntentionJson("getInitiatives");
         sendJsonObject(getInitJson);
+    }
+
+    public void getUserInfo(String mailOfUser) {
+        JSONObject mailToUser = packager.createCollectUserInfoJSON(mailOfUser, connectedUser.getEmail());
+        sendJsonObject(mailToUser);
+    }
+
+    private void showUserRoles(JSONObject roles) {
+        String userMail = (String) roles.get("userMail");
+        String userName = (String) roles.get("name");
+        String userLocation = (String) roles.get("location");
+        boolean isAdmin = (boolean) roles.get("isAdmin");
+        List<String> userRoles = new ArrayList<>();
+
+        JSONArray rolesJSONArray = (JSONArray) roles.get("roles");
+
+        for (int i = 0; i < rolesJSONArray.length(); i++) {
+            JSONObject roleJSON = rolesJSONArray.getJSONObject(i);
+            String role = roleJSON.getString("role");
+            userRoles.add(role);
+        }
+        guiInController.showUserInfo(userMail, userName, userLocation, userRoles, isAdmin);
+
+    }
+
+    public void updateUsersRoles(String[] roles, String mail) {
+        //JSONObject updateRoles = packager.createUpdateRolesJSON(roles. mail);
     }
 }

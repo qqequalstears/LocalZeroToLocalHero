@@ -1,5 +1,6 @@
 package Server.Controller;
 
+import Client.Model.Role;
 import Client.Model.User;
 import Common.Controller.Utility.Packager;
 import Server.Controller.Authorization.AuthorizationController;
@@ -25,11 +26,13 @@ public class ConnectionController {
     private MessageService messageService;
     private FileStorageService fileStorageService;
     private NotificationService notificationService;
+    private UserManager userManager;
 
     public ConnectionController() {
         authorizationController = new AuthorizationController(this);
         initiativeManager = new InitiativeManager();
         packager = new Packager();
+        userManager = new UserManager();
         this.clientUpdater = new ClientUpdater();
         this.connectionListener = new ConnectionListener(2343, this);
         this.fileStorageService = new FileStorageService();
@@ -71,6 +74,9 @@ public class ConnectionController {
                 break;
             case "sendMessage":
                 messageService.handleNewMessage(jsonObject);
+                break;
+            case "collectUserInfo":
+                collectUserRoles(jsonObject, sender);
                 break;
             default:
                 System.out.println("Intention was not found");
@@ -204,5 +210,14 @@ public class ConnectionController {
                 client.sendObject(listOfUsers.toString());
             }
         }
+    }
+
+    private void collectUserRoles(JSONObject jsonObject, ClientConnection connection) {
+        String connectionMail = (String) jsonObject.get("connectionMail");
+        JSONObject userRolesJSON = userManager.collectUserInfo(jsonObject);
+        boolean connectionIsAdmin = userManager.isAdmin(connectionMail);
+        userRolesJSON.put("isAdmin", connectionIsAdmin);
+
+        connection.sendObject(userRolesJSON.toString());
     }
 }

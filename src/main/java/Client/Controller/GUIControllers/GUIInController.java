@@ -6,6 +6,7 @@ import Client.Controller.GUIControllers.Home.HomeTopController;
 import Client.Controller.GUIControllers.Intitiative.InitiativeController;
 import Client.Controller.GUIControllers.LoginController.LoginController;
 import Client.Controller.GUIControllers.Notifications.NotificationController;
+import Client.Controller.GUIControllers.UserInfo.UserInfoController;
 import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Notifications;
 import Client.View.Achievement.AchievementStage;
@@ -14,6 +15,7 @@ import Client.View.Home.HomeStage;
 import Client.View.Login.LogInStage;
 import Client.View.Notification.NotificationStage;
 import Client.View.StageCreator;
+import Client.View.UserInfo.UserInfoStage;
 import Client.View.UserNotifier;
 import Client.View.ViewInitiative.ViewInitiativeStage;
 import javafx.application.Platform;
@@ -38,6 +40,7 @@ public class GUIInController {
         stageCreators.put("NOTIFICATIONS", () -> new NotificationStage().createStage());
         stageCreators.put("ACHIEVEMENTSTAGE", () -> new AchievementStage().createStage());
         stageCreators.put("OPENINITIATIVESTAGE", () -> new ViewInitiativeStage(currentlySelectedInitiative).createStage());
+        stageCreators.put("USERINFOSTAGE", () -> new UserInfoStage().createStage());
     }
 
     public void createStage(String stageToCreate) {
@@ -55,6 +58,22 @@ public class GUIInController {
         Platform.runLater(() -> {
             loginController.closeStage();
             createStage("HOMESTAGE");
+        });
+    }
+
+    public void showUserInfo(String userMail, String userName, String userLocation, List<String> userRoles, boolean isAdmin) {
+        Platform.runLater(() -> {
+            createStage("USERINFOSTAGE");
+            UserInfoController userInfoController = (UserInfoController) GUIControllerRegistry.getInstance().get(UserInfoController.class.getName());
+            if (!isAdmin) {
+                userInfoController.disableComboBox();
+            }
+            StringBuilder rolesSB = new StringBuilder();
+            for (String role : userRoles) {
+                rolesSB.append(role + ", ");
+            }
+            String roles = rolesSB.toString();
+            userInfoController.setInformation(userName, userLocation, userMail, roles);
         });
     }
 

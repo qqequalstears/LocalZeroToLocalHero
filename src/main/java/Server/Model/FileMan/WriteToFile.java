@@ -213,4 +213,16 @@ public class WriteToFile implements IDataWriter {
     public String writeLogEntryToFile(String logEntry) {
         return writeToLog(logEntry);
     }
+
+    public void replaceRoles() {
+
+    }
+
+    public void replaceUsers(String csvContent) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(destinationUser))) {
+            writer.write(csvContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

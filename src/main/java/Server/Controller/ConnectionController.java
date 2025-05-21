@@ -78,12 +78,14 @@ public class ConnectionController {
             case "collectUserInfo":
                 collectUserRoles(jsonObject, sender);
                 break;
+            case "updateRoles":
+                userManager.updateRoles(jsonObject);
+                break;
             default:
                 System.out.println("Intention was not found");
                 break;
         }
     }
-
     private void handleLogin(JSONObject jsonObject, ClientConnection sender) {
         String mail = (String) jsonObject.get("mail");
         boolean successfulLogin = authorizationController.tryLogin(jsonObject, clientUpdater);

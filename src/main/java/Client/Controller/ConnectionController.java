@@ -196,6 +196,7 @@ public class ConnectionController {
     }
 
     public void updateUsersRoles(String[] roles, String mail) {
-        //JSONObject updateRoles = packager.createUpdateRolesJSON(roles. mail);
+        JSONObject updateRoles = packager.createUpdateRolesJSON(roles, mail);
+        sendJsonObject(updateRoles);
     }
 }

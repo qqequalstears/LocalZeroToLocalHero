@@ -5,6 +5,7 @@ import Client.Model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserManager {
@@ -49,5 +50,21 @@ public class UserManager {
             }
         }
         return false;
+    }
+
+    public void updateRoles(JSONObject jsonObject) {
+        String mail = (String) jsonObject.get("mail");
+        List<String> newRoles = new ArrayList<>();
+
+        JSONArray rolesJSONArray = jsonObject.getJSONArray("roles");
+        for (int i = 0; i < rolesJSONArray.length(); i++) {
+            JSONObject roleJson = rolesJSONArray.getJSONObject(i);
+            String role = roleJson.getString("role");
+            if (!role.isEmpty()) {
+                newRoles.add(role);
+            }
+        }
+
+        FileHandler.getInstance().replaceRoles(mail, newRoles);
     }
 }

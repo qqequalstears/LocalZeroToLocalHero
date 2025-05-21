@@ -1,5 +1,7 @@
 package Common.Controller.Utility;
 
+import Client.Model.User;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
@@ -62,5 +64,19 @@ public class Packager {
         collectUserJSON.put("mail", mailOfUser);
         collectUserJSON.put("connectionMail", connectionMail);
         return  collectUserJSON;
+    }
+
+    public JSONObject createUpdateRolesJSON(String[] roles, String mail) {
+        JSONObject rolesJSON = new JSONObject();
+        JSONArray rolesArray = new JSONArray();
+        for (String role : roles) {
+            JSONObject roleJSON = new JSONObject();
+            roleJSON.put("role", role);
+            rolesArray.put(roleJSON);
+        }
+        rolesJSON.put("type", "updateRoles");
+        rolesJSON.put("roles", rolesArray);
+        rolesJSON.put("mail", mail);
+        return rolesJSON;
     }
 }

@@ -73,8 +73,9 @@ public class UserInfoController implements FxController {
         currentRolesTextfield.setText(newText);
     }
 
-    public void disableComboBox() {
+    public void disableAdminPrivileges() {
         rolesComboBox.setDisable(true);
+        confirmButton.setDisable(true);
     }
 
     public void setInformation(String name, String location, String mail, String roles) {

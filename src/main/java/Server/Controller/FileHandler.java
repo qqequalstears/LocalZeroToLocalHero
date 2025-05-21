@@ -1,6 +1,5 @@
 package Server.Controller;
 
-import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.User;
 import Server.Model.FileMan.AppendToFile;
 import Server.Model.FileMan.IDataSaver;
@@ -50,5 +49,10 @@ public class FileHandler {
 
     public void createInitiative(String csvContent) {
         AppendToFile.getInstance().appendActiveIntiativeToFile(csvContent);
+    }
+
+    public void replaceRoles(String mail, List<String> newRoles) {
+        String csvContent = ReaderFiles.getInstance().updateUsersNewRoles(mail, newRoles);
+        WriteToFile.getInstance().replaceUsers(csvContent);
     }
 }

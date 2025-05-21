@@ -7,8 +7,6 @@ import Client.Controller.GUIControllers.Intitiative.InitiativeController;
 import Client.Controller.GUIControllers.LoginController.LoginController;
 import Client.Controller.GUIControllers.Notifications.NotificationController;
 import Client.Controller.GUIControllers.UserInfo.UserInfoController;
-import Client.Model.Initiative.Parent.Initiative;
-import Client.Model.Notifications;
 import Client.View.Achievement.AchievementStage;
 import Client.View.CreateInitiative.CreateInitiativeStage;
 import Client.View.Home.HomeStage;
@@ -22,7 +20,6 @@ import javafx.application.Platform;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GUIInController {
@@ -66,7 +63,7 @@ public class GUIInController {
             createStage("USERINFOSTAGE");
             UserInfoController userInfoController = (UserInfoController) GUIControllerRegistry.getInstance().get(UserInfoController.class.getName());
             if (!isAdmin) {
-                userInfoController.disableComboBox();
+                userInfoController.disableAdminPrivileges();
             }
             StringBuilder rolesSB = new StringBuilder();
             for (String role : userRoles) {

@@ -52,7 +52,7 @@ public class UserManager {
         return false;
     }
 
-    public void updateRoles(JSONObject jsonObject) {
+    public void updateRoles(JSONObject jsonObject, ConnectionController connectionController) {
         String mail = (String) jsonObject.get("mail");
         List<String> newRoles = new ArrayList<>();
 
@@ -64,6 +64,8 @@ public class UserManager {
                 newRoles.add(role);
             }
         }
+
+        connectionController.sendNotification("Someone has changed your roles to :" + String.join(" - ", newRoles), mail);
 
         FileHandler.getInstance().replaceRoles(mail, newRoles);
     }

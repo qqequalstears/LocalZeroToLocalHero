@@ -79,7 +79,7 @@ public class ConnectionController {
                 collectUserRoles(jsonObject, sender);
                 break;
             case "updateRoles":
-                userManager.updateRoles(jsonObject);
+                userManager.updateRoles(jsonObject, this);
                 break;
             default:
                 System.out.println("Intention was not found");

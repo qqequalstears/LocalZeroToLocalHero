@@ -184,7 +184,6 @@ public class ReaderFiles implements IDataFetcher {
             for (String role : roleContents) {
                 role = role.trim();
                 roles.add(Role.valueOf(role));
-
             }
             users.add(new User(name, location, email, password, roles));
         }

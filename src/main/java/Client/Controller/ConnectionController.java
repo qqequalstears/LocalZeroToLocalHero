@@ -106,6 +106,7 @@ public class ConnectionController {
 
     public void sendRegisterToServer(String mail, String password, String name, String city) {
         JSONObject registerJson = packager.createRegisterJSON(mail, password, name, city);
+        connectedUser = new User(mail, password);
         sendJsonObject(registerJson);
     }
 

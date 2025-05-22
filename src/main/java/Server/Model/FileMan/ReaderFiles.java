@@ -165,7 +165,7 @@ public class ReaderFiles implements IDataFetcher {
     @Override
     public List<User> fetchAllUsers() {
         List<User> users = new ArrayList<>();
-        String csvContent = readWholeCSVFile(destinationUser);
+        String csvContent = readUsers();
         String[] lines = csvContent.split("\n");
 
         for (int i = 1; i < lines.length; i++) {
@@ -256,38 +256,4 @@ public class ReaderFiles implements IDataFetcher {
         return readActiveIntiative();
     }
 
-    /**
-     * @author Anton Persson
-     * @param mail
-     * @param newRoles
-     * @return
-     */
-    public String updateUsersNewRoles(String mail, List<String> newRoles) {
-        List<User> users = new ArrayList<>();
-        String csvContent = readWholeCSVFile(destinationUser);
-        String[] lines = csvContent.split("\n");
-
-        StringBuilder updatedCSV = new StringBuilder();
-        updatedCSV.append(lines[0]).append("\n");
-
-        for (int i = 1; i < lines.length; i++) {
-            String[] contents = lines[i].split(",");
-            if (contents.length < 5) {
-                continue;
-            }
-            String email = contents[0].trim();
-            if (email.equals(mail)) {
-                String joinedRoles = String.join(" - ", newRoles);
-                StringBuilder updatedLine = new StringBuilder();
-                for (int j = 0; j < 4; j++) {
-                    updatedLine.append(contents[j]).append(",");
-                }
-                updatedLine.append(joinedRoles);
-                updatedCSV.append(updatedLine).append("\n");
-            } else {
-                updatedCSV.append(lines[i]).append("\n");
-            }
-        }
-        return updatedCSV.toString();
-    }
 }

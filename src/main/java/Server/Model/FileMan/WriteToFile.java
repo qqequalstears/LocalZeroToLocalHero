@@ -98,10 +98,7 @@ public class WriteToFile implements IDataWriter {
      * @Date 2025-04-07
      */
     private String writeToUsers(String data) {
-        String header = "email,password,name,location,roles\n"; // TODO this is a placeholder. The header
-        // needs to be changed to the
-        // corresponding header.
-
+        String header = "email,password,name,location,roles\n";
         return writeToCSVFile(destinationUser, header, data);
     }
 
@@ -216,9 +213,7 @@ public class WriteToFile implements IDataWriter {
         return writeToLog(logEntry);
     }
 
-    public void replaceRoles() {
 
-    }
 
     public void replaceUsers(String csvContent) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(destinationUser))) {

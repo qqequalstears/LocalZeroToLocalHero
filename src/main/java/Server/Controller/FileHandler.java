@@ -6,13 +6,10 @@ import Server.Model.FileMan.Proxy.FileAppenderProxy;
 import Server.Model.FileMan.Proxy.FileReaderProxy;
 import Server.Model.FileMan.Proxy.FileWriterProxy;
 
+import java.util.ArrayList;
 import java.util.List;
 
-//TODO denna klassen är inte klar. Syftet är att den ska hantera filhantering för att 
-//spara data samt läsa/hämta data (med hjälp av IDataSaver och IDataFetcher).
-//Den är bara en mock för att visa hur den kan se ut. 
-//Klassen beöver fler metoder med rimlig logik och mer funktionalitet.
-//  * @date 2025-04-24 @Jansson Anton
+
 public class FileHandler {
     private static FileHandler instance;
 
@@ -38,15 +35,12 @@ public class FileHandler {
     }
 
     public List<User> getUsers() {
-        //  return ReaderFiles.getInstance().fetchAllUsers();
-        //return FileReaderProxy.getInstance().fetchAllUsers();
         IDataFetcher dataFetcher = FileReaderProxy.getInstance();
         return dataFetcher.fetchAllUsers();
     }
 
     public String registerUser(String csvContent) {
         IDataSaver dataAppender = FileAppenderProxy.getInstance();
-        //test.appendToUsersFile(csvContent);
         dataAppender.saveUser(csvContent);
         return "Data saved successfully";
 
@@ -59,8 +53,45 @@ public class FileHandler {
 
     }
 
-    public void replaceRoles(String mail, List<String> newRoles) {
-        String csvContent = ReaderFiles.getInstance().updateUsersNewRoles(mail, newRoles);
-        WriteToFile.getInstance().replaceUsers(csvContent);
+    public String replaceRoles(String mail, List<String> newRoles) {
+        String csvContent = updateUsersNewRoles(mail, newRoles);
+        //WriteToFile.getInstance().replaceUsers(csvContent);
+        FileWriterProxy.getInstance().writeUsersToFile(csvContent);
+        return "Roles replaced successfully";
+    }
+
+
+    /**
+     * @author Anton Persson
+     * @param mail
+     * @param newRoles
+     * @return
+     */
+    public String updateUsersNewRoles(String mail, List<String> newRoles) {
+        String csvContent = FileReaderProxy.getInstance().fetchAllUserData();
+        String[] lines = csvContent.split("\n");
+
+        StringBuilder updatedCSV = new StringBuilder();
+        //  updatedCSV.append(lines[0]).append("\n");
+
+        for (int i = 1; i < lines.length; i++) {
+            String[] contents = lines[i].split(",");
+            if (contents.length < 5) {
+                continue;
+            }
+            String email = contents[0].trim();
+            if (email.equals(mail)) {
+                String joinedRoles = String.join(" - ", newRoles);
+                StringBuilder updatedLine = new StringBuilder();
+                for (int j = 0; j < 4; j++) {
+                    updatedLine.append(contents[j]).append(",");
+                }
+                updatedLine.append(joinedRoles);
+                updatedCSV.append(updatedLine).append("\n");
+            } else {
+                updatedCSV.append(lines[i]).append("\n");
+            }
+        }
+        return updatedCSV.toString();
     }
 }

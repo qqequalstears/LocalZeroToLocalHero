@@ -84,4 +84,6 @@ public interface IDataFetcher {
      * @Date 2025-04-16
      */
     String fetchAllActiveIntiativeData();
+
+    String fetchOneUserLocationData(String email);
 }

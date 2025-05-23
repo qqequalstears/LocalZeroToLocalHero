@@ -6,7 +6,6 @@ import Server.Model.FileMan.Proxy.FileAppenderProxy;
 import Server.Model.FileMan.Proxy.FileReaderProxy;
 import Server.Model.FileMan.Proxy.FileWriterProxy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -55,20 +54,22 @@ public class FileHandler {
 
     public String replaceRoles(String mail, List<String> newRoles) {
         String csvContent = updateUsersNewRoles(mail, newRoles);
-        //WriteToFile.getInstance().replaceUsers(csvContent);
-        FileWriterProxy.getInstance().writeUsersToFile(csvContent);
+        //FileWriterProxy.getInstance().writeUsersToFile(csvContent);
+        IDataSaver dataSaver = FileWriterProxy.getInstance();
+        dataSaver.saveUser(csvContent);
         return "Roles replaced successfully";
     }
 
 
     /**
-     * @author Anton Persson
      * @param mail
      * @param newRoles
      * @return
+     * @author Anton Persson
      */
     public String updateUsersNewRoles(String mail, List<String> newRoles) {
-        String csvContent = FileReaderProxy.getInstance().fetchAllUserData();
+        IDataFetcher dataFetcher = FileReaderProxy.getInstance();
+        String csvContent = dataFetcher.fetchAllUserData();
         String[] lines = csvContent.split("\n");
 
         StringBuilder updatedCSV = new StringBuilder();
@@ -94,7 +95,33 @@ public class FileHandler {
         }
         return updatedCSV.toString();
     }
-    public void updateAchievements(String csvContent) {
+
+    public void updateAchievements(String csvContent) { //TODO oanvänd metod?
         AppendToFile.getInstance().appendToAchievementsFile(csvContent);
+    }
+
+    public String fetchAllLogData() {
+        IDataFetcher dataFetcher = FileReaderProxy.getInstance();
+        return dataFetcher.fetchAllLogData();
+    }
+
+    public void appendLogEntryToFile(String logEntryString) {
+        IDataSaver dataSaver = FileAppenderProxy.getInstance();
+        dataSaver.saveLog(logEntryString);
+    }
+
+    public String fetchOneUserLocationData(String email) {
+        IDataFetcher dataFetcher = FileReaderProxy.getInstance();
+        return dataFetcher.fetchOneUserLocationData(email);
+    }
+
+    public String fetchAllAchievementsData() {
+        IDataFetcher dataFetcher = FileReaderProxy.getInstance();
+        return dataFetcher.fetchAllAchievementsData();
+    }
+
+    public String writeAchievementsToFile(String data) {
+        IDataSaver dataSaver = FileWriterProxy.getInstance();
+        return dataSaver.saveAchievements(data);
     }
 }

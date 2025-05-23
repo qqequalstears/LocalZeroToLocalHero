@@ -54,4 +54,9 @@ public class FileReaderProxy implements IDataFetcher {
     public String fetchAllActiveIntiativeData() {
         return ReaderFiles.getInstance().fetchAllActiveIntiativeData();
     }
+
+    @Override
+    public String fetchOneUserLocationData(String email) {
+        return ReaderFiles.getInstance().fetchOneUserLocationData(email);
+    }
 }

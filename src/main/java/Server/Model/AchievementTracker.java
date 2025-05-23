@@ -6,7 +6,7 @@ import Client.Model.Initiative.Children.GarageSale;
 import Client.Model.Initiative.Children.Gardening;
 import Client.Model.Initiative.Children.ToolSharing;
 import Client.Model.Initiative.Parent.Initiative;
-import Server.Model.FileMan.ReaderFiles;
+import Server.Controller.FileHandler;
 import Server.Model.FileMan.WriteToFile;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,21 +55,21 @@ public class AchievementTracker {
         return "All achievements had progress improved by: " + determineAchievementImprovementScore(initiative);
     }
 
-    public String improveAchievementCSV(Initiative initiative){
+    public String improveAchievementCSV(Initiative initiative) {
         int improvementScore = determineAchievementImprovementScore(initiative);
 
-        String currentAchievements = ReaderFiles.getInstance().fetchAllAchievementsData();
+        String currentAchievements = FileHandler.getInstance().fetchAllAchievementsData();
         String[] splitLines = currentAchievements.split("\n");
         List<String> allAchievementLines = new ArrayList<>();
 
 
         boolean found = false;
 
-        for(int i = 1; i< splitLines.length; i++) {
+        for (int i = 1; i < splitLines.length; i++) {
             String line = splitLines[i];
             String[] columnParts = line.split(",");
 
-            if (columnParts[1].trim().equalsIgnoreCase(initiative.getCategory().trim())&& columnParts[4].trim().equalsIgnoreCase(initiative.getLocation())) {
+            if (columnParts[1].trim().equalsIgnoreCase(initiative.getCategory().trim()) && columnParts[4].trim().equalsIgnoreCase(initiative.getLocation())) {
                 int currentProgress = Integer.parseInt(columnParts[3].trim());
                 currentProgress += improvementScore;
                 columnParts[3] = String.valueOf(currentProgress);
@@ -86,7 +86,7 @@ public class AchievementTracker {
             String newLine = String.join(",", newID, initiative.getCategory(), newDescription, String.valueOf(improvementScore), newLocation);
             allAchievementLines.add(newLine);
         }
-        WriteToFile.getInstance().writeAchievementsToFile(String.join("\n", allAchievementLines));
+        FileHandler.getInstance().writeAchievementsToFile(String.join("\n", allAchievementLines));
 
         return "Achievement " + initiative.getCategory() + " had progress improved by: " + improvementScore;
     }
@@ -104,7 +104,6 @@ public class AchievementTracker {
         achievement.setProgress(achievement.getProgress() + improvementRate);
         return "Achievement" + achievement.getName() + "had progress improved by: " + improvementRate;
     }
-
 
 
     /**
@@ -136,18 +135,18 @@ public class AchievementTracker {
     }
 
     public JSONArray getAchievementsForLocation(String location) {
-        String achievementsData = ReaderFiles.getInstance().fetchAllAchievementsData();
-        String [] lines = achievementsData.split("\n");
+        String achievementsData = FileHandler.getInstance().fetchAllAchievementsData();
+        String[] lines = achievementsData.split("\n");
 
         org.json.JSONArray achievementArray = new org.json.JSONArray();
-        for(int i = 1; i < lines.length; i++) {
+        for (int i = 1; i < lines.length; i++) {
             String[] columns = lines[i].split(",");
             if (columns[4].trim().equalsIgnoreCase(location.trim())) {
                 JSONObject achievement = new JSONObject();
-                achievement.put("id",columns[0].trim());
-                achievement.put("category",columns[1].trim());
+                achievement.put("id", columns[0].trim());
+                achievement.put("category", columns[1].trim());
                 achievement.put("description", columns[2].trim());
-                achievement.put("progress",columns[3].trim());
+                achievement.put("progress", columns[3].trim());
                 achievementArray.put(achievement);
             }
         }

@@ -1,5 +1,6 @@
 package Server.Model;
 
+import Client.Controller.NotificationController;
 import Client.Model.Achievement;
 import Client.Model.Initiative.Children.CarPool;
 import Client.Model.Initiative.Children.GarageSale;
@@ -8,6 +9,7 @@ import Client.Model.Initiative.Children.ToolSharing;
 import Client.Model.Initiative.Parent.Initiative;
 import Server.Model.FileMan.ReaderFiles;
 import Server.Model.FileMan.WriteToFile;
+import Server.Service.NotificationService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -81,13 +83,12 @@ public class AchievementTracker {
         }
         if (!found) {
             String newID = splitLines.length + 1 + "";
-            String newDescription = "Jaha vad ska här stå?";
+            String newDescription = "ZeroToHero";
             String newLocation = initiative.getLocation();
             String newLine = String.join(",", newID, initiative.getCategory(), newDescription, String.valueOf(improvementScore), newLocation);
             allAchievementLines.add(newLine);
         }
         WriteToFile.getInstance().writeAchievementsToFile(String.join("\n", allAchievementLines));
-
         return "Achievement " + initiative.getCategory() + " had progress improved by: " + improvementScore;
     }
 
@@ -104,7 +105,6 @@ public class AchievementTracker {
         achievement.setProgress(achievement.getProgress() + improvementRate);
         return "Achievement" + achievement.getName() + "had progress improved by: " + improvementRate;
     }
-
 
 
     /**

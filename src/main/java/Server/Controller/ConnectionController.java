@@ -143,6 +143,7 @@ public class ConnectionController {
 
     private void handleCreateInitiative(JSONObject jsonObject, ClientConnection sender) {
         boolean success = initiativeManager.createNewInitiative(jsonObject);
+        if(success){notifyOfAchievement(jsonObject);}
         sendCreateInitiativeStatus(success, sender);
     }
 
@@ -261,6 +262,18 @@ public class ConnectionController {
         userRolesJSON.put("isAdmin", connectionIsAdmin);
 
         connection.sendObject(userRolesJSON.toString());
+    }
+    private void notifyOfAchievement(JSONObject jsonObject){
+        String location = jsonObject.getString("location");
+        String category = jsonObject.getString("category");
+        List<User> users = FileHandler.getInstance().getUsers();
+        for (User user : users) {
+            if (user.getLocation().equalsIgnoreCase(location)) {
+                String mail = user.getEmail();
+                String notification = "New progress on: " + category;
+                sendNotification(notification, mail);
+            }
+        }
     }
 }
 

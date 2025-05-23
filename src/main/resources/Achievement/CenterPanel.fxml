@@ -3,8 +3,8 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<ScrollPane fitToHeight="false" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" fx:controller="Client.Controller.GUIControllers.Achievement.AchievementCentreController" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToHeight="false" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #A3D1C6;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.Controller.GUIControllers.Achievement.AchievementCentreController">
    <content>
-      <FlowPane fx:id="achievementFlowPane" style="-fx-background-color: #A3D1C6;" />
+      <FlowPane fx:id="achievementFlowPane" minHeight="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #A3D1C6;" />
    </content>
 </ScrollPane>

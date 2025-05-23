@@ -94,4 +94,7 @@ public class FileHandler {
         }
         return updatedCSV.toString();
     }
+    public void updateAchievements(String csvContent) {
+        AppendToFile.getInstance().appendToAchievementsFile(csvContent);
+    }
 }

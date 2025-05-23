@@ -8,6 +8,7 @@ import Client.Model.User;
 import Client.Model.Message;
 import Common.Controller.Utility.Packager;
 import Common.Controller.Utility.Unpacker;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -75,7 +76,7 @@ public class ConnectionController {
                 String subject = jsonObject.getString("subject");
                 String content = jsonObject.getString("content");
                 String timestamp = jsonObject.getString("timestamp");
-                
+
                 Message message = new Message(senderId, recipientId, subject, content);
                 try {
                     java.lang.reflect.Field tsField = Message.class.getDeclaredField("timestamp");
@@ -84,7 +85,7 @@ public class ConnectionController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                
+
                 MessageController.getInstance().addMessage(message);
                 break;
             case "unSuccessfulInitiativeCreation":
@@ -92,6 +93,14 @@ public class ConnectionController {
                 break;
             case "SuccessfulInitiativeCreation":
                 guiInController.successfulInitiativeCreation();
+                break;
+            case "achievementsLocation":
+                JSONArray jsonArray = (JSONArray) jsonObject.get("achievements");
+                convertingAchievements(jsonArray);
+                break;
+            case "logResponse":
+                JSONArray logArray = (JSONArray) jsonObject.get("log");
+                convertingLogs(logArray);
                 break;
             case "updateClients":
                 updateClients(jsonObject);
@@ -143,8 +152,40 @@ public class ConnectionController {
         Notifications.addNotification(notification);
         guiInController.newNotification();
     }
-    public List<Achievement> getAchievements() {
-        return connectedUser.getAchievements();
+
+    public void requestAchievements() {
+        JSONObject requestAchievements = packager.createAchievementRequestJson(connectedUser.getEmail());
+        sendJsonObject(requestAchievements);
+    }
+
+    private void convertingAchievements(JSONArray jsonArray) {
+        List<Achievement> achievements = unpacker.unpackJsonArray(jsonArray, obj -> {
+            String name = obj.getString("category");
+            String progress = obj.getString("progress");
+            String description = obj.getString("description");
+            return new Achievement(name, Integer.parseInt(progress), description);
+        });
+        GUIInController.getInstance().achievement(achievements);
+    }
+
+    private void convertingLogs(JSONArray jsonArray) {
+        List<String> logs = unpacker.unpackJsonArray(jsonArray, obj -> {
+            String log = obj.getString("logEntry");
+            String time = obj.getString("date");
+            String together = log + "," + time;
+            return together;
+        });
+        GUIInController.getInstance().responseLogs(logs);
+    }
+
+    public void sendNewLogEntry(String logEntry) {
+        JSONObject newLogEntry = packager.createNewLogEntry(connectedUser.getEmail(), logEntry);
+        sendJsonObject(newLogEntry);
+    }
+
+    public void requestLog() {
+        JSONObject requestLog = packager.requestLog(connectedUser.getEmail());
+        sendJsonObject(requestLog);
     }
 
     public User getConnectedUser() {

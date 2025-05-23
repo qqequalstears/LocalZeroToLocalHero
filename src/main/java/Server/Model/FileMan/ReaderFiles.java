@@ -256,4 +256,16 @@ public class ReaderFiles implements IDataFetcher {
         return readActiveIntiative();
     }
 
+    public String fetchOneUserData(String email) {
+        List<User> users = fetchAllUsers();
+
+        for(User user : users) {
+            if (user.getEmail().equals(email)) {
+
+                return user.getLocation();
+            }
+        }
+        return "User not found";
+    }
+
 }

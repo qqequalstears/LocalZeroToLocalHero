@@ -27,6 +27,11 @@ public class Achievement implements ISavableObject{
         this.name=name;
         this.progress= 0;
     }
+    public Achievement(String name, Integer progress, String description) {
+        this.name=name;
+        this.progress= progress;
+        this.description= description;
+    }
 
     public Achievement(Image image, String name, Integer progress, List<Integer> milestones, String description) {
         this.image = image;

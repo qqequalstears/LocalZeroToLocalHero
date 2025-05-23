@@ -1,3 +1,22 @@
 category, title, description, location, duration, startTime, creator, participant, participants, isPublic, itemsToSell, numberOfSeats
 Gardening,Kolla på fiskar,Vi samlas i Martins trädgård,Martins hus,3 timmar,2025-05-05 16:00,user@test.com,,,false,,
 ToolSharing,Kolla på Martin,Vi samlas utanför Martins hus,Martins hus,6 timmar,2025.05.06,user@test.com,,,false,,
+Carpool,Stoffes,SuperTur,Trelle,5,15,frank@lampard.chelsea,,,true,,4
+ToolSharing,Superduper,Låt min spade vara,Hemma,5,20,frank@lampard.chelsea,,,true,,
+ToolSharing,jaaa,duuu,är,5,5,frank@lampard.chelsea,,,true,,
+Garage Sale,Köp mitt skrot,Skrot i överflöd,Garaget,20,14,frank@lampard.chelsea,,,false,Allt,
+Gardening,Nu ska blommorna växa,Kanske gurkor,Trädgårn,40,00,frank@lampard.chelsea,,,true,,
+ToolSharing,Trälar,Trälarn,Jovet,2,2,Frank@lampard.chelsea,,,true,,
+ToolSharing,Hjajaja,jahahaha,a,2,1,frank@lampard.chelsea,,,true,,
+Gardening,Gardening,Gardening,Hemma,2,2,frank@lampard.chelsea,,,false,,
+Garage Sale,Sälj,Sälj,Sälj,2,2,frank@lampard.chelsea,,,false,Sälj,
+Garage Sale,Sale,Sälja saker,Trelle,5,12,frank@lampard.chelsea,,,false,Allt,
+ToolSharing,Super,Duper,Tuper,5,5,frank@lampard.chelsea,,,false,,
+Garage Sale,Garage,Sale	,Super,2,2,frank@lampard.chelsea,,,false,Allt,
+Gardening,Gården,Skåden,Låden,2,2,frank@lampard.chelsea,,,false,,
+Carpool,carpool,carpool,carpool,2,3,frank@lampard.chelsea,,,true,,3
+Carpool,Carpool,Carpool,Trelleborg,2,2,frank@lampard.chelsea,,,false,,4
+Carpool,Carpooler,The pooler,malmö,5,2,frank@lampard.chelsea,,,false,,2
+Carpool,carpool,carpool,MalmÖ,2,2,frank@lampard.chelsea,,,false,,3
+Carpool,adad,adad,Malmöö,2,3,frank@lampard.chelsea,,,false,,3
+Carpool,Superduper,luper,London,5,3,frank@lampard.chelsea,,,false,,3

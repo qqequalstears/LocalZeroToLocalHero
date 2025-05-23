@@ -51,4 +51,7 @@ public class FileHandler {
     public void createInitiative(String csvContent) {
         AppendToFile.getInstance().appendActiveIntiativeToFile(csvContent);
     }
+    public void updateAchievements(String csvContent) {
+        AppendToFile.getInstance().appendToAchievementsFile(csvContent);
+    }
 }

@@ -2,11 +2,16 @@ package Server.Controller;
 
 import Common.Controller.Utility.Packager;
 import Server.Controller.Authorization.AuthorizationController;
+import Server.Model.AchievementTracker;
+import Server.Model.FileMan.ReaderFiles;
+import Server.Model.FileMan.WriteToFile;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.Socket;
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ConnectionController {
 
@@ -15,11 +20,13 @@ public class ConnectionController {
     private Packager packager;
     private AuthorizationController authorizationController;
     private InitiativeManager initiativeManager;
+    private LogManager logManager;
 
     public ConnectionController() {
         authorizationController = new AuthorizationController(this);
         initiativeManager = new InitiativeManager();
         packager = new Packager();
+        logManager = new LogManager();
         this.clientUpdater = new ClientUpdater();
         this.connectionListener = new ConnectionListener(2343, this);
 
@@ -81,6 +88,7 @@ public class ConnectionController {
             case "createInitiative" :
                 boolean success = initiativeManager.createNewInitiative(jsonObject);
                 sendCreateInitiativeStatus(success, sender);
+
                 break;
             case "sendMessage":
                 String senderId = jsonObject.getString("senderId");
@@ -123,6 +131,16 @@ public class ConnectionController {
                 
                 // Send notification
                 sendNotification("You have received a new message from " + senderId, recipientId);
+                break;
+            case "requestAchievements":
+                String email = jsonObject.getString("email");
+                sendAchievementForLocation(email, sender);
+                break;
+            case "newLogEntry":
+                logManager.newLogEntry(jsonObject);
+                requestLog(jsonObject, sender);
+            case "requestLog":
+                requestLog(jsonObject,sender);
                 break;
             default:
                 System.out.println("Intention was not found");
@@ -184,5 +202,19 @@ public class ConnectionController {
         }
         sucess.put("type", status);
         sender.sendObject(sucess.toString());
+    }
+
+    private void sendAchievementForLocation(String email, ClientConnection sender) {
+        String location = ReaderFiles.getInstance().fetchOneUserData(email);
+        JSONArray achievementList = AchievementTracker.getInstance().getAchievementsForLocation(location);
+        JSONObject achievementPackage = new JSONObject();
+        achievementPackage.put("type", "achievementsLocation");
+        achievementPackage.put("achievements", achievementList);
+
+        sender.sendObject(achievementPackage.toString());
+    }
+    private void requestLog(JSONObject jsonObject, ClientConnection sender){
+        JSONObject logResponse = logManager.requestLog(jsonObject);
+        sender.sendObject(logResponse.toString());
     }
 }

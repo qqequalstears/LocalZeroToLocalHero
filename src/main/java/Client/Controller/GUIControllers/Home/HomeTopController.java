@@ -41,7 +41,12 @@ public class HomeTopController implements FxController {
 
     @FXML
     public void openAchievements() {
-        guiInController.createStage("ACHIEVEMENTSTAGE");
+        guiOutController.requestAchievements();
+    }
+    @FXML
+    public void openLog(){
+        guiOutController.requestLog();
+        guiInController.createStage("LOGSTAGE");
     }
 
     @FXML

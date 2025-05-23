@@ -31,9 +31,13 @@ public class GUIOutController {
         }
         return instance;
     }
-    public List<Achievement> getConnectedUser() {
 
-        return connectionController.getAchievements();
+    public void requestAchievements() {
+        connectionController.requestAchievements();
+    }
+
+    public void requestLog(){
+        connectionController.requestLog();
     }
 
     public void logout() {
@@ -49,6 +53,9 @@ public class GUIOutController {
             return connectionController.getConnectedUser().getEmail();
         }
         return null;
+    }
+    public void sendNewLogEntry(String logEntry) {
+        connectionController.sendNewLogEntry(logEntry);
     }
 
     public ConnectionController getConnectionController() {

@@ -5,23 +5,30 @@ import Client.Controller.GUIControllers.Home.HomeTopController;
 import Client.Controller.GUIControllers.Intitiative.InitiativeController;
 import Client.Controller.GUIControllers.LoginController.LoginController;
 import Client.Controller.GUIControllers.Notifications.NotificationController;
+import Client.Controller.GUIControllers.Log.LogCentreController;
+import Client.Model.Achievement;
 import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Notifications;
 import Client.View.Achievement.AchievementStage;
 import Client.View.CreateInitiative.CreateInitiativeStage;
 import Client.View.Home.HomeStage;
+import Client.View.Log.LogStage;
 import Client.View.Login.LogInStage;
 import Client.View.Notification.NotificationStage;
 import Client.View.StageCreator;
 import Client.View.UserNotifier;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GUIInController {
     private Map<String, StageCreator> stageCreators;
     private static GUIInController instance;
+    private List<Achievement> achievements;
+    private List<String> logs;
 
     private GUIInController() {
         stageCreators = new ConcurrentHashMap<>();
@@ -32,6 +39,7 @@ public class GUIInController {
         stageCreators.put("CREATEINITIATIVE", () -> new CreateInitiativeStage().createStage());
         stageCreators.put("NOTIFICATIONS", () -> new NotificationStage().createStage());
         stageCreators.put("ACHIEVEMENTSTAGE", () -> new AchievementStage().createStage());
+        stageCreators.put("LOGSTAGE", () -> new LogStage().createStage());
     }
 
     public void createStage(String stageToCreate) {
@@ -71,10 +79,10 @@ public class GUIInController {
         }
     }
 
-    public void achievement(){
-        FxController loginController = GUIControllerRegistry.getInstance().get(LoginController.class.getName());
+    public void achievement(List<Achievement> achievements) {
+        this.achievements = achievements;
         Platform.runLater(() -> {
-            loginController.closeStage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Achievement/AchievementCentre.fxml"));
             createStage("ACHIEVEMENTSTAGE");
         });
     }
@@ -90,5 +98,18 @@ public class GUIInController {
         Platform.runLater(() -> {
             createInitiativeController.closeStage();
         });
+    }
+    public List<Achievement> getAchievements() {
+        return achievements;
+    }
+    public void responseLogs(List<String> logs){
+        this.logs = logs;
+        Platform.runLater(() -> {
+            LogCentreController logCentreController = (LogCentreController)GUIControllerRegistry.getInstance().get(LogCentreController.class.getName());
+            logCentreController.addLogsToUI(logs);
+        });
+    }
+    public List<String> getLogs(){
+        return logs;
     }
 }

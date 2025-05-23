@@ -3,6 +3,7 @@ package Common.Controller.Utility;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 public class Packager {
     public byte[] converJsonToByte(JSONObject object) {
@@ -54,5 +55,37 @@ public class Packager {
         newInitiativeJson.put("isPublic", ispublic);
         newInitiativeJson.put("creator", creator);
         return newInitiativeJson;
+    }
+
+    public JSONObject createAchievementJson(String name, String progress, String description) {
+        JSONObject achievementJson = new JSONObject();
+        achievementJson.put("name", name);
+        achievementJson.put("progress", progress);
+        achievementJson.put("description", description);
+        return achievementJson;
+    }
+
+    public JSONObject createAchievementRequestJson(String email) {
+        JSONObject achievementRequestJson = new JSONObject();
+        achievementRequestJson.put("type", "requestAchievements");
+        achievementRequestJson.put("email", email);
+        return achievementRequestJson;
+    }
+
+    public JSONObject createNewLogEntry(String email, String logEntry) {
+        JSONObject newLogEntryJson = new JSONObject();
+        String time = LocalDateTime.now().toString();
+        newLogEntryJson.put("type", "newLogEntry");
+        newLogEntryJson.put("logEntry", logEntry);
+        newLogEntryJson.put("email", email);
+        newLogEntryJson.put("date", time);
+        return newLogEntryJson;
+    }
+
+    public JSONObject requestLog(String email){
+        JSONObject requestLogJson = new JSONObject();
+        requestLogJson.put("type", "requestLog");
+        requestLogJson.put("email", email);
+        return requestLogJson;
     }
 }

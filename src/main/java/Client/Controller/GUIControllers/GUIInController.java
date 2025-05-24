@@ -171,7 +171,7 @@ public class GUIInController {
     }
 
     public void updateInitiatives(List<String> titles) {
-
+        System.out.println("REACHED GUICONTROLLER ---------------------------------------------------------------");
         Platform.runLater(() -> {
             HomeLeftController homeLeftController = (HomeLeftController) GUIControllerRegistry.getInstance().get(HomeLeftController.class.getName());
             if (homeLeftController != null) {

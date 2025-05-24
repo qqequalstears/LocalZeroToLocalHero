@@ -1,6 +1,7 @@
 package Client.Controller.GUIControllers.Home;
 
 import Client.Controller.GUIControllers.FxController;
+import Client.Controller.GUIControllers.GUIControllerRegistry;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
 import javafx.collections.FXCollections;
@@ -46,6 +47,7 @@ public class HomeLeftController implements FxController {
     public void initialize() {
         guiInController = GUIInController.getInstance();
         guiOutController = GUIOutController.getInstance();
+        GUIControllerRegistry.getInstance().add(this.getClass().getName(),this);
 
 
         initiativesListview.setItems(intitiatives);
@@ -132,9 +134,12 @@ public class HomeLeftController implements FxController {
     }
 
     public void updateInitiatives(List<String> titles) {
+        System.out.println("DID IT REACH ???? ---------------------------------------");
+        for (String title : titles) {
+            System.out.println(title);
+        }
         intitiatives.clear();
         intitiatives.addAll(titles);
-        initiativesListview.setItems(intitiatives);
     }
 
 }

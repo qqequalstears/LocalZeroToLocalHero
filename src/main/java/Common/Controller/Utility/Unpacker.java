@@ -49,6 +49,8 @@ public class Unpacker {
         if (category.equals("SAKNAS")) {
             System.err.println("Error!!!! Initiative JSON missing 'initiativeID': " + obj.toString());
             return null;
+        } else {
+            System.out.println("SUCEEESSS ----------------------------------------------------------------------");
         }
         String title = obj.getString("title");
         String description = obj.getString("description");

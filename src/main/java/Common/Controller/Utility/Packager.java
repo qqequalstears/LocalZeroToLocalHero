@@ -126,6 +126,9 @@ public class Packager {
     public JSONObject createJsonForInitiativeGarageSale(GarageSale gs) {
         JSONObject initiativesJson = new JSONObject();
 
+        System.out.println("CREATING PACKAGE ------------------------------------------------------");
+        System.out.println(gs.getCategory());
+
         initiativesJson.put("initiativeID", gs.getCategory());
         initiativesJson.put("title", gs.getTitle());
         initiativesJson.put("description", gs.getDescription());
@@ -164,8 +167,10 @@ public class Packager {
         }
 
         JSONArray helperArray = new JSONArray();
-        for (User helper : g.getHelpers()) {
-            helperArray.put(packUser(helper));
+        if (g.getHelpers() != null) {
+            for (User helper : g.getHelpers()) {
+                helperArray.put(packUser(helper));
+            }
         }
         initiativesJson.put("helpers", helperArray);
 

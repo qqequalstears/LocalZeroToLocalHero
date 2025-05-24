@@ -262,6 +262,8 @@ public class ConnectionController {
     }
 
     private void updateInitiatives(JSONObject jsonObject) {
+        System.out.println("REACHED METHOD THAT COLLECTS INITIATIVES");
+        System.out.println(jsonObject);
         JSONArray array = jsonObject.getJSONArray("listOfInitiatives");
         List<String> titles = new ArrayList<>();
         activeInitiatives.clear();
@@ -279,7 +281,9 @@ public class ConnectionController {
             }
 
         }
+        System.out.println(titles);
 
+        System.out.println("CALLING GUICONTROLLER --------------------------");
         guiInController.updateInitiatives(titles);
     }
 

@@ -33,6 +33,7 @@ public abstract class Initiative implements ISavableObject {
 
     public Initiative(String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements)
     {
+        this.category = category;
         this.title = title;
         this.description = description;
         this.location = location;

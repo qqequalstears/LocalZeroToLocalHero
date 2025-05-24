@@ -59,12 +59,12 @@ public class Unpacker {
         String startTime = obj.getString("startTime");
         boolean isPublic = obj.getBoolean("isPublic");
 
-        if (category.equals("CarPool")) {
+        if (category.equals("Carpool")) {
             String numberOfSeats = obj.getString("numberOfSeats");
-            String destination = obj.getString("destination");
+    //        String destination = obj.getString("destination");
 
             CarPool cp = new CarPool(title, description, location, duration, startTime, numberOfSeats, category, isPublic);
-            cp.setDestination(destination);
+    //        cp.setDestination(destination);
 
             if (obj.has("driver")) {
                 cp.setDriver(unpackaUser(obj.getJSONObject("driver")));

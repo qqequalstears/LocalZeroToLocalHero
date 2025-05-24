@@ -28,6 +28,7 @@ public class CarPool extends Initiative implements durationCalculation, Log {
 
     public CarPool(String destination, String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
         super(category,  title,  description,  location,  duration,  startTime,  comments, likes,  isPublic, achievements);
+        this.destination = destination;
     }
 
     public CarPool(String title, String description, String location, String duration, String startTime, String numberOfSeats, String category, boolean isPublic) {

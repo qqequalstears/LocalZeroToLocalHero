@@ -8,6 +8,7 @@ import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Role;
 import Client.Model.User;
 import org.json.JSONArray;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
@@ -136,4 +137,14 @@ public class Unpacker {
         return new User(name, location, email, "placeholder", roles);
     }
 
+
+    public <T> List<T> unpackJsonArray(JSONArray jsonArray, Function<JSONObject, T> mapper) {
+        List<T> result = new ArrayList<>();
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            T item = mapper.apply(jsonObject);
+            result.add(item);
+        }
+        return result;
+    }
 }

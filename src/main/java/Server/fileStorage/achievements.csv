@@ -1,4 +1,10 @@
-achievementID,achievementName,achievementDescription,achievementPoints
-Test, Achievement, Data, 1745480179589
-Test, Achievement, Data, Append, 1745480179589
-Test, Achievement, Data, Append, 1745480179589
+achievementID,achievementName,achievementDescription,achievementPoints,location
+1,Gardening,GreenThumb,70,malmö
+2,Carpool,Carpooler,2,malmö
+3,ToolSharing,ToolSharer,50,malmö
+4,Garage Sale,GarageSale,0,malmö
+6,Carpool,Jaha vad ska här stå?,1,Malmöö
+7,Carpool,Jaha vad ska här stå?,2,London
+8,Gardening,ZeroToHero,4,London
+9,ToolSharing,ZeroToHero,4,London
+10,Garage Sale,ZeroToHero,2,London

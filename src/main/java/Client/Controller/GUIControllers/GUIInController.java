@@ -10,9 +10,14 @@ import Client.Controller.GUIControllers.LoginController.LoginController;
 import Client.Controller.GUIControllers.Notifications.NotificationController;
 import Client.Controller.GUIControllers.UserInfo.UserInfoController;
 import Client.Model.Initiative.Parent.Initiative;
+import Client.Controller.GUIControllers.Log.LogCentreController;
+import Client.Model.Achievement;
+import Client.Model.Initiative.Parent.Initiative;
+import Client.Model.Notifications;
 import Client.View.Achievement.AchievementStage;
 import Client.View.CreateInitiative.CreateInitiativeStage;
 import Client.View.Home.HomeStage;
+import Client.View.Log.LogStage;
 import Client.View.Login.LogInStage;
 import Client.View.Notification.NotificationStage;
 import Client.View.StageCreator;
@@ -20,7 +25,9 @@ import Client.View.UserInfo.UserInfoStage;
 import Client.View.UserNotifier;
 import Client.View.ViewInitiative.ViewInitiativeStage;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
@@ -29,6 +36,8 @@ public class GUIInController {
     private Map<String, StageCreator> stageCreators;
     private static GUIInController instance;
     private String currentlySelectedInitiative = null;
+    private List<Achievement> achievements;
+    private List<String> logs;
 
     private GUIInController() {
         stageCreators = new ConcurrentHashMap<>();
@@ -41,6 +50,7 @@ public class GUIInController {
         stageCreators.put("ACHIEVEMENTSTAGE", () -> new AchievementStage().createStage());
         stageCreators.put("OPENINITIATIVESTAGE", () -> new ViewInitiativeStage().createStage());
         stageCreators.put("USERINFOSTAGE", () -> new UserInfoStage().createStage());
+        stageCreators.put("LOGSTAGE", () -> new LogStage().createStage());
     }
 
     public void createStage(String stageToCreate) {
@@ -96,10 +106,10 @@ public class GUIInController {
         }
     }
 
-    public void achievement(){
-        FxController loginController = GUIControllerRegistry.getInstance().get(LoginController.class.getName());
+    public void achievement(List<Achievement> achievements) {
+        this.achievements = achievements;
         Platform.runLater(() -> {
-            loginController.closeStage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Achievement/AchievementCentre.fxml"));
             createStage("ACHIEVEMENTSTAGE");
         });
     }
@@ -116,6 +126,19 @@ public class GUIInController {
             createInitiativeController.closeStage();
         });
     }
+    public List<Achievement> getAchievements() {
+        return achievements;
+    }
+    public void responseLogs(List<String> logs){
+        this.logs = logs;
+        Platform.runLater(() -> {
+            LogCentreController logCentreController = (LogCentreController)GUIControllerRegistry.getInstance().get(LogCentreController.class.getName());
+            logCentreController.addLogsToUI(logs);
+        });
+    }
+    public List<String> getLogs(){
+        return logs;
+    }
 
     public String getCurrentlySelectedInitiative() {
         return currentlySelectedInitiative;
@@ -126,18 +149,9 @@ public class GUIInController {
     }
 
     public void updateClients(List<String> onlineClients) {
+        HomeCentreController homeCentreController = (HomeCentreController) GUIControllerRegistry.getInstance().get(HomeCentreController.class.getName());
         Platform.runLater(() -> {
-            HomeCentreController homeCentreController = (HomeCentreController) GUIControllerRegistry.getInstance().get(HomeCentreController.class.getName());
-            if (homeCentreController != null) {
-                homeCentreController.setOnlineUsers(onlineClients);
-            }
-        });
-    }
-
-    public void updateInitiatives(List<String> initiatives) {
-        HomeLeftController homeLeftController = (HomeLeftController) GUIControllerRegistry.getInstance().get(HomeLeftController.class.getName());
-        Platform.runLater(() -> {
-            homeLeftController.setInitiatives(initiatives);
+            homeCentreController.setOnlineUsers(onlineClients);
         });
     }
 

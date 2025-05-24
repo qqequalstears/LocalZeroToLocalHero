@@ -11,11 +11,18 @@ import Server.Controller.Authorization.AuthorizationController;
 import Server.Service.MessageService;
 import Server.Service.FileStorageService;
 import Server.Service.NotificationService;
+import Server.Model.AchievementTracker;
+import Server.Model.FileMan.ReaderFiles;
+import Server.Model.FileMan.WriteToFile;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
 import java.net.Socket;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.List;
 
 public class ConnectionController {
@@ -29,12 +36,14 @@ public class ConnectionController {
     private FileStorageService fileStorageService;
     private NotificationService notificationService;
     private UserManager userManager;
+    private LogManager logManager;
 
     public ConnectionController() {
         authorizationController = new AuthorizationController(this);
         initiativeManager = new InitiativeManager();
         packager = new Packager();
         userManager = new UserManager();
+        logManager = new LogManager();
         this.clientUpdater = new ClientUpdater();
         this.connectionListener = new ConnectionListener(2343, this);
         this.fileStorageService = new FileStorageService();
@@ -83,6 +92,16 @@ public class ConnectionController {
             case "updateRoles":
                 userManager.updateRoles(jsonObject, this);
                 break;
+            case "requestAchievements":
+                String email = jsonObject.getString("email");
+                sendAchievementForLocation(email, sender);
+                break;
+            case "newLogEntry":
+                logManager.newLogEntry(jsonObject);
+                requestLog(jsonObject, sender);
+            case "requestLog":
+                requestLog(jsonObject, sender);
+                break;
             case "getInitiatives":
                 sendAllActiveInitiatives(sender);
             default:
@@ -130,6 +149,7 @@ public class ConnectionController {
 
     private void handleCreateInitiative(JSONObject jsonObject, ClientConnection sender) {
         boolean success = initiativeManager.createNewInitiative(jsonObject);
+        if(success){notifyOfAchievement(jsonObject);}
         sendCreateInitiativeStatus(success, sender);
     }
 
@@ -164,10 +184,6 @@ public class ConnectionController {
         }
         sucess.put("type",status);
         creator.sendObject(sucess.toString());
-
-        //Martin
-        sendAllActiveInitiatives(creator);
-
     }
 
     private void sendRegisterStatus(ClientConnection sender, String mail, boolean successfulRegister) {
@@ -179,6 +195,13 @@ public class ConnectionController {
         }
         sucess.put("type", status);
         sender.sendObject(sucess.toString());
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         sendEveryUser();
     }
 
@@ -199,9 +222,21 @@ public class ConnectionController {
         }
 
         sendEveryUser();
-        //Martin
-        sendAllActiveInitiatives(sender);
+    }
 
+    private void sendAchievementForLocation(String email, ClientConnection sender) {
+        String location = ReaderFiles.getInstance().fetchOneUserData(email);
+        JSONArray achievementList = AchievementTracker.getInstance().getAchievementsForLocation(location);
+        JSONObject achievementPackage = new JSONObject();
+        achievementPackage.put("type", "achievementsLocation");
+        achievementPackage.put("achievements", achievementList);
+
+        sender.sendObject(achievementPackage.toString());
+    }
+
+    private void requestLog(JSONObject jsonObject, ClientConnection sender){
+        JSONObject logResponse = logManager.requestLog(jsonObject);
+        sender.sendObject(logResponse.toString());
     }
 
     private void sendEveryUser() {
@@ -233,6 +268,18 @@ public class ConnectionController {
         userRolesJSON.put("isAdmin", connectionIsAdmin);
 
         connection.sendObject(userRolesJSON.toString());
+    }
+    private void notifyOfAchievement(JSONObject jsonObject){
+        String location = jsonObject.getString("location");
+        String category = jsonObject.getString("category");
+        List<User> users = FileHandler.getInstance().getUsers();
+        for (User user : users) {
+            if (user.getLocation().equalsIgnoreCase(location)) {
+                String mail = user.getEmail();
+                String notification = "New progress on: " + category;
+                sendNotification(notification, mail);
+            }
+        }
     }
 
     private void sendAllActiveInitiatives(ClientConnection sender) {

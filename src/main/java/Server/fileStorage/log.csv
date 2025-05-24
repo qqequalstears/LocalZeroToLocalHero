@@ -1,4 +1,12 @@
- logID,logEntery
-Test, Log, Data, 1745480179589
-Test, Log, Data, Append, 1745480179589
-Test, Log, Data, Append, 1745480179589
+logID,logEntry,date,time
+frank@lampard.chelsea,Hallå,2025-05-23T15:37:51.399846400
+frank@lampard.chelsea,Hey there,2025-05-23T15:42:16.484944
+frank@lampard.chelsea,Darkness in the valley we can live like jack and sally,2025-05-23T15:42:29.454309500
+frank@lampard.chelsea,If you want,2025-05-23T15:42:34.614586600
+frank@lampard.chelsea,Spännande,2025-05-23T15:50:53.302860300
+malmö@malmö.malmö,Jaha ja,2025-05-23T15:56:45.857116300
+frank@lampard.chelsea,Hejhej,2025-05-23T16:02:36.416456200
+frank@lampard.chelsea,Hallå,2025-05-23T16:02:50.141564700
+frank@lampard.chelsea,ada,2025-05-23T16:11:25.726796800
+frank@lampard.chelsea,Yeehaw,2025-05-23T16:16:04.437219500
+frank@lampard.chelsea,Funkar det,2025-05-23T17:39:51.624655600

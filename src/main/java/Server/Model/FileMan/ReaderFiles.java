@@ -81,7 +81,6 @@ public class ReaderFiles implements IDataFetcher {
      * @Date 2025-04-07
      */
     private String readWholeCSVFile(File file) {
-
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             StringBuilder returnString = new StringBuilder();
@@ -263,40 +262,18 @@ public class ReaderFiles implements IDataFetcher {
         return readActiveIntiative();
     }
 
-    /**
-     * @author Anton Persson
-     * @param mail
-     * @param newRoles
-     * @return
-     */
-    public String updateUsersNewRoles(String mail, List<String> newRoles) {
-        List<User> users = new ArrayList<>();
-        String csvContent = readWholeCSVFile(destinationUser);
-        String[] lines = csvContent.split("\n");
+    public String fetchOneUserData(String email) {
+        List<User> users = fetchAllUsers();
 
-        StringBuilder updatedCSV = new StringBuilder();
-        updatedCSV.append(lines[0]).append("\n");
+        for(User user : users) {
+            if (user.getEmail().equals(email)) {
 
-        for (int i = 1; i < lines.length; i++) {
-            String[] contents = lines[i].split(",");
-            if (contents.length < 5) {
-                continue;
-            }
-            String email = contents[0].trim();
-            if (email.equals(mail)) {
-                String joinedRoles = String.join(" - ", newRoles);
-                StringBuilder updatedLine = new StringBuilder();
-                for (int j = 0; j < 4; j++) {
-                    updatedLine.append(contents[j]).append(",");
-                }
-                updatedLine.append(joinedRoles);
-                updatedCSV.append(updatedLine).append("\n");
-            } else {
-                updatedCSV.append(lines[i]).append("\n");
+                return user.getLocation();
             }
         }
-        return updatedCSV.toString();
+        return "User not found";
     }
+
 
     /**
      *

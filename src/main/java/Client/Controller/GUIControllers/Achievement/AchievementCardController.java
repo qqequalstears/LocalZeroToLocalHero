@@ -16,7 +16,22 @@ public class AchievementCardController {
     @FXML private ProgressBar progressBar;
 
     public void setData(Achievement achievement) {
-        InputStream in = getClass().getResourceAsStream("/Achievement/Icons/winning.jpg");
+        InputStream in;
+        if(achievement.getName().equalsIgnoreCase("Gardening")){
+            in = getClass().getResourceAsStream("/Achievement/Icons/Gardening.jpg");
+        }else if(achievement.getName().equalsIgnoreCase("Carpool")){
+            in = getClass().getResourceAsStream("/Achievement/Icons/Carpool.jpg");
+        }
+        else if(achievement.getName().equalsIgnoreCase("Garage sale")){
+            in = getClass().getResourceAsStream("/Achievement/Icons/GarageSale.jpg");
+        }
+        else if(achievement.getName().equalsIgnoreCase("Toolsharing")){
+            in = getClass().getResourceAsStream("/Achievement/Icons/ToolSharing.jpg");
+        }
+        else {
+            in = getClass().getResourceAsStream("/Achievement/Icons/winning.jpg");
+        }
+
         if (in == null) {
             System.out.println("Hittade inte bilden!");
         } else {

@@ -98,10 +98,7 @@ public class WriteToFile implements IDataWriter {
      * @Date 2025-04-07
      */
     private String writeToUsers(String data) {
-        String header = "email,password,name,location,roles\n"; // TODO this is a placeholder. The header
-        // needs to be changed to the
-        // corresponding header.
-
+        String header = "email,password,name,location,roles\n";
         return writeToCSVFile(destinationUser, header, data);
     }
 
@@ -115,7 +112,7 @@ public class WriteToFile implements IDataWriter {
      * @Date 2025-04-07
      */
     private String writeToAchievements(String data) {
-        String header = "achievementID,achievementName,achievementDescription,achievementPoints\n"; // TODO this is a
+        String header = "achievementID,achievementName,achievementDescription,achievementPoints,location\n"; // TODO this is a
         // placeholder. The
         // header needs to
         // be changed to the
@@ -129,16 +126,16 @@ public class WriteToFile implements IDataWriter {
      * The file will be overwritten (not appended) when this method is called.
      * If the file does not exist, it will be created.
      *
-     * @param logEntery The log entry to be written to the log file.
+     * @param logEntry The log entry to be written to the log file.
      * @return A message indicating whether the log entry was written successfully
      * or if an error occurred.
      * @author Jansson Anton
      * @Date 2025-04-16
      */
-    private String writeToLog(String logEntery) {
-        String header = " logID,logEntery\n"; // TODO this is a placeholder. The header needs to be changed to the
+    private String writeToLog(String logEntry) {
+        String header = "logID,logEntry,date,time\n"; // TODO this is a placeholder. The header needs to be changed to the
         // corresponding header.
-        return writeToCSVFile(destinationLog, header, logEntery);
+        return writeToCSVFile(destinationLog, header, logEntry);
     }
 
     /**
@@ -234,9 +231,7 @@ public class WriteToFile implements IDataWriter {
         return writeToLog(logEntry);
     }
 
-    public void replaceRoles() {
 
-    }
 
     public void replaceUsers(String csvContent) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(destinationUser))) {

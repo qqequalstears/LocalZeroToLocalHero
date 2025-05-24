@@ -1,18 +1,21 @@
 email,password,name,location,roles
 user@test.com, pass, Anton, Osby, Admin
-user1@test.com, pass, Martin, Malmö,Resident - Taxi - Handyman
+user1@test.com, pass, Martin, Malmö,Resident - Taxi - Admin
 user2@test.com, password, Christoffer, Helsingborg, Resident
 anton@test.com,pass,Anton,Osby,Resident
 testing@test.com,pass,test,testCity,Resident
 haj@test.com,haj,kalle,ysta,Resident
 bert@bert.com,pas,bert,bstad,Resident
-e@e,e,e,e,Resident
+e@e,e,e,e,Resident - Admin
 Frank@lampard.chelsea,Lampard,Lampard,London,Resident
 frank@lampard.chelsea,Lampard,Frank,London,Resident
 aa@aa,aa,aa,aa,Resident
 bb@bb,bb,bb,bb,Resident
-1@1,1,123,4132,Resident
-qwer@qwer.com,qewr,rr,tt,Resident
-1@1.com,1,f,f,Resident
-1qwer@1qwer.com,qwer,rr,yhb,Resident
-55@66.com,1234,ttgyh,hhh,Resident
+AntonTest@mail.com,pass,Anton,Malmö,Resident
+testing@testing.testing,pass,test,testCity,Resident
+a@a.com,a,a,a,Resident - Admin
+b@b.com,b,b,bCity,Resident
+c@c.com,c,c,city,Resident
+d@d,d,d,d,Resident
+f@f,f,f,f,Resident
+

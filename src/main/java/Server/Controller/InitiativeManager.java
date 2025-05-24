@@ -4,6 +4,7 @@ import Client.Model.Initiative.Children.CarPool;
 import Client.Model.Initiative.Children.GarageSale;
 import Client.Model.Initiative.Children.ToolSharing;
 import Client.Model.Initiative.Parent.Initiative;
+import Server.Model.AchievementTracker;
 import org.json.JSONObject;
 
 public class InitiativeManager {
@@ -43,6 +44,7 @@ public class InitiativeManager {
         if (dataIsValid) {
             String initiativeCSV = formatNewInitiativeToCSV(initiativeToCreate, creator);
             FileHandler.getInstance().createInitiative(initiativeCSV);
+            AchievementTracker.getInstance().improveAchievementCSV(initiativeToCreate);
             return true;
         }
         return false;

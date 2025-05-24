@@ -1,5 +1,6 @@
 package Client.Controller.GUIControllers.Achievement;
 
+import Client.Controller.GUIControllers.GUIInController;
 import Client.Model.Achievement;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,10 +16,7 @@ public class AchievementCentreController {
     @FXML
     public void initialize() {
         //List<Achievement> achievements = GUIOutController.getInstance().getConnectedUser();
-        List<Achievement> achievements = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
-            achievements.add(new Achievement("Achievement " + (i + 1),i*10));
-        }
+        List<Achievement> achievements = GUIInController.getInstance().getAchievements();
 
         for(Achievement achievement : achievements) {
             try{

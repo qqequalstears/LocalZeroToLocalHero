@@ -49,9 +49,7 @@ public class HomeLeftController implements FxController {
                 }
             }
         });
-        intitiatives.add("hej");
-        intitiatives.add("på");
-        intitiatives.add("DIG");
+        loadInitiativesFromCSV();
 
        /* initiativesListview.setOnMouseClicked(event -> {
             String selectedInitiative = (String) initiativesListview.getSelectionModel().getSelectedItem();
@@ -61,6 +59,19 @@ public class HomeLeftController implements FxController {
             }
         });*/
 
+    }
+
+    private void loadInitiativesFromCSV() {
+        String csvFile = "src/main/java/Server/fileStorage/activeIntiative.csv";
+        try (java.util.stream.Stream<String> lines = java.nio.file.Files.lines(java.nio.file.Paths.get(csvFile))) {
+            lines.skip(1) // skip header
+                 .map(line -> line.split(","))
+                 .filter(parts -> parts.length > 1)
+                 .map(parts -> parts[1].trim()) // get the title column
+                 .forEach(intitiatives::add);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

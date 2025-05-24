@@ -13,16 +13,11 @@ import Server.Service.FileStorageService;
 import Server.Service.NotificationService;
 import Server.Model.AchievementTracker;
 import Server.Model.FileMan.ReaderFiles;
-import Server.Model.FileMan.WriteToFile;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONArray;
 
 import java.net.Socket;
 import java.io.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.List;
 
 public class ConnectionController {
@@ -114,7 +109,7 @@ public class ConnectionController {
         String mail = (String) jsonObject.get("mail");
         boolean successfulLogin = authorizationController.tryLogin(jsonObject, clientUpdater);
         sendLoginStatus(sender, mail, successfulLogin);
-        
+
         if (successfulLogin) {
             deliverStoredNotifications(mail, sender);
         }
@@ -149,7 +144,9 @@ public class ConnectionController {
 
     private void handleCreateInitiative(JSONObject jsonObject, ClientConnection sender) {
         boolean success = initiativeManager.createNewInitiative(jsonObject);
-        if(success){notifyOfAchievement(jsonObject);}
+        if (success) {
+            notifyOfAchievement(jsonObject);
+        }
         sendCreateInitiativeStatus(success, sender);
     }
 
@@ -182,7 +179,7 @@ public class ConnectionController {
         if (success) {
             status = "SuccessfulInitiativeCreation";
         }
-        sucess.put("type",status);
+        sucess.put("type", status);
         creator.sendObject(sucess.toString());
     }
 
@@ -225,7 +222,7 @@ public class ConnectionController {
     }
 
     private void sendAchievementForLocation(String email, ClientConnection sender) {
-        String location = ReaderFiles.getInstance().fetchOneUserData(email);
+        String location = FileHandler.getInstance().fetchOneUserLocationData(email);
         JSONArray achievementList = AchievementTracker.getInstance().getAchievementsForLocation(location);
         JSONObject achievementPackage = new JSONObject();
         achievementPackage.put("type", "achievementsLocation");
@@ -234,7 +231,7 @@ public class ConnectionController {
         sender.sendObject(achievementPackage.toString());
     }
 
-    private void requestLog(JSONObject jsonObject, ClientConnection sender){
+    private void requestLog(JSONObject jsonObject, ClientConnection sender) {
         JSONObject logResponse = logManager.requestLog(jsonObject);
         sender.sendObject(logResponse.toString());
     }
@@ -269,7 +266,8 @@ public class ConnectionController {
 
         connection.sendObject(userRolesJSON.toString());
     }
-    private void notifyOfAchievement(JSONObject jsonObject){
+
+    private void notifyOfAchievement(JSONObject jsonObject) {
         String location = jsonObject.getString("location");
         String category = jsonObject.getString("category");
         List<User> users = FileHandler.getInstance().getUsers();

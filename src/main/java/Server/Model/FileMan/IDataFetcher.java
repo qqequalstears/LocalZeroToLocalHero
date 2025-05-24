@@ -92,4 +92,7 @@ public interface IDataFetcher {
      * @Date 2025-05-22
      */
     List<Initiative> fetchAllActiveInitiatives();
+
+    String fetchOneUserLocationData(String email);
+
 }

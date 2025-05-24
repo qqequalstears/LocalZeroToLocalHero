@@ -40,7 +40,8 @@ public class ReaderFiles implements IDataFetcher {
     private static final File destinationLog = FileDestinationFactory.getLogDataFile();
     private static final File destinationActiveIntiative = FileDestinationFactory.getActiveInitiativeDataFile();
 
-    private ReaderFiles() {    }
+    private ReaderFiles() {
+    }
 
     /**
      * Provides a singleton instance of the FileReader class.
@@ -262,10 +263,11 @@ public class ReaderFiles implements IDataFetcher {
         return readActiveIntiative();
     }
 
-    public String fetchOneUserData(String email) {
+    @Override
+    public String fetchOneUserLocationData(String email) {
         List<User> users = fetchAllUsers();
 
-        for(User user : users) {
+        for (User user : users) {
             if (user.getEmail().equals(email)) {
 
                 return user.getLocation();
@@ -276,11 +278,10 @@ public class ReaderFiles implements IDataFetcher {
 
 
     /**
-     *
      * Returns all active initiatives.
      *
-     * @author Martin Frick
      * @return 2025-05-22
+     * @author Martin Frick
      */
     @Override
     public List<Initiative> fetchAllActiveInitiatives() {

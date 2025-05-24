@@ -1,8 +1,6 @@
 package Server.Controller;
 
-import Server.Model.FileMan.AppendToFile;
-import Server.Model.FileMan.ReaderFiles;
-import Server.Model.FileMan.WriteToFile;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,12 +12,14 @@ public class LogManager {
         String time = jsonObject.getString("date");
         String logEntryString = email + "," + logEntry + "," + time;
 
-        AppendToFile.getInstance().appendLogEnteryToFile(logEntryString);
+        //  AppendToFile.getInstance().appendLogEnteryToFile(logEntryString);
+        FileHandler.getInstance().appendLogEntryToFile(logEntryString);
     }
 
     public JSONObject requestLog(JSONObject jsonObject){
         String email = jsonObject.getString("email");
-        String log = ReaderFiles.getInstance().fetchAllLogData();
+        // String log = ReaderFiles.getInstance().fetchAllLogData();
+        String log =FileHandler.getInstance().fetchAllLogData();
         JSONArray logArray = getLogsForUser(email, log);
         JSONObject response = new JSONObject();
         response.put("type", "logResponse");

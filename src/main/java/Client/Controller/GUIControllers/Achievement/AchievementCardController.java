@@ -14,6 +14,7 @@ public class AchievementCardController {
     @FXML private ImageView achievementImage;
     @FXML private Label title;
     @FXML private ProgressBar progressBar;
+    @FXML private Label level;
 
     public void setData(Achievement achievement) {
         InputStream in;
@@ -40,6 +41,9 @@ public class AchievementCardController {
         }
 
         title.setText(achievement.getName());
-        progressBar.setProgress(achievement.getProgress() / 100.0);
+        progressBar.setProgress(achievement.getProgress() % 100 / 100.0);
+
+        int levelpoints = (achievement.getProgress()/100) + 1;
+        level.setText("Level" + levelpoints);
     }
 }

@@ -167,6 +167,15 @@ public class GUIInController {
 
     }
 
+    public void updateInitiatives(List<String> titles) {
+        Platform.runLater(() -> {
+            HomeLeftController homeLeftController = (HomeLeftController) GUIControllerRegistry.getInstance().get(HomeLeftController.class.getName());
+            if (homeLeftController != null) {
+                homeLeftController.updateInitiatives(titles);
+            }
+        });
+    }
+
 
 
 

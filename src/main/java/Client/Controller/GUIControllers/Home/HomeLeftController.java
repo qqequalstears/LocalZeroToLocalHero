@@ -101,6 +101,10 @@ public class HomeLeftController implements FxController {
 
     }
 
-
+    public void updateInitiatives(List<String> titles) {
+        intitiatives.clear();
+        intitiatives.addAll(titles);
+        initiativesListview.setItems(intitiatives);
+    }
 
 }

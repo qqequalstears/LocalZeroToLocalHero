@@ -126,9 +126,11 @@ public class GUIInController {
             createInitiativeController.closeStage();
         });
     }
+
     public List<Achievement> getAchievements() {
         return achievements;
     }
+
     public void responseLogs(List<String> logs){
         this.logs = logs;
         Platform.runLater(() -> {
@@ -136,6 +138,7 @@ public class GUIInController {
             logCentreController.addLogsToUI(logs);
         });
     }
+
     public List<String> getLogs(){
         return logs;
     }
@@ -168,15 +171,15 @@ public class GUIInController {
     }
 
     public void updateInitiatives(List<String> titles) {
+
         Platform.runLater(() -> {
             HomeLeftController homeLeftController = (HomeLeftController) GUIControllerRegistry.getInstance().get(HomeLeftController.class.getName());
             if (homeLeftController != null) {
                 homeLeftController.updateInitiatives(titles);
             }
         });
+
     }
-
-
 
 
 }

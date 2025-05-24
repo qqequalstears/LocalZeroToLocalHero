@@ -103,4 +103,5 @@ public class LoginController implements FxController {
             guiInController.notifyUser("The mail needs to contain @");
         }
     }
+
 }

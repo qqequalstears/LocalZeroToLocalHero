@@ -63,9 +63,7 @@ public class HomeLeftController implements FxController {
             }
         });
 
-        GUIOutController.getInstance().getConnectionController().updateInitiativesFromCache();
-
-//        updateInitiatives(intitiatives);
+        updateInitiatives(intitiatives);
 
 //        loadInitiativesFromCSV();
 

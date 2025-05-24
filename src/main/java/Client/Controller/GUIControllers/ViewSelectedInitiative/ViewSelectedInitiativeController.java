@@ -102,7 +102,12 @@ public class ViewSelectedInitiativeController {
         String title = GUIInController.getInstance().getCurrentlySelectedInitiative();
         String type = GUIOutController.getInstance().getConnectionController().getCurrentInitiativeType(title);
 
-        if (selectedInitiative == null || type == "BadType") return;
+        if (selectedInitiative == null || type == "BadType"){
+            System.out.println("_____________________________________________________________________________");
+            System.out.println("BAD TYPE");
+            System.out.println("_____________________________________________________________________________");
+            return;
+        }
 
         populateCommonFields(selectedInitiative);
 

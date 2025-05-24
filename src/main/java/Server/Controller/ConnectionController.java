@@ -64,7 +64,75 @@ public class ConnectionController {
     }
 
     public synchronized void revealIntention(Object object, ClientConnection sender) {
-        String jsonString = (String) object;
+        System.out.println("Inne i revealIntention() ");
+        System.out.println("Received raw object: " + object);
+
+        try {
+            String jsonString = (String) object;
+            JSONObject jsonObject = new JSONObject(jsonString);
+            System.out.println("[DEBUG] Parsed JSONObject: " + jsonObject);
+
+            String intention = jsonObject.getString("type");
+            System.out.println("[DEBUG] Intention is " + intention);
+
+            switch (intention) {
+                case "login":
+                    handleLogin(jsonObject, sender);
+                    break;
+
+                case "logout":
+                    handleLogout(jsonObject);
+                    break;
+
+                case "register":
+                    handleRegister(jsonObject, sender);
+                    break;
+
+                case "createInitiative":
+                    handleCreateInitiative(jsonObject, sender);
+                    break;
+
+                case "sendMessage":
+                    messageService.handleNewMessage(jsonObject);
+                    break;
+
+                case "collectUserInfo":
+                    collectUserRoles(jsonObject, sender);
+                    break;
+
+                case "updateRoles":
+                    userManager.updateRoles(jsonObject, this);
+                    break;
+
+                case "requestAchievements":
+                    String email = jsonObject.getString("email");
+                    sendAchievementForLocation(email, sender);
+                    break;
+
+                case "newLogEntry":
+                    logManager.newLogEntry(jsonObject);
+                    requestLog(jsonObject, sender);
+                    break;
+
+                case "requestLog":
+                    requestLog(jsonObject, sender);
+                    break;
+
+                case "getInitiatives":
+                    System.out.println("[DEBUG] Received request: getInitiatives");
+                    sendAllActiveInitiatives(sender);
+                    break;
+
+                default:
+                    System.err.println("[ERROR] Unrecognized intention: " + intention);
+                    break;
+            }
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to process incoming object: " + object);
+            e.printStackTrace();
+        }
+
+       /* String jsonString = (String) object;
         JSONObject jsonObject = new JSONObject(jsonString);
         System.out.println(jsonObject);
         String intention = (String) jsonObject.get("type");
@@ -103,11 +171,13 @@ public class ConnectionController {
                 requestLog(jsonObject, sender);
                 break;
             case "getInitiatives":
+                System.out.println("getInitiatives has been REACHED by req from client!!!!");
                 sendAllActiveInitiatives(sender);
+                break;
             default:
                 System.out.println("Intention was not found");
                 break;
-        }
+        }*/
     }
 
     private void handleLogin(JSONObject jsonObject, ClientConnection sender) {
@@ -283,7 +353,9 @@ public class ConnectionController {
     }
 
     private void sendAllActiveInitiatives(ClientConnection sender) {
+        System.out.println("sendAllActiveInitiatives() method in server side has been reached");
         List<Initiative> allActiveInitiatives = FileHandler.getInstance().getAllActiveInitiatives();
+        System.out.println("Amount of initiatives fetched from filehandler is: " + allActiveInitiatives.size());
         JSONArray allActiveInitiativesArray = new JSONArray();
 
         for (int i = 0; i < allActiveInitiatives.size(); i++) {
@@ -306,6 +378,8 @@ public class ConnectionController {
         JSONObject response = new JSONObject();
         response.put("type", "updateInitiatives");
         response.put("listOfInitiatives", allActiveInitiativesArray);
+
+        System.out.println("DEBUUUUUGG Sending initiatives to client: " + response);
 
         sender.sendObject(response.toString());
     }

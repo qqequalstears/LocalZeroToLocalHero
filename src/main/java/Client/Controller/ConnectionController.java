@@ -74,6 +74,7 @@ public class ConnectionController {
 
         switch (intention) {
             case "successfulLogin":
+                GUIOutController.getInstance().getConnectionController().sendRequestForInitiatives();
                 guiInController.successfulLogIn();
                 break;
             case "unSuccessfulLogin":
@@ -227,7 +228,7 @@ public class ConnectionController {
      * @autor Martin Frick
      */
     public void sendRequestForInitiatives(){
-
+        System.out.println("Client sending getInitiatives");
         JSONObject getInitJson = packager.createIntentionJson("getInitiatives");
         sendJsonObject(getInitJson);
     }
@@ -266,16 +267,27 @@ public class ConnectionController {
         activeInitiatives.clear();
 
         for (int i = 0; i < array.length(); i++) {
-            JSONObject obj = array.getJSONObject(i);
-            String title = obj.getString("title");
+            JSONObject Jobj = array.getJSONObject(i);
+            String title = Jobj.getString("title");
             titles.add(title);
 
-            Initiative initiative = unpacker.unpackInitiative(obj);
+            Initiative initiative = unpacker.unpackInitiative(Jobj);
             if (initiative != null) {
                 activeInitiatives.add(initiative);
+            } else {
+                System.err.println("ERROR!!! Failed to unpack initiative: " + Jobj.toString());
             }
+
         }
 
+        guiInController.updateInitiatives(titles);
+    }
+
+    public void updateInitiativesFromCache() {
+        List<String> titles = new ArrayList<>();
+        for (Initiative i : activeInitiatives) {
+            titles.add(i.getTitle());
+        }
         guiInController.updateInitiatives(titles);
     }
 

@@ -45,7 +45,11 @@ public class Unpacker {
 */
 
     public Initiative unpackInitiative(JSONObject obj) {
-        String category = obj.getString("initiativeID");
+        String category = obj.has("initiativeID") ? obj.getString("initiativeID") : obj.optString("category", "SAKNAS");
+        if (category.equals("SAKNAS")) {
+            System.err.println("Error!!!! Initiative JSON missing 'initiativeID': " + obj.toString());
+            return null;
+        }
         String title = obj.getString("title");
         String description = obj.getString("description");
         String location = obj.getString("location");

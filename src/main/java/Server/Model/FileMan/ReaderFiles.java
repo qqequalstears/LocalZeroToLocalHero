@@ -11,6 +11,7 @@ import Client.Model.User;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -291,6 +292,7 @@ public class ReaderFiles implements IDataFetcher {
         for (int i = 1; i < lines.length; i++) {
             String[] contents = lines[i].split(",", -1);
             if (contents.length < 12) {
+                System.err.println("Contentlength!!!! Skipped malformed CSV line: " + Arrays.toString(contents));
                 continue;
             }
 
@@ -326,6 +328,9 @@ public class ReaderFiles implements IDataFetcher {
                 case "ToolSharing":
                     ToolSharing toolSharing = new ToolSharing(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
                     initiatives.add(toolSharing);
+                    break;
+                default:
+                    System.err.println("Error!!! Unknown initiativeID: " + initiativeID);
                     break;
             }
         }

@@ -9,14 +9,15 @@
 
 <VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="223.0" prefWidth="197.0" style="-fx-background-color: #b8d1aa;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.Controller.GUIControllers.Achievement.AchievementCardController">
     <Pane prefHeight="277.0" prefWidth="231.0" style="-fx-background-color: #A3D1C6;">
-    <children>
-        <ImageView fx:id="achievementImage" fitHeight="146.0" fitWidth="186.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+        <children>
+            <ImageView fx:id="achievementImage" fitHeight="146.0" fitWidth="186.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
 
-        <Label fx:id="title" layoutX="18.0" layoutY="145.0" prefHeight="22.0" prefWidth="150.0" style="-fx-background-color: #A3D1C6; -fx-alignment: Center;" text="Label" />
-        <ProgressBar fx:id="progressBar" layoutX="26.0" layoutY="165.0" prefHeight="28.0" prefWidth="134.0" progress="0.0" />
-    </children>
+            <Label fx:id="title" layoutX="18.0" layoutY="134.0" prefHeight="22.0" prefWidth="150.0" style="-fx-background-color: #A3D1C6; -fx-alignment: Center;" text="Label" />
+            <ProgressBar fx:id="progressBar" layoutX="24.0" layoutY="156.0" prefHeight="28.0" prefWidth="134.0" progress="0.0" />
+            <Label fx:id="level" layoutX="77.0" layoutY="185.0" text="Label" textFill="#204bff"/>
+        </children>
     </Pane>
-   <padding>
-      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-   </padding>
+    <padding>
+        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+    </padding>
 </VBox>

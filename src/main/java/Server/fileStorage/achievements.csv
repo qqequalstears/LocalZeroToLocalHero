@@ -5,8 +5,8 @@ achievementID,achievementName,achievementDescription,achievementPoints,location
 4,Garage Sale,GarageSale,0,malmö
 6,Carpool,Jaha vad ska här stå?,1,Malmöö
 7,Carpool,Jaha vad ska här stå?,2,London
-8,Gardening,ZeroToHero,4,London
-9,ToolSharing,ZeroToHero,4,London
-10,Garage Sale,ZeroToHero,2,London
+8,Gardening,ZeroToHero,20,London
+9,ToolSharing,ZeroToHero,30240,London
+10,Garage Sale,ZeroToHero,21010,London
 11,Gardening,ZeroToHero,4,hemma
 12,Gardening,ZeroToHero,4,dsad

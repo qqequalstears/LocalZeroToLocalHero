@@ -41,6 +41,7 @@ public abstract class Initiative implements ISavableObject {
         this.comments = new ArrayList<>(comments);
         this.likes = new ArrayList<>(likes);
         this.isPublic = isPublic;
+        this.category = category;
     }
 
     public Initiative(String title, String description, String location, String duration, String startTime, String category, boolean isPublic) {

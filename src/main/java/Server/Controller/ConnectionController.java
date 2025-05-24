@@ -362,13 +362,13 @@ public class ConnectionController {
             Initiative initiative = allActiveInitiatives.get(i);
             JSONObject initiativeJson = new JSONObject();
 
-            if (initiative instanceof CarPool) {
+            if (initiative.getCategory().equals("CarPool")) {
                 initiativeJson = packager.createJsonForInitiativeCarPool((CarPool) initiative);
-            } else if (initiative instanceof GarageSale) {
+            } else if (initiative.getCategory().equals("GarageSale")) {
                 initiativeJson = packager.createJsonForInitiativeGarageSale((GarageSale) initiative);
-            } else if (initiative instanceof Gardening) {
+            } else if (initiative.getCategory().equals("Gardening")) {
                 initiativeJson = packager.createJsonForInitiativeGargening((Gardening) initiative);
-            } else if (initiative instanceof ToolSharing) {
+            } else if (initiative.getCategory().equals("ToolSharing")) {
                 initiativeJson = packager.createJsonForInitiativeToolSharing((ToolSharing) initiative);
             }
 

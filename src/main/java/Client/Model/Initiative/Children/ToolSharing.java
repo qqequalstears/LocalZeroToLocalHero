@@ -47,4 +47,20 @@ public class ToolSharing extends Initiative implements durationCalculation, Log 
     public void Log() {
         System.out.println("HI, MY NAME IS TOOLSHARING LOG BLOGGALOGGABLOGGIBLOGGBLOGGLOGG LOG");
     }
+
+    public User getLoaner() {
+        return loaner;
+    }
+
+    public void setLoaner(User loaner) {
+        this.loaner = loaner;
+    }
+
+    public User getLender() {
+        return lender;
+    }
+
+    public void setLender(User lender) {
+        this.lender = lender;
+    }
 }

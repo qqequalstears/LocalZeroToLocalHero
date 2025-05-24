@@ -41,5 +41,20 @@ public class Gardening extends Initiative implements Log {
         System.out.println("HI, MY NAME IS GARDENING AND I LOGGGGGGGGGGGGGGGGGGGGGGGGGGGG LOG LOG LOG");
     }
 
+    public User getNeedsHelp() {
+        return needsHelp;
+    }
+
+    public void setNeedsHelp(User needsHelp) {
+        this.needsHelp = needsHelp;
+    }
+
+    public List<User> getHelpers() {
+        return helpers;
+    }
+
+    public void setHelpers(List<User> helpers) {
+        this.helpers = helpers;
+    }
 
 }

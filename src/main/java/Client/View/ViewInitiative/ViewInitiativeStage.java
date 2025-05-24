@@ -10,10 +10,9 @@ import java.io.IOException;
 
 public class ViewInitiativeStage implements StageCreator {
 
-    private final String initiativeName;
 
-    public ViewInitiativeStage(String initiativeName) {
-        this.initiativeName = initiativeName;
+    public ViewInitiativeStage( ) {
+        
     }
 
     @Override

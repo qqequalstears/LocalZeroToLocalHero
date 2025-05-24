@@ -1,5 +1,6 @@
 package Server.Model.FileMan;
 
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.User;
 
 import java.util.List;
@@ -84,4 +85,11 @@ public interface IDataFetcher {
      * @Date 2025-04-16
      */
     String fetchAllActiveIntiativeData();
+
+    /**
+     * @author Martin Frick
+     * @return List of all active initiatives
+     * @Date 2025-05-22
+     */
+    List<Initiative> fetchAllActiveInitiatives();
 }

@@ -1,5 +1,6 @@
 package Server.Model.FileMan.Proxy;
 
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.User;
 import Server.Model.FileMan.IDataFetcher;
 import Server.Model.FileMan.ReaderFiles;
@@ -53,5 +54,10 @@ public class FileReaderProxy implements IDataFetcher {
     @Override
     public String fetchAllActiveIntiativeData() {
         return ReaderFiles.getInstance().fetchAllActiveIntiativeData();
+    }
+
+    @Override
+    public List<Initiative> fetchAllActiveInitiatives() {
+        return ReaderFiles.getInstance().fetchAllActiveInitiatives();
     }
 }

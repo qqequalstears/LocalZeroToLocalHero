@@ -1,5 +1,6 @@
 package Server.Controller;
 
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.User;
 import Server.Model.FileMan.*;
 import Server.Model.FileMan.Proxy.FileAppenderProxy;
@@ -38,7 +39,7 @@ public class FileHandler {
     }
 
     public List<User> getUsers() {
-        //  return ReaderFiles.getInstance().fetchAllUsers();
+        //return ReaderFiles.getInstance().fetchAllUsers();
         //return FileReaderProxy.getInstance().fetchAllUsers();
         IDataFetcher dataFetcher = FileReaderProxy.getInstance();
         return dataFetcher.fetchAllUsers();
@@ -62,5 +63,10 @@ public class FileHandler {
     public void replaceRoles(String mail, List<String> newRoles) {
         String csvContent = ReaderFiles.getInstance().updateUsersNewRoles(mail, newRoles);
         WriteToFile.getInstance().replaceUsers(csvContent);
+    }
+
+    public List<Initiative> getAllActiveInitiatives() {
+
+        return ReaderFiles.getInstance().fetchAllActiveInitiatives();
     }
 }

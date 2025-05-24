@@ -1,5 +1,11 @@
 package Server.Model.FileMan;
 
+import Client.Model.Achievement;
+import Client.Model.Initiative.Children.CarPool;
+import Client.Model.Initiative.Children.GarageSale;
+import Client.Model.Initiative.Children.Gardening;
+import Client.Model.Initiative.Children.ToolSharing;
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Role;
 import Client.Model.User;
 
@@ -75,6 +81,7 @@ public class ReaderFiles implements IDataFetcher {
      * @Date 2025-04-07
      */
     private String readWholeCSVFile(File file) {
+
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             StringBuilder returnString = new StringBuilder();
@@ -290,4 +297,63 @@ public class ReaderFiles implements IDataFetcher {
         }
         return updatedCSV.toString();
     }
+
+    /**
+     *
+     * Returns all active initiatives.
+     *
+     * @author Martin Frick
+     * @return 2025-05-22
+     */
+    @Override
+    public List<Initiative> fetchAllActiveInitiatives() {
+        List<Initiative> initiatives = new ArrayList<>();
+        String csvContent = readWholeCSVFile(destinationActiveIntiative);
+        String[] lines = csvContent.split("\n");
+
+        for (int i = 1; i < lines.length; i++) {
+            String[] contents = lines[i].split(",", -1);
+            if (contents.length < 12) {
+                continue;
+            }
+
+            String initiativeID = contents[0].trim();
+            String title = contents[1].trim();
+            String description = contents[2].trim();
+            String location = contents[3].trim();
+            String duration = contents[4].trim();
+            String startTime = contents[5].trim();
+            String creator = contents[6].trim();
+            String participant = contents[7].trim();
+            String participants = contents[8].trim();
+            boolean isPublic = Boolean.parseBoolean(contents[9].trim());
+            String itemsToSell = contents[10].trim();
+            String numberOfSeats = contents[11].trim();
+            List<String> comments = new ArrayList<>();
+            List<String> likes = new ArrayList<>();
+            List<Achievement> achievements = new ArrayList<>();
+
+            switch (initiativeID) {
+                case "CarPool":
+                    CarPool carPool = new CarPool(title, description, location, duration, startTime, numberOfSeats, initiativeID, isPublic);
+                    initiatives.add(carPool);
+                    break;
+                case "Garage Sale":
+                    GarageSale garageSale = new GarageSale(title, description, location, duration, startTime, itemsToSell, initiativeID, isPublic);
+                    initiatives.add(garageSale);
+                    break;
+                case "Gardening":
+                    Gardening gardening = new Gardening(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
+                    initiatives.add(gardening);
+                    break;
+                case "ToolSharing":
+                    ToolSharing toolSharing = new ToolSharing(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
+                    initiatives.add(toolSharing);
+                    break;
+            }
+        }
+
+        return initiatives;
+    }
+
 }

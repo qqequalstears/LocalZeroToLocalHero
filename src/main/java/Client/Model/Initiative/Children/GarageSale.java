@@ -54,7 +54,29 @@ public class GarageSale extends Initiative implements Sale, Log {
         System.out.println("YEEEHAW, GarageSale is logging hell yea!");
     }
 
+
     public String getItemsToSell() {
         return itemsToSell;
+    }
+
+
+    public List<User> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<User> participants) {
+        this.participants = participants;
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
+
+    public void setItemsToSell(String itemsToSell) {
+        this.itemsToSell = itemsToSell;
     }
 }

@@ -145,4 +145,7 @@ public class User implements Log, ISavableObject {
         return returnString.toString();
     }
 
+    public void setAchievements(List<Achievement> achievements) {
+        this.achievements = achievements;
+    }
 }

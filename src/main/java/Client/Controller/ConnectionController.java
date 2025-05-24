@@ -3,6 +3,11 @@ package Client.Controller;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
 import Client.Model.Achievement;
+import Client.Model.Initiative.Children.CarPool;
+import Client.Model.Initiative.Children.GarageSale;
+import Client.Model.Initiative.Children.Gardening;
+import Client.Model.Initiative.Children.ToolSharing;
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.Notifications;
 import Client.Model.User;
 import Client.Model.Message;
@@ -17,12 +22,22 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ *
+ * @update  Martin Frick
+ * Added a lot of functions for initiatives
+ *
+ * @author Anton Persson
+ */
 public class ConnectionController {
     private ClientConnection clientConnection;
     private GUIInController guiInController;
     private Packager packager;
     private Unpacker unpacker;
     private User connectedUser;
+    private List<Initiative> activeInitiatives = new ArrayList<>();
+
 
     public ConnectionController() {
         try {
@@ -98,6 +113,9 @@ public class ConnectionController {
                 break;
             case "showUserRoles":
                 showUserRoles(jsonObject);
+                break;
+            case "updateInitiatives":
+                updateInitiatives(jsonObject);
                 break;
             default:
                 guiInController.notifyUser("Something went wrong in the application");
@@ -199,4 +217,50 @@ public class ConnectionController {
         JSONObject updateRoles = packager.createUpdateRolesJSON(roles, mail);
         sendJsonObject(updateRoles);
     }
+
+    private void updateInitiatives(JSONObject jsonObject) {
+        JSONArray array = jsonObject.getJSONArray("listOfInitiatives");
+        List<String> titles = new ArrayList<>();
+        activeInitiatives.clear();
+
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
+            String title = obj.getString("title");
+            titles.add(title);
+
+            Initiative initiative = unpacker.unpackInitiative(obj);
+            if (initiative != null) {
+                activeInitiatives.add(initiative);
+            }
+        }
+
+        guiInController.updateInitiatives(titles);
+    }
+
+    /**
+     * @author Martin Frick
+     * @param titleOfInitiativeToReturn
+     * @return Initiative with title
+     */
+    public Initiative getSpecificInitiative(String titleOfInitiativeToReturn) {
+        for (Initiative i : activeInitiatives) {
+            if (i.getTitle().equals(titleOfInitiativeToReturn)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    public String getCurrentInitiativeType(String title) {
+        Initiative selected = getSpecificInitiative(title);
+        if (selected instanceof CarPool) return "CarPool";
+        if (selected instanceof GarageSale) return "Garage Sale";
+        if (selected instanceof Gardening) return "Gardening";
+        if (selected instanceof ToolSharing) return "ToolSharing";
+        return "BadType";
+    }
+
+
+
+
 }

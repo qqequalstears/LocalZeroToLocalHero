@@ -180,23 +180,13 @@ public class Packager {
      */
     public JSONObject createJsonForInitiativeToolSharing(ToolSharing ts) {
         JSONObject initiativesJson = new JSONObject();
-
-        initiativesJson.put("initiativeID", ts.getCategory());
+        initiativesJson.put("initiativeID", "ToolSharing");
         initiativesJson.put("title", ts.getTitle());
         initiativesJson.put("description", ts.getDescription());
         initiativesJson.put("location", ts.getLocation());
         initiativesJson.put("duration", ts.getDuration());
         initiativesJson.put("startTime", ts.getStartTime());
         initiativesJson.put("isPublic", ts.isPublic());
-
-        if (ts.getLoaner() != null) {
-            initiativesJson.put("loaner", packUser(ts.getLoaner()));
-        }
-
-        if (ts.getLender() != null) {
-            initiativesJson.put("lender", packUser(ts.getLender()));
-        }
-
         return initiativesJson;
     }
 

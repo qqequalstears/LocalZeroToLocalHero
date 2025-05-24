@@ -10,6 +10,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 
 /**
  *
@@ -51,13 +53,13 @@ public class HomeLeftController implements FxController {
         intitiatives.add("på");
         intitiatives.add("DIG");
 
-        initiativesListview.setOnMouseClicked(event -> {
+       /* initiativesListview.setOnMouseClicked(event -> {
             String selectedInitiative = (String) initiativesListview.getSelectionModel().getSelectedItem();
             if (selectedInitiative != null) {
 //                System.out.println("Yoyoyoyoy");
                 //mediator.notify("NEWSTAGE","");
             }
-        });
+        });*/
 
     }
 
@@ -83,6 +85,22 @@ public class HomeLeftController implements FxController {
 
         guiInController.setCurrentlySelectedInitiative(selected);
         guiInController.createStage("OPENINITIATIVESTAGE");
+        guiInController.populateViewSelectedInitiativeSceen();
     }
+
+    /**
+     *
+     * Adds initiatives to the list
+     * @autor Martin Frick
+     *
+     */
+    public void setInitiatives (List<String> initiatives) {
+
+        intitiatives.clear();
+        intitiatives.addAll(initiatives);
+
+    }
+
+
 
 }

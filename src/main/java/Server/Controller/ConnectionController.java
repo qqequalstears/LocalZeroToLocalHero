@@ -1,6 +1,10 @@
 package Server.Controller;
 
-import Client.Model.Role;
+import Client.Model.Initiative.Children.CarPool;
+import Client.Model.Initiative.Children.GarageSale;
+import Client.Model.Initiative.Children.Gardening;
+import Client.Model.Initiative.Children.ToolSharing;
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.User;
 import Common.Controller.Utility.Packager;
 import Server.Controller.Authorization.AuthorizationController;
@@ -12,8 +16,6 @@ import org.json.JSONArray;
 
 import java.net.Socket;
 import java.io.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectionController {
@@ -81,11 +83,14 @@ public class ConnectionController {
             case "updateRoles":
                 userManager.updateRoles(jsonObject, this);
                 break;
+            case "getInitiatives":
+                sendAllActiveInitiatives(sender);
             default:
                 System.out.println("Intention was not found");
                 break;
         }
     }
+
     private void handleLogin(JSONObject jsonObject, ClientConnection sender) {
         String mail = (String) jsonObject.get("mail");
         boolean successfulLogin = authorizationController.tryLogin(jsonObject, clientUpdater);
@@ -159,6 +164,10 @@ public class ConnectionController {
         }
         sucess.put("type",status);
         creator.sendObject(sucess.toString());
+
+        //Martin
+        sendAllActiveInitiatives(creator);
+
     }
 
     private void sendRegisterStatus(ClientConnection sender, String mail, boolean successfulRegister) {
@@ -190,6 +199,9 @@ public class ConnectionController {
         }
 
         sendEveryUser();
+        //Martin
+        sendAllActiveInitiatives(sender);
+
     }
 
     private void sendEveryUser() {
@@ -222,4 +234,34 @@ public class ConnectionController {
 
         connection.sendObject(userRolesJSON.toString());
     }
+
+    private void sendAllActiveInitiatives(ClientConnection sender) {
+        List<Initiative> allActiveInitiatives = FileHandler.getInstance().getAllActiveInitiatives();
+        JSONArray allActiveInitiativesArray = new JSONArray();
+
+        for (int i = 0; i < allActiveInitiatives.size(); i++) {
+            Initiative initiative = allActiveInitiatives.get(i);
+            JSONObject initiativeJson = new JSONObject();
+
+            if (initiative instanceof CarPool) {
+                initiativeJson = packager.createJsonForInitiativeCarPool((CarPool) initiative);
+            } else if (initiative instanceof GarageSale) {
+                initiativeJson = packager.createJsonForInitiativeGarageSale((GarageSale) initiative);
+            } else if (initiative instanceof Gardening) {
+                initiativeJson = packager.createJsonForInitiativeGargening((Gardening) initiative);
+            } else if (initiative instanceof ToolSharing) {
+                initiativeJson = packager.createJsonForInitiativeToolSharing((ToolSharing) initiative);
+            }
+
+            allActiveInitiativesArray.put(initiativeJson);
+        }
+
+        JSONObject response = new JSONObject();
+        response.put("type", "updateInitiatives");
+        response.put("listOfInitiatives", allActiveInitiativesArray);
+
+        sender.sendObject(response.toString());
+    }
+
+
 }

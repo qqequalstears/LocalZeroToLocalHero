@@ -7,6 +7,7 @@ import Client.Model.Initiative.Parent.Initiative;
 import org.json.JSONObject;
 
 public class InitiativeManager {
+
     public InitiativeManager() {}
 
     public boolean createNewInitiative(JSONObject newInitiative) {
@@ -68,6 +69,7 @@ public class InitiativeManager {
     }
 
     private String formatNewInitiativeToCSV(Initiative initiative, String creator) {
+
         String category = initiative.getCategory();
         String title = initiative.getTitle();
         String description = initiative.getDescription();
@@ -88,4 +90,5 @@ public class InitiativeManager {
         }
         return String.join(",", category, title, description, location, duration, startTime, creator, participant, participants, isPublic, itemsToSell, numberOfSeats);
     }
+
 }

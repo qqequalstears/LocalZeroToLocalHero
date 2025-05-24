@@ -1,12 +1,15 @@
 package Client.Controller.GUIControllers;
 
+
 import Client.Controller.GUIControllers.CreateInitiativeController.CreateInitiativeController;
 import Client.Controller.GUIControllers.Home.HomeCentreController;
+import Client.Controller.GUIControllers.Home.HomeLeftController;
 import Client.Controller.GUIControllers.Home.HomeTopController;
 import Client.Controller.GUIControllers.Intitiative.InitiativeController;
 import Client.Controller.GUIControllers.LoginController.LoginController;
 import Client.Controller.GUIControllers.Notifications.NotificationController;
 import Client.Controller.GUIControllers.UserInfo.UserInfoController;
+import Client.Model.Initiative.Parent.Initiative;
 import Client.View.Achievement.AchievementStage;
 import Client.View.CreateInitiative.CreateInitiativeStage;
 import Client.View.Home.HomeStage;
@@ -36,7 +39,7 @@ public class GUIInController {
         stageCreators.put("CREATEINITIATIVE", () -> new CreateInitiativeStage().createStage());
         stageCreators.put("NOTIFICATIONS", () -> new NotificationStage().createStage());
         stageCreators.put("ACHIEVEMENTSTAGE", () -> new AchievementStage().createStage());
-        stageCreators.put("OPENINITIATIVESTAGE", () -> new ViewInitiativeStage(currentlySelectedInitiative).createStage());
+        stageCreators.put("OPENINITIATIVESTAGE", () -> new ViewInitiativeStage().createStage());
         stageCreators.put("USERINFOSTAGE", () -> new UserInfoStage().createStage());
     }
 
@@ -123,9 +126,34 @@ public class GUIInController {
     }
 
     public void updateClients(List<String> onlineClients) {
-        HomeCentreController homeCentreController = (HomeCentreController) GUIControllerRegistry.getInstance().get(HomeCentreController.class.getName());
         Platform.runLater(() -> {
-            homeCentreController.setOnlineUsers(onlineClients);
+            HomeCentreController homeCentreController = (HomeCentreController) GUIControllerRegistry.getInstance().get(HomeCentreController.class.getName());
+            if (homeCentreController != null) {
+                homeCentreController.setOnlineUsers(onlineClients);
+            }
         });
     }
+
+    public void updateInitiatives(List<String> initiatives) {
+        HomeLeftController homeLeftController = (HomeLeftController) GUIControllerRegistry.getInstance().get(HomeLeftController.class.getName());
+        Platform.runLater(() -> {
+            homeLeftController.setInitiatives(initiatives);
+        });
+    }
+
+    public Initiative getSelectedInitiativeObject() {
+        return GUIOutController.getInstance().getConnectionController().getSpecificInitiative(currentlySelectedInitiative);
+    }
+
+    public String getSelectedInitiativeType() {
+        return GUIOutController.getInstance().getConnectionController().getCurrentInitiativeType(currentlySelectedInitiative);
+    }
+
+    public void populateViewSelectedInitiativeSceen() {
+
+    }
+
+
+
+
 }

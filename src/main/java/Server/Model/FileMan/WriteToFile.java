@@ -145,6 +145,13 @@ public class WriteToFile implements IDataWriter {
      * Writes the given data to the active initiative file.
      * The file will be overwritten (not appended) when this method is called.
      * If the file does not exist, it will be created.
+     * ---------------------------------------------
+     * Update: Added attributes and adjusted writing method.
+     *
+     *
+     * @author Martin Frick
+     * @date 2025-05-22
+     * ---------------------------------------------
      *
      * @param data The data to be written to the active initiative file.
      * @return A message indicating whether the data was written successfully or if
@@ -153,11 +160,22 @@ public class WriteToFile implements IDataWriter {
      * @Date 2025-04-16
      */
     private String writeToActiveIntiative(String data) {
-        String header = "intiativeID,intiativeName,intiativeDescription,intiativePoints\n"; // TODO this is a
-        // placeholder. The header
-        // needs to be changed to
-        // the corresponding header.
-        return writeToCSVFile(destinationActiveIntiative, header, data);
+        String header = "initiativeID,title,description,location,duration,startTime,creator,participant,participants,isPublic,itemsToSell,numberOfSeats\n";
+        File file = destinationActiveIntiative;
+        boolean writeHeader = !file.exists() || file.length() == 0;
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            if (writeHeader) {
+                writer.write(header);
+            }
+            writer.write(data);
+            if (!data.endsWith("\n")) {
+                writer.write("\n");
+            }
+            return "Wrote new data to file successfully";
+        } catch (IOException e) {
+            return "Internal server error";
+        }
     }
 
     /**

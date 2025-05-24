@@ -291,7 +291,7 @@ public class ReaderFiles implements IDataFetcher {
 
         for (int i = 1; i < lines.length; i++) {
             String[] contents = lines[i].split(",", -1);
-            if (contents.length < 12) {
+            if (contents.length < 10) {
                 System.err.println("Contentlength!!!! Skipped malformed CSV line: " + Arrays.toString(contents));
                 continue;
             }
@@ -313,19 +313,24 @@ public class ReaderFiles implements IDataFetcher {
             List<Achievement> achievements = new ArrayList<>();
 
             switch (initiativeID) {
-                case "CarPool":
+                case "Carpool":
+                    System.out.println("CARPOOL ID = " + initiativeID);
+
                     CarPool carPool = new CarPool(title, description, location, duration, startTime, numberOfSeats, initiativeID, isPublic);
                     initiatives.add(carPool);
                     break;
                 case "Garage Sale":
+                    System.out.println("GARAGE SALE ID = " + initiativeID);
                     GarageSale garageSale = new GarageSale(title, description, location, duration, startTime, itemsToSell, initiativeID, isPublic);
                     initiatives.add(garageSale);
                     break;
                 case "Gardening":
+                    System.out.println("GARDENING ID  = " + initiativeID);
                     Gardening gardening = new Gardening(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
                     initiatives.add(gardening);
                     break;
                 case "ToolSharing":
+                    System.out.println("TOOLSHARING ID = " + initiativeID);
                     ToolSharing toolSharing = new ToolSharing(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
                     initiatives.add(toolSharing);
                     break;

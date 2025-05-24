@@ -355,6 +355,12 @@ public class ConnectionController {
     private void sendAllActiveInitiatives(ClientConnection sender) {
         System.out.println("sendAllActiveInitiatives() method in server side has been reached");
         List<Initiative> allActiveInitiatives = FileHandler.getInstance().getAllActiveInitiatives();
+        for (Initiative initiative : allActiveInitiatives) {
+            System.out.println("----------- Initiative -------------");
+            System.out.println(initiative.getTitle());
+            System.out.println(initiative.getLocation());
+            System.out.println(initiative.getCategory());
+        }
         System.out.println("Amount of initiatives fetched from filehandler is: " + allActiveInitiatives.size());
         JSONArray allActiveInitiativesArray = new JSONArray();
 
@@ -362,13 +368,13 @@ public class ConnectionController {
             Initiative initiative = allActiveInitiatives.get(i);
             JSONObject initiativeJson = new JSONObject();
 
-            if (initiative.getCategory().equals("CarPool")) {
+            if (initiative instanceof CarPool) {
                 initiativeJson = packager.createJsonForInitiativeCarPool((CarPool) initiative);
-            } else if (initiative.getCategory().equals("GarageSale")) {
+            } else if (initiative instanceof GarageSale) {
                 initiativeJson = packager.createJsonForInitiativeGarageSale((GarageSale) initiative);
-            } else if (initiative.getCategory().equals("Gardening")) {
+            } else if (initiative instanceof Gardening) {
                 initiativeJson = packager.createJsonForInitiativeGargening((Gardening) initiative);
-            } else if (initiative.getCategory().equals("ToolSharing")) {
+            } else if (initiative instanceof ToolSharing) {
                 initiativeJson = packager.createJsonForInitiativeToolSharing((ToolSharing) initiative);
             }
 
@@ -380,6 +386,15 @@ public class ConnectionController {
         response.put("listOfInitiatives", allActiveInitiativesArray);
 
         System.out.println("DEBUUUUUGG Sending initiatives to client: " + response);
+
+
+        System.out.println("--------- Categories of JSONObjects ---------");
+        for (int i = 0; i < allActiveInitiativesArray.length(); i++) {
+            JSONObject json = allActiveInitiativesArray.getJSONObject(i);
+            String category = (String) json.get("initiativeID");
+            System.out.println(category);
+
+        }
 
         sender.sendObject(response.toString());
     }

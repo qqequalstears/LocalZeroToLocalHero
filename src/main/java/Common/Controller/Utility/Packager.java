@@ -93,6 +93,10 @@ public class Packager {
      */
     public JSONObject createJsonForInitiativeCarPool(CarPool cp) {
         JSONObject initiativesJson = new JSONObject();
+        System.out.println("CREATING FOR ---------------- CARPOOL ---------------");
+        System.out.println(cp.getCategory());
+        System.out.println("---------------------------- DESTINATION IS ---------------------------");
+        System.out.println(cp.getDestination());
 
         initiativesJson.put("initiativeID", cp.getCategory());
         initiativesJson.put("title", cp.getTitle());
@@ -102,7 +106,7 @@ public class Packager {
         initiativesJson.put("startTime", cp.getStartTime());
         initiativesJson.put("isPublic", cp.isPublic());
         initiativesJson.put("numberOfSeats", cp.getNumberOfSeats());
-        initiativesJson.put("destination", cp.getDestination());
+//        initiativesJson.put("destination", cp.getDestination());
 
         if (cp.getDriver() != null) {
             initiativesJson.put("driver", packUser(cp.getDriver()));
@@ -126,7 +130,7 @@ public class Packager {
     public JSONObject createJsonForInitiativeGarageSale(GarageSale gs) {
         JSONObject initiativesJson = new JSONObject();
 
-        System.out.println("CREATING PACKAGE ------------------------------------------------------");
+        System.out.println("CREATING FOR ---------------- GARAGESALE ---------------");
         System.out.println(gs.getCategory());
 
         initiativesJson.put("initiativeID", gs.getCategory());
@@ -153,6 +157,11 @@ public class Packager {
      */
     public JSONObject createJsonForInitiativeGargening(Gardening g) {
         JSONObject initiativesJson = new JSONObject();
+
+        System.out.println("CREATING FOR ---------------- GARDENING ---------------");
+        System.out.println(g.getTitle());
+        System.out.println(g.getLocation());
+        System.out.println("Category = " + g.getCategory());
 
         initiativesJson.put("initiativeID", g.getCategory());
         initiativesJson.put("title", g.getTitle());
@@ -186,6 +195,9 @@ public class Packager {
      */
     public JSONObject createJsonForInitiativeToolSharing(ToolSharing ts) {
         JSONObject initiativesJson = new JSONObject();
+
+        System.out.println("CREATING FOR ---------------- TOOLSHARING ---------------");
+        System.out.println(ts.getCategory());
 
         initiativesJson.put("initiativeID", ts.getCategory());
         initiativesJson.put("title", ts.getTitle());

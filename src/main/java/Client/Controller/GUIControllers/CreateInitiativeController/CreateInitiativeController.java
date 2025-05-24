@@ -53,7 +53,7 @@ public class CreateInitiativeController implements FxController {
         guiOutController = GUIOutController.getInstance();
 
         List<String> categories = new ArrayList<>();
-        categories.add("CarPool");
+        categories.add("Carpool");
         categories.add("Gardening");
         categories.add("ToolSharing");
         categories.add("Garage Sale");

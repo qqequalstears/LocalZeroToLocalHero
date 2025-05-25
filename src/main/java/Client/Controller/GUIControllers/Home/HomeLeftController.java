@@ -2,6 +2,8 @@ package Client.Controller.GUIControllers.Home;
 
 import Client.Controller.GUIControllers.FxController;
 import Client.Controller.GUIControllers.GUIInController;
+import Client.Controller.GUIControllers.GUIOutController;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.util.List;
 
@@ -32,11 +35,16 @@ public class HomeLeftController implements FxController {
     private GUIInController guiInController;
     @FXML
     private Button openInitiativeButton;
-
+    @FXML
+    private Button neighborhoodButton;
+    @FXML
+    private Button allInitiativesButton;
+    private GUIOutController guiOutController;
 
     @FXML
     public void initialize() {
         guiInController = GUIInController.getInstance();
+        guiOutController = GUIOutController.getInstance();
         initiativesListview.setItems(intitiatives);
         initiativesListview.setCellFactory(listView -> new ListCell<String>() {
             @Override
@@ -113,9 +121,61 @@ public class HomeLeftController implements FxController {
     }
 
     public void updateInitiatives(List<String> titles) {
-        intitiatives.clear();
-        intitiatives.addAll(titles);
-        initiativesListview.setItems(intitiatives);
+        System.out.println("[DEBUG] HomeLeftController.updateInitiatives called with " + titles.size() + " titles");
+        System.out.println("[DEBUG] Current list view items: " + initiativesListview.getItems().size());
+        
+        Platform.runLater(() -> {
+            intitiatives.clear();
+            intitiatives.addAll(titles);
+            initiativesListview.setItems(intitiatives);
+            System.out.println("[DEBUG] List view updated with " + intitiatives.size() + " items");
+        });
+    }
+
+    @FXML
+    public void showNeighborhood() {
+        try {
+            if (guiOutController == null) {
+                guiOutController = GUIOutController.getInstance();
+            }
+            
+            // Check if we have a valid connection
+            if (guiOutController.getConnectionController() == null) {
+                guiInController.notifyUser("No connection to server. Please restart the application.");
+                return;
+            }
+            
+            String userEmail = guiOutController.getConnectedUserEmail();
+            if (userEmail == null) {
+                guiInController.notifyUser("Please log in first to view neighborhood initiatives.");
+                return;
+            }
+            
+            guiOutController.getNeighborhoodInitiatives();
+        } catch (Exception e) {
+            System.err.println("Error showing neighborhood initiatives: " + e.getMessage());
+            guiInController.notifyUser("Error connecting to server. Please try again.");
+        }
+    }
+
+    @FXML
+    public void showAllInitiatives() {
+        try {
+            if (guiOutController == null) {
+                guiOutController = GUIOutController.getInstance();
+            }
+            
+            // Check if we have a valid connection
+            if (guiOutController.getConnectionController() == null) {
+                guiInController.notifyUser("No connection to server. Please restart the application.");
+                return;
+            }
+            
+            guiOutController.getAllInitiativesFromServer();
+        } catch (Exception e) {
+            System.err.println("Error showing all initiatives: " + e.getMessage());
+            guiInController.notifyUser("Error connecting to server. Please try again.");
+        }
     }
 
 }

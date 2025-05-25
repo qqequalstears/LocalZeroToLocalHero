@@ -1,25 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #FCFFF0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.Controller.GUIControllers.ViewSelectedInitiative.ViewSelectedInitiativeController">
 
     <children>
-        <Label fx:id="initName" layoutX="274.0" layoutY="14.0" text="Label" textFill="#5b9e46">
+        <Label fx:id="initName" layoutX="200.0" layoutY="14.0" text="Label" textFill="#5b9e46">
             <font>
                 <Font name="System Bold" size="21.0" />
             </font>
         </Label>
 
-        <VBox alignment="CENTER" prefWidth="350.0" spacing="10" />
+        <!-- Join/Leave Buttons -->
+        <HBox layoutX="125.0" layoutY="50.0" spacing="10.0">
+            <Button fx:id="joinButton" onAction="#handleJoinInitiative" style="-fx-background-color: #A3D1C6;" text="Join Initiative" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Button>
+            <Button fx:id="leaveButton" onAction="#handleLeaveInitiative" style="-fx-background-color: #FF6B6B;" text="Leave Initiative" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Button>
+            <Button fx:id="neighborhoodButton" onAction="#handleShowNeighborhood" style="-fx-background-color: #4ECDC4;" text="Show Neighborhood" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+            </Button>
+        </HBox>
 
-        <ScrollPane fx:id="commentsScrollPane" fitToWidth="true" layoutX="125.0" layoutY="189.0" prefHeight="120.0" prefWidth="350.0">
+        <!-- Participants Display -->
+        <Label layoutX="125.0" layoutY="90.0" text="Participants:" textFill="#5b9e46">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="participantsField" layoutX="125.0" layoutY="110.0" prefWidth="350.0" editable="false" />
+
+        <!-- Comments Section -->
+        <Label layoutX="125.0" layoutY="150.0" text="Comments:" textFill="#5b9e46">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+
+        <ScrollPane fx:id="commentsScrollPane" fitToWidth="true" layoutX="125.0" layoutY="170.0" prefHeight="200.0" prefWidth="350.0">
             <content>
                 <VBox fx:id="commentsBox" spacing="5">
                     <padding>
@@ -35,34 +69,39 @@
             </content>
         </ScrollPane>
 
-        <TextField fx:id="txtInputField" layoutX="125.0" layoutY="309.0" onAction="#handleAddComment" prefHeight="25.0" prefWidth="350.0" />
+        <TextField fx:id="txtInputField" layoutX="125.0" layoutY="380.0" onAction="#handleAddComment" prefHeight="25.0" prefWidth="280.0" promptText="Add a comment..." />
+        <Button fx:id="addCommentButton" layoutX="410.0" layoutY="380.0" onAction="#handleAddComment" style="-fx-background-color: #A3D1C6;" text="Post" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
 
         <!-- CarPool Fields -->
-        <Label layoutX="125.0" layoutY="350.0" text="Destination:" visible="false" />
-        <TextField fx:id="destinationField" layoutX="125.0" layoutY="370.0" prefWidth="350.0" visible="false" />
+        <Label fx:id="destinationLabel" layoutX="125.0" layoutY="420.0" text="Destination:" visible="false" />
+        <TextField fx:id="destinationField" layoutX="125.0" layoutY="440.0" prefWidth="350.0" visible="false" editable="false" />
 
-        <Label layoutX="125.0" layoutY="405.0" text="Passengers:" visible="false" />
-        <TextField fx:id="passengersField" layoutX="125.0" layoutY="425.0" prefWidth="350.0" visible="false" />
+        <Label fx:id="passengersLabel" layoutX="125.0" layoutY="475.0" text="Passengers:" visible="false" />
+        <TextField fx:id="passengersField" layoutX="125.0" layoutY="495.0" prefWidth="350.0" visible="false" editable="false" />
 
         <!-- GarageSale Fields -->
-        <Label layoutX="125.0" layoutY="460.0" text="Items to Sell:" visible="false" />
-        <TextField fx:id="itemsToSellField" layoutX="125.0" layoutY="480.0" prefWidth="350.0" visible="false" />
+        <Label fx:id="itemsToSellLabel" layoutX="125.0" layoutY="530.0" text="Items to Sell:" visible="false" />
+        <TextField fx:id="itemsToSellField" layoutX="125.0" layoutY="550.0" prefWidth="350.0" visible="false" editable="false" />
 
-        <Label layoutX="125.0" layoutY="515.0" text="Seller:" visible="false" />
-        <TextField fx:id="sellerField" layoutX="125.0" layoutY="535.0" prefWidth="350.0" visible="false" />
+        <Label fx:id="sellerLabel" layoutX="125.0" layoutY="585.0" text="Seller:" visible="false" />
+        <TextField fx:id="sellerField" layoutX="125.0" layoutY="605.0" prefWidth="350.0" visible="false" editable="false" />
 
         <!-- Gardening Fields -->
-        <Label layoutX="125.0" layoutY="570.0" text="Needs Help:" visible="false" />
-        <TextField fx:id="needsHelpField" layoutX="125.0" layoutY="590.0" prefWidth="350.0" visible="false" />
+        <Label fx:id="needsHelpLabel" layoutX="125.0" layoutY="640.0" text="Needs Help:" visible="false" />
+        <TextField fx:id="needsHelpField" layoutX="125.0" layoutY="660.0" prefWidth="350.0" visible="false" editable="false" />
 
-        <Label layoutX="125.0" layoutY="625.0" text="Helpers:" visible="false" />
-        <TextField fx:id="helpersField" layoutX="125.0" layoutY="645.0" prefWidth="350.0" visible="false" />
+        <Label fx:id="helpersLabel" layoutX="125.0" layoutY="695.0" text="Helpers:" visible="false" />
+        <TextField fx:id="helpersField" layoutX="125.0" layoutY="715.0" prefWidth="350.0" visible="false" editable="false" />
 
         <!-- ToolSharing Fields -->
-        <Label layoutX="125.0" layoutY="680.0" text="Loaner:" visible="false" />
-        <TextField fx:id="loanerField" layoutX="125.0" layoutY="700.0" prefWidth="350.0" visible="false" />
+        <Label fx:id="loanerLabel" layoutX="125.0" layoutY="750.0" text="Loaner:" visible="false" />
+        <TextField fx:id="loanerField" layoutX="125.0" layoutY="770.0" prefWidth="350.0" visible="false" editable="false" />
 
-        <Label layoutX="125.0" layoutY="735.0" text="Lender:" visible="false" />
-        <TextField fx:id="lenderField" layoutX="125.0" layoutY="755.0" prefWidth="350.0" visible="false" />
+        <Label fx:id="lenderLabel" layoutX="125.0" layoutY="805.0" text="Lender:" visible="false" />
+        <TextField fx:id="lenderField" layoutX="125.0" layoutY="825.0" prefWidth="350.0" visible="false" editable="false" />
     </children>
 </AnchorPane>

@@ -54,7 +54,7 @@ public class CarPool extends Initiative implements durationCalculation, Log {
 
     @Override
     public void Log() {
-        System.out.println("HI, MY NAME IS TRANSPORTATION, I R GOOT KLOGGER LOGG LOGG LOGGGGGER HEHEHEHETITIHTIHTI");
+        System.out.println("HI, MY NAME IS TRANSPORTATION, I R GOOT KLOGGER LOGG LOGG LOGGGER HEHEHEHETITIHTIHTI");
     }
 
     public String getNumberOfSeats() {
@@ -87,5 +87,15 @@ public class CarPool extends Initiative implements durationCalculation, Log {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    @Override
+    public boolean isFull() {
+        try {
+            int max = Integer.parseInt(numberOfSeats);
+            return getParticipants().size() >= max;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

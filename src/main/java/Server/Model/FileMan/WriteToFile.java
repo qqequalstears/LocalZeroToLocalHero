@@ -157,14 +157,11 @@ public class WriteToFile implements IDataWriter {
      * @Date 2025-04-16
      */
     private String writeToActiveIntiative(String data) {
-        String header = "initiativeID,title,description,location,duration,startTime,creator,participant,participants,isPublic,itemsToSell,numberOfSeats\n";
+        String header = "category,title,description,location,duration,startTime,creator,participant,participants,isPublic,itemsToSell,numberOfSeats\n";
         File file = destinationActiveIntiative;
-        boolean writeHeader = !file.exists() || file.length() == 0;
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            if (writeHeader) {
-                writer.write(header);
-            }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {  // false = OVERWRITE mode
+            writer.write(header);
             writer.write(data);
             if (!data.endsWith("\n")) {
                 writer.write("\n");

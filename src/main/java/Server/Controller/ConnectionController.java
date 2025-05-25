@@ -61,7 +61,7 @@ public class ConnectionController {
     public synchronized void revealIntention(Object object, ClientConnection sender) {
         String jsonString = (String) object;
         JSONObject jsonObject = new JSONObject(jsonString);
-        System.out.println(jsonObject);
+        System.out.println("[DEBUG] revealIntention called with: " + jsonObject);
         String intention = (String) jsonObject.get("type");
         System.out.println("Intention is " + intention);
 
@@ -77,6 +77,25 @@ public class ConnectionController {
                 break;
             case "createInitiative":
                 handleCreateInitiative(jsonObject, sender);
+                break;
+            case "joinInitiative":
+                handleJoinInitiative(jsonObject, sender);
+                break;
+            case "leaveInitiative":
+                handleLeaveInitiative(jsonObject, sender);
+                break;
+            case "addComment":
+                handleAddComment(jsonObject, sender);
+                break;
+            case "replyComment":
+                handleReplyComment(jsonObject, sender);
+                break;
+            case "likeComment":
+                handleLikeComment(jsonObject, sender);
+                break;
+            case "getNeighborhoodInitiatives":
+                System.out.println("[DEBUG] Processing getNeighborhoodInitiatives request");
+                handleGetNeighborhoodInitiatives(jsonObject, sender);
                 break;
             case "sendMessage":
                 messageService.handleNewMessage(jsonObject);
@@ -94,13 +113,15 @@ public class ConnectionController {
             case "newLogEntry":
                 logManager.newLogEntry(jsonObject);
                 requestLog(jsonObject, sender);
+                break;
             case "requestLog":
                 requestLog(jsonObject, sender);
                 break;
             case "getInitiatives":
                 sendAllActiveInitiatives(sender);
+                break;
             default:
-                System.out.println("Intention was not found");
+                System.out.println("Intention was not found: " + intention);
                 break;
         }
     }
@@ -143,10 +164,16 @@ public class ConnectionController {
     }
 
     private void handleCreateInitiative(JSONObject jsonObject, ClientConnection sender) {
+        System.out.println("[DEBUG] handleCreateInitiative called with: " + jsonObject.toString());
         boolean success = initiativeManager.createNewInitiative(jsonObject);
+        System.out.println("[DEBUG] Initiative creation result: " + success);
         if (success) {
             notifyOfAchievement(jsonObject);
+            // Broadcast updated initiatives to all clients
+            System.out.println("[DEBUG] Broadcasting updated initiatives to all clients");
+            broadcastUpdatedInitiatives();
         }
+        System.out.println("[DEBUG] Sending create initiative status to client: " + (success ? "success" : "failure"));
         sendCreateInitiativeStatus(success, sender);
     }
 
@@ -180,7 +207,9 @@ public class ConnectionController {
             status = "SuccessfulInitiativeCreation";
         }
         sucess.put("type", status);
+        System.out.println("[DEBUG] Sending initiative creation status: " + status);
         creator.sendObject(sucess.toString());
+        System.out.println("[DEBUG] Initiative creation status sent");
     }
 
     private void sendRegisterStatus(ClientConnection sender, String mail, boolean successfulRegister) {
@@ -281,7 +310,9 @@ public class ConnectionController {
     }
 
     private void sendAllActiveInitiatives(ClientConnection sender) {
+        System.out.println("[DEBUG] sendAllActiveInitiatives called");
         List<Initiative> allActiveInitiatives = FileHandler.getInstance().getAllActiveInitiatives();
+        System.out.println("[DEBUG] Found " + allActiveInitiatives.size() + " initiatives to send");
         JSONArray allActiveInitiativesArray = new JSONArray();
 
         for (int i = 0; i < allActiveInitiatives.size(); i++) {
@@ -305,8 +336,339 @@ public class ConnectionController {
         response.put("type", "updateInitiatives");
         response.put("listOfInitiatives", allActiveInitiativesArray);
 
+        System.out.println("[DEBUG] Sending updateInitiatives with " + allActiveInitiativesArray.length() + " initiatives");
         sender.sendObject(response.toString());
     }
 
+    private void handleJoinInitiative(JSONObject jsonObject, ClientConnection sender) {
+        String userEmail = jsonObject.getString("userEmail");
+        String initiativeTitle = jsonObject.getString("initiativeTitle");
+        System.out.println("[DEBUG] handleJoinInitiative - User: " + userEmail + ", Initiative: " + initiativeTitle);
+        
+        List<Initiative> initiatives = FileHandler.getInstance().getAllActiveInitiatives();
+        System.out.println("[DEBUG] Total initiatives found: " + initiatives.size());
+        Initiative targetInitiative = null;
+        
+        for (Initiative initiative : initiatives) {
+            System.out.println("[DEBUG] Checking initiative: " + initiative.getTitle());
+            if (initiative.getTitle().equals(initiativeTitle)) {
+                targetInitiative = initiative;
+                System.out.println("[DEBUG] Found target initiative!");
+                break;
+            }
+        }
+        
+        JSONObject response = new JSONObject();
+        if (targetInitiative != null) {
+            System.out.println("[DEBUG] Current participants: " + targetInitiative.getParticipants());
+            System.out.println("[DEBUG] Is full: " + targetInitiative.isFull());
+            System.out.println("[DEBUG] Already contains user: " + targetInitiative.getParticipants().contains(userEmail));
+            
+            boolean joinResult = targetInitiative.join(userEmail);
+            System.out.println("[DEBUG] Join result: " + joinResult);
+            
+            if (joinResult) {
+                // Update persistence
+                initiativeManager.updateInitiativeParticipants(targetInitiative);
+                
+                // Notify existing participants
+                for (String participantEmail : targetInitiative.getParticipants()) {
+                    if (!participantEmail.equals(userEmail)) {
+                        String notification = userEmail + " joined the initiative: " + initiativeTitle;
+                        sendNotification(notification, participantEmail);
+                    }
+                }
+                
+                response.put("type", "joinInitiativeSuccess");
+                response.put("message", "Successfully joined initiative");
+            } else {
+                response.put("type", "joinInitiativeFailure");
+                response.put("message", "Failed to join initiative - may be full or already joined");
+            }
+        } else {
+            System.out.println("[DEBUG] Target initiative not found!");
+            response.put("type", "joinInitiativeFailure");
+            response.put("message", "Initiative not found");
+        }
+        
+        sender.sendObject(response.toString());
+        // Send updated initiatives to all clients
+        broadcastUpdatedInitiatives();
+    }
+
+    private void handleLeaveInitiative(JSONObject jsonObject, ClientConnection sender) {
+        String userEmail = jsonObject.getString("userEmail");
+        String initiativeTitle = jsonObject.getString("initiativeTitle");
+        
+        List<Initiative> initiatives = FileHandler.getInstance().getAllActiveInitiatives();
+        Initiative targetInitiative = null;
+        
+        for (Initiative initiative : initiatives) {
+            if (initiative.getTitle().equals(initiativeTitle)) {
+                targetInitiative = initiative;
+                break;
+            }
+        }
+        
+        JSONObject response = new JSONObject();
+        if (targetInitiative != null && targetInitiative.leave(userEmail)) {
+            // Update persistence
+            initiativeManager.updateInitiativeParticipants(targetInitiative);
+            
+            response.put("type", "leaveInitiativeSuccess");
+            response.put("message", "Successfully left initiative");
+        } else {
+            response.put("type", "leaveInitiativeFailure");
+            response.put("message", "Failed to leave initiative");
+        }
+        
+        sender.sendObject(response.toString());
+        // Send updated initiatives to all clients
+        broadcastUpdatedInitiatives();
+    }
+
+    private void handleAddComment(JSONObject jsonObject, ClientConnection sender) {
+        String userEmail = jsonObject.getString("userEmail");
+        String initiativeTitle = jsonObject.getString("initiativeTitle");
+        String commentContent = jsonObject.getString("content");
+        String commentId = java.util.UUID.randomUUID().toString();
+        
+        List<Initiative> initiatives = FileHandler.getInstance().getAllActiveInitiatives();
+        Initiative targetInitiative = null;
+        
+        for (Initiative initiative : initiatives) {
+            if (initiative.getTitle().equals(initiativeTitle)) {
+                targetInitiative = initiative;
+                break;
+            }
+        }
+        
+        JSONObject response = new JSONObject();
+        if (targetInitiative != null) {
+            // Check if user is a participant
+            if (!targetInitiative.getParticipants().contains(userEmail)) {
+                response.put("type", "addCommentFailure");
+                response.put("message", "You must join the initiative to comment");
+                sender.sendObject(response.toString());
+                return;
+            }
+            
+            Initiative.Comment comment = new Initiative.Comment(commentId, userEmail, commentContent, null);
+            targetInitiative.addComment(comment);
+            
+            // Update persistence
+            initiativeManager.updateInitiativeComments(targetInitiative);
+            
+            // Notify all participants
+            for (String participantEmail : targetInitiative.getParticipants()) {
+                if (!participantEmail.equals(userEmail)) {
+                    String notification = userEmail + " commented on initiative: " + initiativeTitle;
+                    sendNotification(notification, participantEmail);
+                }
+            }
+            
+            response.put("type", "addCommentSuccess");
+            response.put("commentId", commentId);
+        } else {
+            response.put("type", "addCommentFailure");
+            response.put("message", "Initiative not found");
+        }
+        
+        sender.sendObject(response.toString());
+        broadcastUpdatedInitiatives();
+    }
+
+    private void handleReplyComment(JSONObject jsonObject, ClientConnection sender) {
+        String userEmail = jsonObject.getString("userEmail");
+        String initiativeTitle = jsonObject.getString("initiativeTitle");
+        String commentContent = jsonObject.getString("content");
+        String parentCommentId = jsonObject.getString("parentCommentId");
+        String replyId = java.util.UUID.randomUUID().toString();
+        
+        List<Initiative> initiatives = FileHandler.getInstance().getAllActiveInitiatives();
+        Initiative targetInitiative = null;
+        
+        for (Initiative initiative : initiatives) {
+            if (initiative.getTitle().equals(initiativeTitle)) {
+                targetInitiative = initiative;
+                break;
+            }
+        }
+        
+        JSONObject response = new JSONObject();
+        if (targetInitiative != null) {
+            // Check if user is a participant
+            if (!targetInitiative.getParticipants().contains(userEmail)) {
+                response.put("type", "replyCommentFailure");
+                response.put("message", "You must join the initiative to reply");
+                sender.sendObject(response.toString());
+                return;
+            }
+            
+            Initiative.Comment reply = new Initiative.Comment(replyId, userEmail, commentContent, parentCommentId);
+            
+            // Find parent comment and add reply
+            Initiative.Comment parentComment = findCommentById(targetInitiative, parentCommentId);
+            if (parentComment != null) {
+                parentComment.addReply(reply);
+                
+                // Update persistence
+                initiativeManager.updateInitiativeComments(targetInitiative);
+                
+                // Notify original comment author
+                String notification = userEmail + " replied to your comment on initiative: " + initiativeTitle;
+                sendNotification(notification, parentComment.getAuthorEmail());
+                
+                response.put("type", "replyCommentSuccess");
+                response.put("replyId", replyId);
+            } else {
+                response.put("type", "replyCommentFailure");
+                response.put("message", "Parent comment not found");
+            }
+        } else {
+            response.put("type", "replyCommentFailure");
+            response.put("message", "Initiative not found");
+        }
+        
+        sender.sendObject(response.toString());
+        broadcastUpdatedInitiatives();
+    }
+
+    private void handleLikeComment(JSONObject jsonObject, ClientConnection sender) {
+        String userEmail = jsonObject.getString("userEmail");
+        String initiativeTitle = jsonObject.getString("initiativeTitle");
+        String commentId = jsonObject.getString("commentId");
+        
+        List<Initiative> initiatives = FileHandler.getInstance().getAllActiveInitiatives();
+        Initiative targetInitiative = null;
+        
+        for (Initiative initiative : initiatives) {
+            if (initiative.getTitle().equals(initiativeTitle)) {
+                targetInitiative = initiative;
+                break;
+            }
+        }
+        
+        JSONObject response = new JSONObject();
+        if (targetInitiative != null) {
+            // Check if user is a participant
+            if (!targetInitiative.getParticipants().contains(userEmail)) {
+                response.put("type", "likeCommentFailure");
+                response.put("message", "You must join the initiative to like comments");
+                sender.sendObject(response.toString());
+                return;
+            }
+            
+            Initiative.Comment comment = findCommentById(targetInitiative, commentId);
+            if (comment != null && comment.like(userEmail)) {
+                // Update persistence
+                initiativeManager.updateInitiativeComments(targetInitiative);
+                
+                // Notify comment author
+                if (!comment.getAuthorEmail().equals(userEmail)) {
+                    String notification = userEmail + " liked your comment on initiative: " + initiativeTitle;
+                    sendNotification(notification, comment.getAuthorEmail());
+                }
+                
+                response.put("type", "likeCommentSuccess");
+                response.put("likes", comment.getLikes());
+            } else {
+                response.put("type", "likeCommentFailure");
+                response.put("message", "Already liked or comment not found");
+            }
+        } else {
+            response.put("type", "likeCommentFailure");
+            response.put("message", "Initiative not found");
+        }
+        
+        sender.sendObject(response.toString());
+        broadcastUpdatedInitiatives();
+    }
+
+    private void handleGetNeighborhoodInitiatives(JSONObject jsonObject, ClientConnection sender) {
+        System.out.println("[DEBUG] handleGetNeighborhoodInitiatives called");
+        String userEmail = jsonObject.getString("userEmail");
+        String userLocation = FileHandler.getInstance().fetchOneUserLocationData(userEmail);
+        System.out.println("[DEBUG] User: " + userEmail + ", Location: " + userLocation);
+        
+        List<Initiative> allInitiatives = FileHandler.getInstance().getAllActiveInitiatives();
+        System.out.println("[DEBUG] Total initiatives: " + allInitiatives.size());
+        JSONArray neighborhoodInitiatives = new JSONArray();
+        
+        for (Initiative initiative : allInitiatives) {
+            System.out.println("[DEBUG] Initiative: " + initiative.getTitle() + 
+                             ", Location: " + initiative.getLocation() + 
+                             ", IsPublic: " + initiative.isPublic() + 
+                             ", Participants: " + initiative.getParticipants());
+            
+            // Include if it's in the same location and either public or user is a participant
+            boolean sameLocation = initiative.getLocation().equalsIgnoreCase(userLocation);
+            boolean isPublicOrParticipant = initiative.isPublic() || initiative.getParticipants().contains(userEmail);
+            
+            System.out.println("[DEBUG] Same location: " + sameLocation + ", Public or participant: " + isPublicOrParticipant);
+            
+            if (sameLocation && isPublicOrParticipant) {
+                System.out.println("[DEBUG] Including initiative: " + initiative.getTitle());
+                JSONObject initiativeJson = new JSONObject();
+                if (initiative instanceof CarPool) {
+                    initiativeJson = packager.createJsonForInitiativeCarPool((CarPool) initiative);
+                } else if (initiative instanceof GarageSale) {
+                    initiativeJson = packager.createJsonForInitiativeGarageSale((GarageSale) initiative);
+                } else if (initiative instanceof Gardening) {
+                    initiativeJson = packager.createJsonForInitiativeGargening((Gardening) initiative);
+                } else if (initiative instanceof ToolSharing) {
+                    initiativeJson = packager.createJsonForInitiativeToolSharing((ToolSharing) initiative);
+                }
+                neighborhoodInitiatives.put(initiativeJson);
+            }
+        }
+        
+        System.out.println("[DEBUG] Found " + neighborhoodInitiatives.length() + " neighborhood initiatives");
+        
+        JSONObject response = new JSONObject();
+        response.put("type", "neighborhoodInitiatives");
+        response.put("initiatives", neighborhoodInitiatives);
+        
+        sender.sendObject(response.toString());
+    }
+
+    private Initiative.Comment findCommentById(Initiative initiative, String commentId) {
+        for (Initiative.Comment comment : initiative.getCommentList()) {
+            if (comment.getId().equals(commentId)) {
+                return comment;
+            }
+            // Check replies recursively
+            Initiative.Comment found = findCommentInReplies(comment, commentId);
+            if (found != null) {
+                return found;
+            }
+        }
+        return null;
+    }
+
+    private Initiative.Comment findCommentInReplies(Initiative.Comment comment, String commentId) {
+        for (Initiative.Comment reply : comment.getReplies()) {
+            if (reply.getId().equals(commentId)) {
+                return reply;
+            }
+            Initiative.Comment found = findCommentInReplies(reply, commentId);
+            if (found != null) {
+                return found;
+            }
+        }
+        return null;
+    }
+
+    private void broadcastUpdatedInitiatives() {
+        System.out.println("[DEBUG] broadcastUpdatedInitiatives called");
+        List<ClientConnection> onlineClients = clientUpdater.getClientConnections();
+        System.out.println("[DEBUG] Number of online clients: " + (onlineClients != null ? onlineClients.size() : 0));
+        if (onlineClients != null) {
+            for (ClientConnection client : onlineClients) {
+                System.out.println("[DEBUG] Sending updated initiatives to client");
+                sendAllActiveInitiatives(client);
+            }
+        }
+    }
 
 }

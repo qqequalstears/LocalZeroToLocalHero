@@ -4,6 +4,7 @@ import Client.Model.Initiative.Children.CarPool;
 import Client.Model.Initiative.Children.GarageSale;
 import Client.Model.Initiative.Children.Gardening;
 import Client.Model.Initiative.Children.ToolSharing;
+import Client.Model.Initiative.Parent.Initiative;
 import Client.Model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -104,6 +105,20 @@ public class Packager {
         initiativesJson.put("numberOfSeats", cp.getNumberOfSeats());
         initiativesJson.put("destination", cp.getDestination());
 
+        // Add participants
+        JSONArray participantsArray = new JSONArray();
+        for (String participant : cp.getParticipants()) {
+            participantsArray.put(participant);
+        }
+        initiativesJson.put("participants", participantsArray);
+
+        // Add comments
+        JSONArray commentsArray = new JSONArray();
+        for (Initiative.Comment comment : cp.getCommentList()) {
+            commentsArray.put(packComment(comment));
+        }
+        initiativesJson.put("comments", commentsArray);
+
         if (cp.getDriver() != null) {
             initiativesJson.put("driver", packUser(cp.getDriver()));
         }
@@ -135,6 +150,20 @@ public class Packager {
         initiativesJson.put("isPublic", gs.isPublic());
         initiativesJson.put("itemsToSell", gs.getItemsToSell());
 
+        // Add participants
+        JSONArray participantsArray = new JSONArray();
+        for (String participant : gs.getParticipants()) {
+            participantsArray.put(participant);
+        }
+        initiativesJson.put("participants", participantsArray);
+
+        // Add comments
+        JSONArray commentsArray = new JSONArray();
+        for (Initiative.Comment comment : gs.getCommentList()) {
+            commentsArray.put(packComment(comment));
+        }
+        initiativesJson.put("comments", commentsArray);
+
         if (gs.getSeller() != null) {
             initiativesJson.put("seller", packUser(gs.getSeller()));
         }
@@ -159,6 +188,20 @@ public class Packager {
         initiativesJson.put("startTime", g.getStartTime());
         initiativesJson.put("isPublic", g.isPublic());
 
+        // Add participants
+        JSONArray participantsArray = new JSONArray();
+        for (String participant : g.getParticipants()) {
+            participantsArray.put(participant);
+        }
+        initiativesJson.put("participants", participantsArray);
+
+        // Add comments
+        JSONArray commentsArray = new JSONArray();
+        for (Initiative.Comment comment : g.getCommentList()) {
+            commentsArray.put(packComment(comment));
+        }
+        initiativesJson.put("comments", commentsArray);
+
         if (g.getNeedsHelp() != null) {
             initiativesJson.put("needsHelp", packUser(g.getNeedsHelp()));
         }
@@ -170,7 +213,6 @@ public class Packager {
         initiativesJson.put("helpers", helperArray);
 
         return initiativesJson;
-
     }
 
     /**
@@ -189,6 +231,20 @@ public class Packager {
         initiativesJson.put("duration", ts.getDuration());
         initiativesJson.put("startTime", ts.getStartTime());
         initiativesJson.put("isPublic", ts.isPublic());
+
+        // Add participants
+        JSONArray participantsArray = new JSONArray();
+        for (String participant : ts.getParticipants()) {
+            participantsArray.put(participant);
+        }
+        initiativesJson.put("participants", participantsArray);
+
+        // Add comments
+        JSONArray commentsArray = new JSONArray();
+        for (Initiative.Comment comment : ts.getCommentList()) {
+            commentsArray.put(packComment(comment));
+        }
+        initiativesJson.put("comments", commentsArray);
 
         if (ts.getLoaner() != null) {
             initiativesJson.put("loaner", packUser(ts.getLoaner()));
@@ -216,10 +272,28 @@ public class Packager {
         return userJson;
     }
 
-
-
-
-
+    private JSONObject packComment(Initiative.Comment comment) {
+        JSONObject commentJson = new JSONObject();
+        commentJson.put("id", comment.getId());
+        commentJson.put("authorEmail", comment.getAuthorEmail());
+        commentJson.put("content", comment.getContent());
+        commentJson.put("parentId", comment.getParentId());
+        commentJson.put("likes", comment.getLikes());
+        
+        JSONArray likedByArray = new JSONArray();
+        for (String email : comment.getLikedBy()) {
+            likedByArray.put(email);
+        }
+        commentJson.put("likedBy", likedByArray);
+        
+        JSONArray repliesArray = new JSONArray();
+        for (Initiative.Comment reply : comment.getReplies()) {
+            repliesArray.put(packComment(reply));
+        }
+        commentJson.put("replies", repliesArray);
+        
+        return commentJson;
+    }
 
     public JSONObject createAchievementJson(String name, String progress, String description) {
         JSONObject achievementJson = new JSONObject();
@@ -251,5 +325,57 @@ public class Packager {
         requestLogJson.put("type", "requestLog");
         requestLogJson.put("email", email);
         return requestLogJson;
+    }
+
+    // Add methods for creating join/leave/comment requests
+    public JSONObject createJoinInitiativeJson(String userEmail, String initiativeTitle) {
+        JSONObject joinJson = new JSONObject();
+        joinJson.put("type", "joinInitiative");
+        joinJson.put("userEmail", userEmail);
+        joinJson.put("initiativeTitle", initiativeTitle);
+        return joinJson;
+    }
+
+    public JSONObject createLeaveInitiativeJson(String userEmail, String initiativeTitle) {
+        JSONObject leaveJson = new JSONObject();
+        leaveJson.put("type", "leaveInitiative");
+        leaveJson.put("userEmail", userEmail);
+        leaveJson.put("initiativeTitle", initiativeTitle);
+        return leaveJson;
+    }
+
+    public JSONObject createAddCommentJson(String userEmail, String initiativeTitle, String content) {
+        JSONObject commentJson = new JSONObject();
+        commentJson.put("type", "addComment");
+        commentJson.put("userEmail", userEmail);
+        commentJson.put("initiativeTitle", initiativeTitle);
+        commentJson.put("content", content);
+        return commentJson;
+    }
+
+    public JSONObject createReplyCommentJson(String userEmail, String initiativeTitle, String content, String parentCommentId) {
+        JSONObject replyJson = new JSONObject();
+        replyJson.put("type", "replyComment");
+        replyJson.put("userEmail", userEmail);
+        replyJson.put("initiativeTitle", initiativeTitle);
+        replyJson.put("content", content);
+        replyJson.put("parentCommentId", parentCommentId);
+        return replyJson;
+    }
+
+    public JSONObject createLikeCommentJson(String userEmail, String initiativeTitle, String commentId) {
+        JSONObject likeJson = new JSONObject();
+        likeJson.put("type", "likeComment");
+        likeJson.put("userEmail", userEmail);
+        likeJson.put("initiativeTitle", initiativeTitle);
+        likeJson.put("commentId", commentId);
+        return likeJson;
+    }
+
+    public JSONObject createGetNeighborhoodInitiativesJson(String userEmail) {
+        JSONObject neighborhoodJson = new JSONObject();
+        neighborhoodJson.put("type", "getNeighborhoodInitiatives");
+        neighborhoodJson.put("userEmail", userEmail);
+        return neighborhoodJson;
     }
 }

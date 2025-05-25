@@ -121,9 +121,15 @@ public class GUIInController {
     }
 
     public void successfulInitiativeCreation() {
+        System.out.println("[DEBUG] GUIInController.successfulInitiativeCreation() called");
+        System.out.println("[DEBUG] About to close initiative creation window");
         FxController createInitiativeController = GUIControllerRegistry.getInstance().get(CreateInitiativeController.class.getName());
         Platform.runLater(() -> {
             createInitiativeController.closeStage();
+            System.out.println("[DEBUG] Initiative creation window closed");
+            System.out.println("[DEBUG] About to request initiatives update");
+            GUIOutController.getInstance().getConnectionController().sendRequestForInitiatives();
+            System.out.println("[DEBUG] Initiatives update requested");
         });
     }
     public List<Achievement> getAchievements() {

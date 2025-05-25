@@ -53,10 +53,30 @@ public class ConnectionController {
     }
 
     public void connectToServer() throws IOException {
-        String serverAddress = "127.0.0.1";
-        int serverPort = 2343;
-        clientConnection = new ClientConnection(serverAddress, serverPort, this);
-        clientConnection.connect();
+        try {
+            String serverAddress = "127.0.0.1";
+            int serverPort = 2343;
+            
+            // Close existing connection if any
+            if (clientConnection != null) {
+                clientConnection.disconnect();
+            }
+            
+            clientConnection = new ClientConnection(serverAddress, serverPort, this);
+            clientConnection.connect();
+            
+            // Give the connection a moment to establish
+            Thread.sleep(500);
+            
+            if (!clientConnection.isConnected()) {
+                throw new IOException("Failed to establish connection to server");
+            }
+            
+            System.out.println("Successfully connected to server");
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Connection interrupted");
+        }
     }
 
     public void disconnectFromServer() throws IOException {
@@ -104,10 +124,50 @@ public class ConnectionController {
                 MessageController.getInstance().addMessage(message);
                 break;
             case "unSuccessfulInitiativeCreation":
+                System.out.println("[DEBUG] Received unSuccessfulInitiativeCreation");
                 guiInController.notifyUser("The initiative could not be created. Please make sure no commas in included anywhere and that every field has text");
                 break;
             case "SuccessfulInitiativeCreation":
+                System.out.println("[DEBUG] Received SuccessfulInitiativeCreation");
                 guiInController.successfulInitiativeCreation();
+                break;
+            case "joinInitiativeSuccess":
+                guiInController.notifyUser("Successfully joined initiative!");
+                break;
+            case "joinInitiativeFailure":
+                String joinFailureMessage = jsonObject.optString("message", "Failed to join initiative");
+                guiInController.notifyUser(joinFailureMessage);
+                break;
+            case "leaveInitiativeSuccess":
+                guiInController.notifyUser("Successfully left initiative!");
+                break;
+            case "leaveInitiativeFailure":
+                String leaveFailureMessage = jsonObject.optString("message", "Failed to leave initiative");
+                guiInController.notifyUser(leaveFailureMessage);
+                break;
+            case "addCommentSuccess":
+                guiInController.notifyUser("Comment added successfully!");
+                break;
+            case "addCommentFailure":
+                String commentFailureMessage = jsonObject.optString("message", "Failed to add comment");
+                guiInController.notifyUser(commentFailureMessage);
+                break;
+            case "replyCommentSuccess":
+                guiInController.notifyUser("Reply added successfully!");
+                break;
+            case "replyCommentFailure":
+                String replyFailureMessage = jsonObject.optString("message", "Failed to add reply");
+                guiInController.notifyUser(replyFailureMessage);
+                break;
+            case "likeCommentSuccess":
+                guiInController.notifyUser("Comment liked!");
+                break;
+            case "likeCommentFailure":
+                String likeFailureMessage = jsonObject.optString("message", "Failed to like comment");
+                guiInController.notifyUser(likeFailureMessage);
+                break;
+            case "neighborhoodInitiatives":
+                handleNeighborhoodInitiatives(jsonObject);
                 break;
             case "achievementsLocation":
                 JSONArray jsonArray = (JSONArray) jsonObject.get("achievements");
@@ -160,8 +220,29 @@ public class ConnectionController {
     }
 
     public void sendJsonObject(JSONObject jsonObject) {
-        String dataToSend = jsonObject.toString();
-        clientConnection.sendObject(dataToSend);
+        try {
+            // Check if connection is still valid
+            if (clientConnection == null || !clientConnection.isConnected()) {
+                System.out.println("Connection lost, attempting to reconnect...");
+                connectToServer();
+                // Give a moment for connection to establish
+                Thread.sleep(100);
+            }
+            
+            String dataToSend = jsonObject.toString();
+            clientConnection.sendObject(dataToSend);
+        } catch (Exception e) {
+            System.err.println("Failed to send JSON object: " + e.getMessage());
+            guiInController.notifyUser("Connection error. Please try again.");
+            
+            // Attempt to reconnect
+            try {
+                connectToServer();
+            } catch (IOException reconnectException) {
+                System.err.println("Failed to reconnect: " + reconnectException.getMessage());
+                guiInController.notifyUser("Unable to reconnect to server. Please restart the application.");
+            }
+        }
     }
 
     private void newNotification(JSONObject jsonObject) {
@@ -261,7 +342,9 @@ public class ConnectionController {
     }
 
     private void updateInitiatives(JSONObject jsonObject) {
+        System.out.println("[DEBUG] Client updateInitiatives called with: " + jsonObject.toString());
         JSONArray array = jsonObject.getJSONArray("listOfInitiatives");
+        System.out.println("[DEBUG] Client received " + array.length() + " initiatives");
         List<String> titles = new ArrayList<>();
         activeInitiatives.clear();
 
@@ -269,6 +352,7 @@ public class ConnectionController {
             JSONObject obj = array.getJSONObject(i);
             String title = obj.getString("title");
             titles.add(title);
+            System.out.println("[DEBUG] Client processing initiative: " + title);
 
             Initiative initiative = unpacker.unpackInitiative(obj);
             if (initiative != null) {
@@ -276,7 +360,9 @@ public class ConnectionController {
             }
         }
 
+        System.out.println("[DEBUG] Client calling guiInController.updateInitiatives with " + titles.size() + " titles");
         guiInController.updateInitiatives(titles);
+        System.out.println("[DEBUG] Client finished updating initiatives");
     }
 
     /**
@@ -302,7 +388,58 @@ public class ConnectionController {
         return "BadType";
     }
 
+    public void sendJoinInitiative(String userEmail, String initiativeTitle) {
+        JSONObject joinJson = packager.createJoinInitiativeJson(userEmail, initiativeTitle);
+        sendJsonObject(joinJson);
+    }
 
+    public void sendLeaveInitiative(String userEmail, String initiativeTitle) {
+        JSONObject leaveJson = packager.createLeaveInitiativeJson(userEmail, initiativeTitle);
+        sendJsonObject(leaveJson);
+    }
 
+    public void sendAddComment(String userEmail, String initiativeTitle, String content) {
+        JSONObject commentJson = packager.createAddCommentJson(userEmail, initiativeTitle, content);
+        sendJsonObject(commentJson);
+    }
+
+    public void sendReplyComment(String userEmail, String initiativeTitle, String content, String parentCommentId) {
+        JSONObject replyJson = packager.createReplyCommentJson(userEmail, initiativeTitle, content, parentCommentId);
+        sendJsonObject(replyJson);
+    }
+
+    public void sendLikeComment(String userEmail, String initiativeTitle, String commentId) {
+        JSONObject likeJson = packager.createLikeCommentJson(userEmail, initiativeTitle, commentId);
+        sendJsonObject(likeJson);
+    }
+
+    public void sendGetNeighborhoodInitiatives(String userEmail) {
+        System.out.println("[DEBUG] sendGetNeighborhoodInitiatives called for user: " + userEmail);
+        JSONObject neighborhoodJson = packager.createGetNeighborhoodInitiativesJson(userEmail);
+        System.out.println("[DEBUG] Sending JSON: " + neighborhoodJson.toString());
+        sendJsonObject(neighborhoodJson);
+    }
+
+    private void handleNeighborhoodInitiatives(JSONObject jsonObject) {
+        System.out.println("[DEBUG] handleNeighborhoodInitiatives received response");
+        JSONArray initiativesArray = jsonObject.getJSONArray("initiatives");
+        System.out.println("[DEBUG] Received " + initiativesArray.length() + " initiatives");
+        List<String> titles = new ArrayList<>();
+        activeInitiatives.clear();
+
+        for (int i = 0; i < initiativesArray.length(); i++) {
+            JSONObject obj = initiativesArray.getJSONObject(i);
+            String title = obj.getString("title");
+            titles.add(title);
+
+            Initiative initiative = unpacker.unpackInitiative(obj);
+            if (initiative != null) {
+                activeInitiatives.add(initiative);
+            }
+        }
+
+        guiInController.updateInitiatives(titles);
+        guiInController.notifyUser("Showing " + titles.size() + " neighborhood initiatives");
+    }
 
 }

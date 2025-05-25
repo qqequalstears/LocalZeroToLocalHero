@@ -287,11 +287,15 @@ public class ReaderFiles implements IDataFetcher {
     public List<Initiative> fetchAllActiveInitiatives() {
         List<Initiative> initiatives = new ArrayList<>();
         String csvContent = readWholeCSVFile(destinationActiveIntiative);
+        System.out.println("[DEBUG] CSV content: " + csvContent);
         String[] lines = csvContent.split("\n");
+        System.out.println("[DEBUG] Number of lines in CSV: " + lines.length);
 
         for (int i = 1; i < lines.length; i++) {
             String[] contents = lines[i].split(",", -1);
+            System.out.println("[DEBUG] Line " + i + " split into " + contents.length + " parts: " + java.util.Arrays.toString(contents));
             if (contents.length < 12) {
+                System.out.println("[DEBUG] Skipping line " + i + " - insufficient columns");
                 continue;
             }
 
@@ -311,26 +315,49 @@ public class ReaderFiles implements IDataFetcher {
             List<String> likes = new ArrayList<>();
             List<Achievement> achievements = new ArrayList<>();
 
+            System.out.println("[DEBUG] Processing initiative: " + initiativeID + " - " + title + " at " + location);
+
+            Initiative initiative = null;
             switch (initiativeID) {
                 case "CarPool":
-                    CarPool carPool = new CarPool(title, description, location, duration, startTime, numberOfSeats, initiativeID, isPublic);
-                    initiatives.add(carPool);
+                    initiative = new CarPool(title, description, location, duration, startTime, numberOfSeats, initiativeID, isPublic);
+                    System.out.println("[DEBUG] Created CarPool initiative");
                     break;
                 case "Garage Sale":
-                    GarageSale garageSale = new GarageSale(title, description, location, duration, startTime, itemsToSell, initiativeID, isPublic);
-                    initiatives.add(garageSale);
+                    initiative = new GarageSale(title, description, location, duration, startTime, itemsToSell, initiativeID, isPublic);
+                    System.out.println("[DEBUG] Created GarageSale initiative");
                     break;
                 case "Gardening":
-                    Gardening gardening = new Gardening(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
-                    initiatives.add(gardening);
+                    initiative = new Gardening(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
+                    System.out.println("[DEBUG] Created Gardening initiative");
                     break;
                 case "ToolSharing":
-                    ToolSharing toolSharing = new ToolSharing(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
-                    initiatives.add(toolSharing);
+                    initiative = new ToolSharing(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
+                    System.out.println("[DEBUG] Created ToolSharing initiative");
                     break;
+                default:
+                    System.out.println("[DEBUG] Unknown initiative type: " + initiativeID);
+            }
+            
+            if (initiative != null) {
+                // Parse and set participants
+                if (!participants.isEmpty()) {
+                    String[] participantArray = participants.split(";");
+                    List<String> participantList = new ArrayList<>();
+                    for (String p : participantArray) {
+                        if (!p.trim().isEmpty()) {
+                            participantList.add(p.trim());
+                        }
+                    }
+                    initiative.setParticipants(participantList);
+                    System.out.println("[DEBUG] Set participants for " + title + ": " + participantList);
+                }
+                initiatives.add(initiative);
+                System.out.println("[DEBUG] Added initiative to list: " + title);
             }
         }
 
+        System.out.println("[DEBUG] Total initiatives loaded: " + initiatives.size());
         return initiatives;
     }
 

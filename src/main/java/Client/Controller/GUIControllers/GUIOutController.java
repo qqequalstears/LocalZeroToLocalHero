@@ -84,4 +84,46 @@ public class GUIOutController {
 
         connectionController.updateUsersRoles(rolesList, mail);
     }
+
+    public void joinInitiative(String initiativeTitle) {
+        String userEmail = getConnectedUserEmail();
+        if (userEmail != null) {
+            connectionController.sendJoinInitiative(userEmail, initiativeTitle);
+        }
+    }
+
+    public void leaveInitiative(String initiativeTitle) {
+        String userEmail = getConnectedUserEmail();
+        if (userEmail != null) {
+            connectionController.sendLeaveInitiative(userEmail, initiativeTitle);
+        }
+    }
+
+    public void addComment(String initiativeTitle, String content) {
+        String userEmail = getConnectedUserEmail();
+        if (userEmail != null) {
+            connectionController.sendAddComment(userEmail, initiativeTitle, content);
+        }
+    }
+
+    public void replyComment(String initiativeTitle, String content, String parentCommentId) {
+        String userEmail = getConnectedUserEmail();
+        if (userEmail != null) {
+            connectionController.sendReplyComment(userEmail, initiativeTitle, content, parentCommentId);
+        }
+    }
+
+    public void likeComment(String initiativeTitle, String commentId) {
+        String userEmail = getConnectedUserEmail();
+        if (userEmail != null) {
+            connectionController.sendLikeComment(userEmail, initiativeTitle, commentId);
+        }
+    }
+
+    public void getNeighborhoodInitiatives() {
+        String userEmail = getConnectedUserEmail();
+        if (userEmail != null) {
+            connectionController.sendGetNeighborhoodInitiatives(userEmail);
+        }
+    }
 }

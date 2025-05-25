@@ -53,12 +53,18 @@ public class Unpacker {
         String startTime = obj.getString("startTime");
         boolean isPublic = obj.getBoolean("isPublic");
 
+        Initiative initiative = null;
+
         if (category.equals("CarPool")) {
             String numberOfSeats = obj.getString("numberOfSeats");
-            String destination = obj.getString("destination");
-
+            
             CarPool cp = new CarPool(title, description, location, duration, startTime, numberOfSeats, category, isPublic);
-            cp.setDestination(destination);
+            
+            // Only set destination if it exists in the JSON
+            if (obj.has("destination")) {
+                String destination = obj.getString("destination");
+                cp.setDestination(destination);
+            }
 
             if (obj.has("driver")) {
                 cp.setDriver(unpackaUser(obj.getJSONObject("driver")));
@@ -73,10 +79,10 @@ public class Unpacker {
                 cp.setPassengers(passengers);
             }
 
-            return cp;
+            initiative = cp;
         }
 
-        if (category.equals("Garage Sale")) {
+        else if (category.equals("Garage Sale")) {
             String itemsToSell = obj.getString("itemsToSell");
 
             GarageSale gs = new GarageSale(title, description, location, duration, startTime, itemsToSell, category, isPublic);
@@ -85,10 +91,10 @@ public class Unpacker {
                 gs.setSeller(unpackaUser(obj.getJSONObject("seller")));
             }
 
-            return gs;
+            initiative = gs;
         }
 
-        if (category.equals("Gardening")) {
+        else if (category.equals("Gardening")) {
             Gardening g = new Gardening(category, title, description, location, duration, startTime, new ArrayList<>(), new ArrayList<>(), isPublic, new ArrayList<>());
 
             if (obj.has("needsHelp")) {
@@ -102,13 +108,12 @@ public class Unpacker {
                     helpers.add(unpackaUser(helperArray.getJSONObject(i)));
                 }
                 g.setHelpers(helpers);
-
             }
 
-            return g;
+            initiative = g;
         }
 
-        if (category.equals("ToolSharing")) {
+        else if (category.equals("ToolSharing")) {
             ToolSharing ts = new ToolSharing(category, title, description, location, duration, startTime, new ArrayList<>(), new ArrayList<>(), isPublic, new ArrayList<>());
 
             if (obj.has("loaner")) {
@@ -119,10 +124,66 @@ public class Unpacker {
                 ts.setLender(unpackaUser(obj.getJSONObject("lender")));
             }
 
-            return ts;
+            initiative = ts;
         }
 
-        return null;
+        // Handle participants and comments for all initiative types
+        if (initiative != null) {
+            // Unpack participants
+            if (obj.has("participants")) {
+                JSONArray participantsArray = obj.getJSONArray("participants");
+                List<String> participants = new ArrayList<>();
+                for (int i = 0; i < participantsArray.length(); i++) {
+                    participants.add(participantsArray.getString(i));
+                }
+                initiative.setParticipants(participants);
+            }
+
+            // Unpack comments
+            if (obj.has("comments")) {
+                JSONArray commentsArray = obj.getJSONArray("comments");
+                List<Initiative.Comment> comments = new ArrayList<>();
+                for (int i = 0; i < commentsArray.length(); i++) {
+                    Initiative.Comment comment = unpackComment(commentsArray.getJSONObject(i));
+                    if (comment != null) {
+                        comments.add(comment);
+                    }
+                }
+                initiative.setCommentList(comments);
+            }
+        }
+
+        return initiative;
+    }
+
+    private Initiative.Comment unpackComment(JSONObject commentObj) {
+        String id = commentObj.getString("id");
+        String authorEmail = commentObj.getString("authorEmail");
+        String content = commentObj.getString("content");
+        String parentId = commentObj.optString("parentId", null);
+
+        Initiative.Comment comment = new Initiative.Comment(id, authorEmail, content, parentId);
+
+        // Unpack likes
+        if (commentObj.has("likedBy")) {
+            JSONArray likedByArray = commentObj.getJSONArray("likedBy");
+            for (int i = 0; i < likedByArray.length(); i++) {
+                comment.like(likedByArray.getString(i));
+            }
+        }
+
+        // Unpack replies
+        if (commentObj.has("replies")) {
+            JSONArray repliesArray = commentObj.getJSONArray("replies");
+            for (int i = 0; i < repliesArray.length(); i++) {
+                Initiative.Comment reply = unpackComment(repliesArray.getJSONObject(i));
+                if (reply != null) {
+                    comment.addReply(reply);
+                }
+            }
+        }
+
+        return comment;
     }
 
     private User unpackaUser(JSONObject userObj) {

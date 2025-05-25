@@ -21,8 +21,6 @@ import java.util.List;
 public class GarageSale extends Initiative implements Sale, Log {
     private String itemsToSell;
     private User seller;
-    List<User> participants;
-
 
     public GarageSale(String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
         super(category,  title,  description,  location,  duration,  startTime,  comments, likes,  isPublic, achievements);
@@ -31,7 +29,6 @@ public class GarageSale extends Initiative implements Sale, Log {
     public GarageSale(String title, String description, String location, String duration, String startTime, String sellList, String category, boolean isPublic) {
         super(title, description, location, duration, startTime, category, isPublic);
         this.itemsToSell = sellList;
-        participants = new ArrayList<>();
     }
 
     @Override
@@ -54,18 +51,8 @@ public class GarageSale extends Initiative implements Sale, Log {
         System.out.println("YEEEHAW, GarageSale is logging hell yea!");
     }
 
-
     public String getItemsToSell() {
         return itemsToSell;
-    }
-
-
-    public List<User> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<User> participants) {
-        this.participants = participants;
     }
 
     public User getSeller() {

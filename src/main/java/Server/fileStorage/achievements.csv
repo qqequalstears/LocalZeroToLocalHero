@@ -1,12 +1,15 @@
 achievementID,achievementName,achievementDescription,achievementPoints,location
-1,Gardening,GreenThumb,70,malmö
-2,Carpool,Carpooler,2,malmö
-3,ToolSharing,ToolSharer,50,malmö
-4,Garage Sale,GarageSale,0,malmö
-6,Carpool,Jaha vad ska här stå?,1,Malmöö
-7,Carpool,Jaha vad ska här stå?,85,London
-8,Gardening,ZeroToHero,174,London
-9,ToolSharing,ZeroToHero,260,London
-10,Garage Sale,ZeroToHero,540,London
-11,Gardening,ZeroToHero,5,hemma
-12,Gardening,ZeroToHero,4,dsad
+Category,Title,Description,Location,Duration,StartTime,Creator,Participant,Participants,IsPublic,ItemsToSell,NumberOfSeats
+CarPool,Ride to Malmö,Need passengers for trip to Malmö,Osby,1 hour,09:00,,,user1@test.com,true,,3
+CarPool,Trip to Stockholm,Need 2 passengers for Stockholm trip,Osby,4 hours,08:00,,,user@test.com,true,,4
+CarPool,Rideto denmark,we are riding to denmark,Osby,60,20:00,,,user@test.com;user1@test.com,true,,4
+Gardening,testing,test,60,60,60,user@test.com,,user@test.com,false,,
+ToolSharing,Testings,we are testing,malmo,60,20:00,user@test.com,,user@test.com,true,,
+ToolSharing,Toolsharing,Share tools,Osby,60,20:00,user@test.com,,user@test.com,true,,
+Gardening,Testing,please work,home,60,1,user@test.com,,user@test.com,true,,
+Garage Sale,testingpls,plswork,Osby,60,15:00,user@test.com,,user@test.com,false,Toys,
+Garage Sale,work,work,Osby,60,20:00,user@test.com,,user@test.com,false,Cars,
+ToolSharing,working,on,pls,20,20:00,user@test.com,,user@test.com,true,,
+ToolSharing,working,on,pls,20,20:00,user@test.com,,user@test.com,true,,
+Garage Sale,working,on,pls,20,20:00,user@test.com,,user@test.com,true,test,
+15,Garage Sale,ZeroToHero,2,pls

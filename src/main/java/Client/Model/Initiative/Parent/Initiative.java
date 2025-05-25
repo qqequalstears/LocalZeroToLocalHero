@@ -5,6 +5,8 @@ import Client.Model.ISavableObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Object utilizing Template Design Pattern to represent initiatives that actors in the system can take (depending on actor in question role).
@@ -25,10 +27,12 @@ public abstract class Initiative implements ISavableObject {
     private String duration;
     private String startTime;
     private String category;
-    private List<String> comments;
-    private List<String> likes;
-    private List<Achievement> achievements;
+    private List<String> comments = new ArrayList<>();
+    private List<String> likes = new ArrayList<>();
+    private List<Achievement> achievements = new ArrayList<>();
     private boolean isPublic;
+    private List<String> participants = new ArrayList<>(); // user emails
+    private List<Comment> commentList = new ArrayList<>();
 
 
     public Initiative(String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements)
@@ -129,6 +133,106 @@ public abstract class Initiative implements ISavableObject {
         isPublic = aPublic;
     }
 
+    public List<String> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<String> participants) {
+        this.participants = participants;
+    }
+
+    public boolean join(String userEmail) {
+        System.out.println("[DEBUG] Initiative.join() called for user: " + userEmail);
+        System.out.println("[DEBUG] Current participants: " + participants);
+        System.out.println("[DEBUG] Contains user: " + participants.contains(userEmail));
+        System.out.println("[DEBUG] Is full: " + isFull());
+        
+        if (!participants.contains(userEmail) && !isFull()) {
+            participants.add(userEmail);
+            System.out.println("[DEBUG] User added successfully. New participants: " + participants);
+            return true;
+        }
+        System.out.println("[DEBUG] Join failed - user already participant or initiative full");
+        return false;
+    }
+
+    public boolean leave(String userEmail) {
+        return participants.remove(userEmail);
+    }
+
+    public boolean isFull() {
+        return false;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public void addComment(Comment comment) {
+        commentList.add(comment);
+    }
+
+    public static class Comment {
+        private String id;
+        private String authorEmail;
+        private String content;
+        private String parentId; // null if top-level
+        private List<Comment> replies = new ArrayList<>();
+        private int likes = 0;
+        private List<String> likedBy = new ArrayList<>();
+
+        public Comment(String id, String authorEmail, String content, String parentId) {
+            this.id = id;
+            this.authorEmail = authorEmail;
+            this.content = content;
+            this.parentId = parentId;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getAuthorEmail() {
+            return authorEmail;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public String getParentId() {
+            return parentId;
+        }
+
+        public List<Comment> getReplies() {
+            return replies;
+        }
+
+        public int getLikes() {
+            return likes;
+        }
+
+        public List<String> getLikedBy() {
+            return likedBy;
+        }
+
+        public void addReply(Comment reply) {
+            replies.add(reply);
+        }
+
+        public boolean like(String userEmail) {
+            if (!likedBy.contains(userEmail)) {
+                likedBy.add(userEmail);
+                likes++;
+                return true;
+            }
+            return false;
+        }
+    }
 
     @Override
     public String getSaveString() {

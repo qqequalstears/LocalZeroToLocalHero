@@ -61,10 +61,30 @@ public class ClientConnection extends Thread {
                 connectSocket();
             }
             while (!Thread.currentThread().isInterrupted()) {
-                Object object = inputStream.readObject();
-                connectionController.revealIntention(object);
+                try {
+                    Object object = inputStream.readObject();
+                    if (object != null) {
+                        connectionController.revealIntention(object);
+                    }
+                } catch (java.io.EOFException e) {
+                    System.out.println("Server closed connection unexpectedly. Attempting to reconnect...");
+                    disconnect();
+                    Thread.sleep(1000); // Wait before reconnecting
+                    connectSocket();
+                    if (!isConnected()) {
+                        System.err.println("Failed to reconnect to server");
+                        break;
+                    }
+                } catch (java.io.IOException e) {
+                    System.err.println("IO error in client connection: " + e.getMessage());
+                    disconnect();
+                    break;
+                } catch (ClassNotFoundException e) {
+                    System.err.println("Class not found error: " + e.getMessage());
+                }
             }
         } catch (Exception e) {
+            System.err.println("Fatal error in client connection: " + e.getMessage());
             e.printStackTrace();
             disconnect();
         }
@@ -78,5 +98,9 @@ public class ClientConnection extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isConnected() {
+        return socket != null && socket.isConnected() && !socket.isClosed();
     }
 }

@@ -53,7 +53,6 @@ public class FileHandler {
         IDataSaver dataAppender = FileAppenderProxy.getInstance();
         dataAppender.saveActiveIntiative(csvContent);
         return "Data saved successfully";
-
     }
 
     public String replaceRoles(String mail, List<String> newRoles) {
@@ -133,5 +132,50 @@ public class FileHandler {
     public String writeAchievementsToFile(String data) {
         IDataSaver dataSaver = FileWriterProxy.getInstance();
         return dataSaver.saveAchievements(data);
+    }
+
+    public void updateInitiative(Initiative initiative) {
+        // Get all current initiatives
+        List<Initiative> allInitiatives = getAllActiveInitiatives();
+        
+        // Find and replace the initiative with the updated one
+        for (int i = 0; i < allInitiatives.size(); i++) {
+            if (allInitiatives.get(i).getTitle().equals(initiative.getTitle())) {
+                allInitiatives.set(i, initiative);
+                break;
+            }
+        }
+        
+        // Rebuild the CSV content and save it
+        StringBuilder csvContent = new StringBuilder();
+        csvContent.append("Category,Title,Description,Location,Duration,StartTime,Creator,Participant,Participants,IsPublic,ItemsToSell,NumberOfSeats\n");
+        
+        for (Initiative init : allInitiatives) {
+            String category = init.getCategory();
+            String title = init.getTitle();
+            String description = init.getDescription();
+            String location = init.getLocation();
+            String duration = init.getDuration();
+            String startTime = init.getStartTime();
+            String isPublic = String.valueOf(init.isPublic());
+            
+            // Convert participants list to comma-separated string
+            String participants = String.join(";", init.getParticipants());
+            
+            String itemsToSell = "";
+            String numberOfSeats = "";
+            
+            if (init instanceof Client.Model.Initiative.Children.CarPool) {
+                numberOfSeats = ((Client.Model.Initiative.Children.CarPool) init).getNumberOfSeats();
+            } else if (init instanceof Client.Model.Initiative.Children.GarageSale) {
+                itemsToSell = ((Client.Model.Initiative.Children.GarageSale) init).getItemsToSell();
+            }
+            
+            csvContent.append(String.join(",", category, title, description, location, duration, startTime, "", "", participants, isPublic, itemsToSell, numberOfSeats)).append("\n");
+        }
+        
+        // Save the updated CSV
+        IDataSaver dataSaver = FileWriterProxy.getInstance();
+        dataSaver.saveActiveIntiative(csvContent.toString());
     }
 }

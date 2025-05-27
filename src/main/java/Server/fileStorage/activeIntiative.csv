@@ -1,14 +1,9 @@
 category,title,description,location,duration,startTime,creator,participant,participants,isPublic,itemsToSell,numberOfSeats
-Category,Title,Description,Location,Duration,StartTime,Creator,Participant,Participants,IsPublic,ItemsToSell,NumberOfSeats
-CarPool,Ride to Malm√∂,Need passengers for trip to Malm√∂,Osby,1 hour,09:00,,,user1@test.com,true,,3
-CarPool,Trip to Stockholm,Need 2 passengers for Stockholm trip,Osby,4 hours,08:00,,,user@test.com,true,,4
-CarPool,Rideto denmark,we are riding to denmark,Osby,60,20:00,,,user@test.com;user1@test.com,true,,4
-Gardening,testing,test,60,60,60,user@test.com,,user@test.com,false,,
-ToolSharing,Testings,we are testing,malmo,60,20:00,user@test.com,,user@test.com,true,,
-ToolSharing,Toolsharing,Share tools,Osby,60,20:00,user@test.com,,user@test.com,true,,
-Gardening,Testing,please work,home,60,1,user@test.com,,user@test.com,true,,
-Garage Sale,testingpls,plswork,Osby,60,15:00,user@test.com,,user@test.com,false,Toys,
-Garage Sale,work,work,Osby,60,20:00,user@test.com,,user@test.com,false,Cars,
-ToolSharing,working,on,pls,20,20:00,user@test.com,,user@test.com,true,,
-ToolSharing,working,on,pls,20,20:00,user@test.com,,user@test.com,true,,
-Garage Sale,working,on,pls,20,20:00,user@test.com,,user@test.com,true,test,
+Category,Title,Description,Location,Duration,StartTime,Creator,Participant,Participants,IsPublic,ItemsToSell,NumberOfSeats,Comments
+CarPool,Ride to Malm√∂,Need passengers for trip to Malm√∂,Osby,1 hour,09:00,,,user1@test.com,true,,3,
+CarPool,Trip to Stockholm,Need 2 passengers for Stockholm trip,Osby,4 hours,08:00,,,user@test.com,true,,4,
+CarPool,Rideto denmark,we are riding to denmark,Osby,60,20:00,,,user@test.com;user1@test.com,true,,4,
+Garage Sale,testingpls,plswork,Osby,60,15:00,,,user@test.com,false,Toys,,
+Garage Sale,work,work,Osby,60,20:00,,,user@test.com,false,Cars,,
+Garage Sale,working,on,pls,20,20:00,,,user@test.com,true,test,,
+CarPool,Testing,test,test,60,20,,,user@test.com,true,,2,[{"authorEmail":"user@test.com"ß"replies":[{"authorEmail":"user@test.com"ß"replies":[]ß"likedBy":[]ß"id":"0bff6ede-643d-46de-9ec5-196ac464160d"ß"content":"hej"ß"parentId":"ae2cc74c-b37b-4b04-ad2e-bc494f86af81"ß"likes":0}]ß"likedBy":["user@test.com"]ß"id":"ae2cc74c-b37b-4b04-ad2e-bc494f86af81"ß"content":"test"ß"likes":1}]

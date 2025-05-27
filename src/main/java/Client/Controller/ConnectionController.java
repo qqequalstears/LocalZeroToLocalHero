@@ -362,6 +362,15 @@ public class ConnectionController {
 
         System.out.println("[DEBUG] Client calling guiInController.updateInitiatives with " + titles.size() + " titles");
         guiInController.updateInitiatives(titles);
+        // Ensure the selected initiative object is up-to-date
+        String selectedTitle = guiInController.getCurrentlySelectedInitiative();
+        if (selectedTitle != null) {
+            Initiative updated = getSpecificInitiative(selectedTitle);
+            if (updated != null) {
+                guiInController.setCurrentlySelectedInitiative(selectedTitle); // triggers refresh
+            }
+        }
+        guiInController.populateViewSelectedInitiativeSceen();
         System.out.println("[DEBUG] Client finished updating initiatives");
     }
 

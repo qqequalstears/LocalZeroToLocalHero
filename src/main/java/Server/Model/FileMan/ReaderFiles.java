@@ -13,6 +13,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * The FileReader class provides methods for reading data from a file.
  * It follows the Singleton design pattern, ensuring only one instance of the
@@ -311,6 +314,7 @@ public class ReaderFiles implements IDataFetcher {
             boolean isPublic = Boolean.parseBoolean(contents[9].trim());
             String itemsToSell = contents[10].trim();
             String numberOfSeats = contents[11].trim();
+            String commentsJson = contents.length > 12 ? contents[12].trim() : "";
             List<String> comments = new ArrayList<>();
             List<String> likes = new ArrayList<>();
             List<Achievement> achievements = new ArrayList<>();
@@ -352,6 +356,26 @@ public class ReaderFiles implements IDataFetcher {
                     initiative.setParticipants(participantList);
                     System.out.println("[DEBUG] Set participants for " + title + ": " + participantList);
                 }
+                
+                // Parse and set comments
+                if (!commentsJson.isEmpty()) {
+                    try {
+                        String unescapedJson = commentsJson.replace("§", ",").replace("¶", "\n");
+                        JSONArray commentsArray = new JSONArray(unescapedJson);
+                        List<Initiative.Comment> commentList = new ArrayList<>();
+                        for (int j = 0; j < commentsArray.length(); j++) {
+                            Initiative.Comment comment = unpackComment(commentsArray.getJSONObject(j));
+                            if (comment != null) {
+                                commentList.add(comment);
+                            }
+                        }
+                        initiative.setCommentList(commentList);
+                        System.out.println("[DEBUG] Loaded " + commentList.size() + " comments for " + title);
+                    } catch (Exception e) {
+                        System.out.println("[DEBUG] Error parsing comments for " + title + ": " + e.getMessage());
+                    }
+                }
+                
                 initiatives.add(initiative);
                 System.out.println("[DEBUG] Added initiative to list: " + title);
             }
@@ -359,6 +383,36 @@ public class ReaderFiles implements IDataFetcher {
 
         System.out.println("[DEBUG] Total initiatives loaded: " + initiatives.size());
         return initiatives;
+    }
+
+    private Initiative.Comment unpackComment(JSONObject commentObj) {
+        String id = commentObj.getString("id");
+        String authorEmail = commentObj.getString("authorEmail");
+        String content = commentObj.getString("content");
+        String parentId = commentObj.optString("parentId", null);
+
+        Initiative.Comment comment = new Initiative.Comment(id, authorEmail, content, parentId);
+
+        // Unpack likes
+        if (commentObj.has("likedBy")) {
+            JSONArray likedByArray = commentObj.getJSONArray("likedBy");
+            for (int i = 0; i < likedByArray.length(); i++) {
+                comment.like(likedByArray.getString(i));
+            }
+        }
+
+        // Unpack replies
+        if (commentObj.has("replies")) {
+            JSONArray repliesArray = commentObj.getJSONArray("replies");
+            for (int i = 0; i < repliesArray.length(); i++) {
+                Initiative.Comment reply = unpackComment(repliesArray.getJSONObject(i));
+                if (reply != null) {
+                    comment.addReply(reply);
+                }
+            }
+        }
+
+        return comment;
     }
 
 }

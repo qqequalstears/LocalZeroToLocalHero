@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewSelectedInitiativeController {
+public class ViewSelectedInitiativeController implements Client.Controller.GUIControllers.FxController {
 
     private Initiative initiative;
     private GUIInController guiInController;
@@ -89,12 +89,12 @@ public class ViewSelectedInitiativeController {
     public void initialize() {
         this.guiInController = GUIInController.getInstance();
         this.guiOutController = GUIOutController.getInstance();
-
+        // Register this controller for refresh
+        Client.Controller.GUIControllers.GUIControllerRegistry.getInstance().add(this.getClass().getName(), (Client.Controller.GUIControllers.FxController) this);
         //Start invisible so dont crash if bad type.
         txtInputField.setVisible(false);
         commentsBox.setVisible(false);
         commentsScrollPane.setVisible(false);
-
         populateFields();
     }
 
@@ -164,6 +164,7 @@ public class ViewSelectedInitiativeController {
     }
 
     private void populateCommonFields(Initiative initiative) {
+        this.initiative = initiative;
         initName.setText(initiative.getTitle());
 
         // Show participants
@@ -187,7 +188,9 @@ public class ViewSelectedInitiativeController {
         commentsBox.getChildren().clear();
 
         // Display threaded comments
+        System.out.println("[DEBUG] Initiative has " + initiative.getCommentList().size() + " comments");
         for (Initiative.Comment comment : initiative.getCommentList()) {
+            System.out.println("[DEBUG] Adding comment to UI: " + comment.getContent());
             addCommentToUI(comment, 0);
         }
     }
@@ -332,5 +335,16 @@ public class ViewSelectedInitiativeController {
         
         loanerField.setText(ts.getLoaner() != null ? ts.getLoaner().getName() : "");
         lenderField.setText(ts.getLender() != null ? ts.getLender().getName() : "");
+    }
+
+    @Override
+    public void closeStage() {
+        // Find and close the stage for this controller if needed
+        if (initName != null && initName.getScene() != null) {
+            javafx.stage.Window window = initName.getScene().getWindow();
+            if (window instanceof javafx.stage.Stage) {
+                ((javafx.stage.Stage) window).close();
+            }
+        }
     }
 }

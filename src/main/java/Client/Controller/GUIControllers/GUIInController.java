@@ -24,6 +24,7 @@ import Client.View.StageCreator;
 import Client.View.UserInfo.UserInfoStage;
 import Client.View.UserNotifier;
 import Client.View.ViewInitiative.ViewInitiativeStage;
+import Client.Controller.GUIControllers.ViewSelectedInitiative.ViewSelectedInitiativeController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 
@@ -170,7 +171,10 @@ public class GUIInController {
     }
 
     public void populateViewSelectedInitiativeSceen() {
-
+        ViewSelectedInitiativeController controller = (ViewSelectedInitiativeController) GUIControllerRegistry.getInstance().get(ViewSelectedInitiativeController.class.getName());
+        if (controller != null) {
+            Platform.runLater(controller::populateFields);
+        }
     }
 
     public void updateInitiatives(List<String> titles) {

@@ -9,6 +9,8 @@ import Server.Model.FileMan.Proxy.FileWriterProxy;
 
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class FileHandler {
     private static FileHandler instance;
@@ -148,7 +150,7 @@ public class FileHandler {
         
         // Rebuild the CSV content and save it
         StringBuilder csvContent = new StringBuilder();
-        csvContent.append("Category,Title,Description,Location,Duration,StartTime,Creator,Participant,Participants,IsPublic,ItemsToSell,NumberOfSeats\n");
+        csvContent.append("Category,Title,Description,Location,Duration,StartTime,Creator,Participant,Participants,IsPublic,ItemsToSell,NumberOfSeats,Comments\n");
         
         for (Initiative init : allInitiatives) {
             String category = init.getCategory();
@@ -159,23 +161,58 @@ public class FileHandler {
             String startTime = init.getStartTime();
             String isPublic = String.valueOf(init.isPublic());
             
-            // Convert participants list to comma-separated string
-            String participants = String.join(";", init.getParticipants());
+            String participants = "";
+            if (init.getParticipants() != null && !init.getParticipants().isEmpty()) {
+                participants = String.join(";", init.getParticipants());
+            }
             
             String itemsToSell = "";
             String numberOfSeats = "";
             
-            if (init instanceof Client.Model.Initiative.Children.CarPool) {
-                numberOfSeats = ((Client.Model.Initiative.Children.CarPool) init).getNumberOfSeats();
-            } else if (init instanceof Client.Model.Initiative.Children.GarageSale) {
-                itemsToSell = ((Client.Model.Initiative.Children.GarageSale) init).getItemsToSell();
+            if (init instanceof Client.Model.Initiative.Children.CarPool carPool) {
+                numberOfSeats = carPool.getNumberOfSeats();
+            } else if (init instanceof Client.Model.Initiative.Children.GarageSale garageSale) {
+                itemsToSell = garageSale.getItemsToSell();
             }
             
-            csvContent.append(String.join(",", category, title, description, location, duration, startTime, "", "", participants, isPublic, itemsToSell, numberOfSeats)).append("\n");
+            // Serialize comments to JSON string
+            String commentsJson = "";
+            if (init.getCommentList() != null && !init.getCommentList().isEmpty()) {
+                JSONArray commentsArray = new JSONArray();
+                for (Initiative.Comment comment : init.getCommentList()) {
+                    commentsArray.put(packComment(comment));
+                }
+                commentsJson = commentsArray.toString().replace(",", "§").replace("\n", "¶"); // Escape commas and newlines
+            }
+            
+            csvContent.append(String.join(",", category, title, description, location, duration, startTime, "", "", participants, isPublic, itemsToSell, numberOfSeats, commentsJson)).append("\n");
         }
         
         // Save the updated CSV
         IDataSaver dataSaver = FileWriterProxy.getInstance();
         dataSaver.saveActiveIntiative(csvContent.toString());
+    }
+
+    private JSONObject packComment(Initiative.Comment comment) {
+        JSONObject commentJson = new JSONObject();
+        commentJson.put("id", comment.getId());
+        commentJson.put("authorEmail", comment.getAuthorEmail());
+        commentJson.put("content", comment.getContent());
+        commentJson.put("parentId", comment.getParentId());
+        commentJson.put("likes", comment.getLikes());
+        
+        JSONArray likedByArray = new JSONArray();
+        for (String email : comment.getLikedBy()) {
+            likedByArray.put(email);
+        }
+        commentJson.put("likedBy", likedByArray);
+        
+        JSONArray repliesArray = new JSONArray();
+        for (Initiative.Comment reply : comment.getReplies()) {
+            repliesArray.put(packComment(reply));
+        }
+        commentJson.put("replies", repliesArray);
+        
+        return commentJson;
     }
 }

@@ -142,18 +142,14 @@ public class Unpacker {
             // Unpack comments
             if (obj.has("comments")) {
                 JSONArray commentsArray = obj.getJSONArray("comments");
-                System.out.println("[DEBUG] Unpacking " + commentsArray.length() + " comments for initiative: " + title);
                 List<Initiative.Comment> comments = new ArrayList<>();
                 for (int i = 0; i < commentsArray.length(); i++) {
                     Initiative.Comment comment = unpackComment(commentsArray.getJSONObject(i));
                     if (comment != null) {
-                        System.out.println("[DEBUG] Unpacked comment: " + comment.getContent());
                         comments.add(comment);
                     }
                 }
                 initiative.setCommentList(comments);
-            } else {
-                System.out.println("[DEBUG] No comments field found for initiative: " + title);
             }
         }
 

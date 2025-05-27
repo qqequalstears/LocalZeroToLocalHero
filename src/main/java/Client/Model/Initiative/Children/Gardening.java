@@ -32,7 +32,6 @@ public class Gardening extends Initiative implements Log {
 
     @Override
     public void startActivity() {
-        System.out.println("HI, MY NAME IS GARDENING, I AM TOLD TO 'START ACTIVITY' WHICH I AM, ITS JUST THAT THIS METHOD DOESNT DO ANYTHING YET");
     }
 
     @Override
@@ -42,7 +41,6 @@ public class Gardening extends Initiative implements Log {
 
     @Override
     public void Log() {
-        System.out.println("HI, MY NAME IS GARDENING AND I LOGGGGGGGGGGGGGGGGGGGGGGGGGGGG LOG LOG LOG");
     }
 
     public User getNeedsHelp() {

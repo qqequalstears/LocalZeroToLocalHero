@@ -70,7 +70,6 @@ public class GUIInController {
             loginController.closeStage();
             createStage("HOMESTAGE");
             // Automatically request initiatives when logging in
-            System.out.println("[DEBUG] Requesting initiatives after successful login");
             GUIOutController.getInstance().getAllInitiativesFromServer();
         });
     }
@@ -99,11 +98,7 @@ public class GUIInController {
     }
 
     public void newNotification() {
-        System.out.println("[DEBUG] GUIInController.newNotification() called");
-        System.out.println("[DEBUG] Current notification count: " + Notifications.getUnreadCount());
-        
         if (GUIControllerRegistry.getInstance().contains(NotificationController.class.getName())) {
-            System.out.println("[DEBUG] Notification window is open, updating list");
             NotificationController notificationController = (NotificationController) GUIControllerRegistry.getInstance().get(NotificationController.class.getName());
             Platform.runLater(notificationController::updateNotifcations);
         }
@@ -111,10 +106,7 @@ public class GUIInController {
         // Always update the home button regardless of whether notification window is open
         HomeTopController homeTopController = (HomeTopController) GUIControllerRegistry.getInstance().get(HomeTopController.class.getName());
         if (homeTopController != null) {
-            System.out.println("[DEBUG] Updating notification button");
             Platform.runLater(homeTopController::notifyUser);
-        } else {
-            System.out.println("[DEBUG] HomeTopController not found in registry");
         }
     }
 
@@ -133,15 +125,10 @@ public class GUIInController {
     }
 
     public void successfulInitiativeCreation() {
-        System.out.println("[DEBUG] GUIInController.successfulInitiativeCreation() called");
-        System.out.println("[DEBUG] About to close initiative creation window");
         FxController createInitiativeController = GUIControllerRegistry.getInstance().get(CreateInitiativeController.class.getName());
         Platform.runLater(() -> {
             createInitiativeController.closeStage();
-            System.out.println("[DEBUG] Initiative creation window closed");
-            System.out.println("[DEBUG] About to request initiatives update");
             GUIOutController.getInstance().getConnectionController().sendRequestForInitiatives();
-            System.out.println("[DEBUG] Initiatives update requested");
         });
     }
     public List<Achievement> getAchievements() {

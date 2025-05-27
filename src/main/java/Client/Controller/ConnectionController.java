@@ -86,11 +86,9 @@ public class ConnectionController {
     }
 
     public void revealIntention(Object object) {
-        System.out.println("[DEBUG] revealIntention called with: " + object);
         String jsonString = (String) object;
         JSONObject jsonObject = new JSONObject(jsonString);
         String intention = (String) jsonObject.get("type");
-        System.out.println("Gained an object" + jsonObject);
 
         switch (intention) {
             case "successfulLogin":
@@ -124,11 +122,9 @@ public class ConnectionController {
                 MessageController.getInstance().addMessage(message);
                 break;
             case "unSuccessfulInitiativeCreation":
-                System.out.println("[DEBUG] Received unSuccessfulInitiativeCreation");
                 guiInController.notifyUser("The initiative could not be created. Please make sure no commas in included anywhere and that every field has text");
                 break;
             case "SuccessfulInitiativeCreation":
-                System.out.println("[DEBUG] Received SuccessfulInitiativeCreation");
                 guiInController.successfulInitiativeCreation();
                 break;
             case "joinInitiativeSuccess":
@@ -246,15 +242,11 @@ public class ConnectionController {
     }
 
     private void newNotification(JSONObject jsonObject) {
-        System.out.println("[DEBUG] Client received notification JSON: " + jsonObject.toString());
         String notification = (String) jsonObject.get("notification");
-        System.out.println("[DEBUG] Notification content: " + notification);
         
         Notifications.addNotification(notification);
-        System.out.println("[DEBUG] Notification added to model, new count: " + Notifications.getUnreadCount());
         
         guiInController.newNotification();
-        System.out.println("[DEBUG] GUI notification update triggered");
     }
 
     public void requestAchievements() {
@@ -313,7 +305,6 @@ public class ConnectionController {
      * @autor Martin Frick
      */
     public void sendRequestForInitiatives(){
-        System.out.println("[DEBUG] sendRequestForInitiatives CALLED");
         JSONObject getInitJson = packager.createIntentionJson("getInitiatives");
         sendJsonObject(getInitJson);
     }
@@ -347,26 +338,18 @@ public class ConnectionController {
     }
 
     private void updateInitiatives(JSONObject jsonObject) {
-        System.out.println("[DEBUG] updateInitiatives CALLED");
-        System.out.println("[DEBUG] Client updateInitiatives called with: " + jsonObject.toString());
         JSONArray array = jsonObject.getJSONArray("listOfInitiatives");
-        System.out.println("[DEBUG] Client received " + array.length() + " initiatives");
         List<String> titles = new ArrayList<>();
         activeInitiatives.clear();
-
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
             String title = obj.getString("title");
             titles.add(title);
-            System.out.println("[DEBUG] Client processing initiative: " + title);
-
             Initiative initiative = unpacker.unpackInitiative(obj);
             if (initiative != null) {
                 activeInitiatives.add(initiative);
             }
         }
-
-        System.out.println("[DEBUG] Client calling guiInController.updateInitiatives with " + titles.size() + " titles");
         guiInController.updateInitiatives(titles);
         // Ensure the selected initiative object is up-to-date
         String selectedTitle = guiInController.getCurrentlySelectedInitiative();
@@ -377,7 +360,6 @@ public class ConnectionController {
             }
         }
         guiInController.populateViewSelectedInitiativeSceen();
-        System.out.println("[DEBUG] Client finished updating initiatives");
     }
 
     /**
@@ -429,16 +411,12 @@ public class ConnectionController {
     }
 
     public void sendGetNeighborhoodInitiatives(String userEmail) {
-        System.out.println("[DEBUG] sendGetNeighborhoodInitiatives called for user: " + userEmail);
         JSONObject neighborhoodJson = packager.createGetNeighborhoodInitiativesJson(userEmail);
-        System.out.println("[DEBUG] Sending JSON: " + neighborhoodJson.toString());
         sendJsonObject(neighborhoodJson);
     }
 
     private void handleNeighborhoodInitiatives(JSONObject jsonObject) {
-        System.out.println("[DEBUG] handleNeighborhoodInitiatives received response");
         JSONArray initiativesArray = jsonObject.getJSONArray("initiatives");
-        System.out.println("[DEBUG] Received " + initiativesArray.length() + " initiatives");
         List<String> titles = new ArrayList<>();
         activeInitiatives.clear();
 

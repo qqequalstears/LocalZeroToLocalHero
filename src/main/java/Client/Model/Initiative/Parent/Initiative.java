@@ -142,17 +142,10 @@ public abstract class Initiative implements ISavableObject {
     }
 
     public boolean join(String userEmail) {
-        System.out.println("[DEBUG] Initiative.join() called for user: " + userEmail);
-        System.out.println("[DEBUG] Current participants: " + participants);
-        System.out.println("[DEBUG] Contains user: " + participants.contains(userEmail));
-        System.out.println("[DEBUG] Is full: " + isFull());
-        
         if (!participants.contains(userEmail) && !isFull()) {
             participants.add(userEmail);
-            System.out.println("[DEBUG] User added successfully. New participants: " + participants);
             return true;
         }
-        System.out.println("[DEBUG] Join failed - user already participant or initiative full");
         return false;
     }
 

@@ -291,26 +291,19 @@ public class ReaderFiles implements IDataFetcher {
         List<Initiative> initiatives = new ArrayList<>();
         String content = readWholeCSVFile(destinationActiveIntiative);
         if (content == null || content.trim().isEmpty()) {
-            System.out.println("[DEBUG] CSV file is empty or null");
             return initiatives;
         }
 
         String[] lines = content.split("\n");
-        System.out.println("[DEBUG] Total lines in CSV: " + lines.length);
 
         for (int i = 2; i < lines.length; i++) { // Start from line 2 to skip both header lines
             String line = lines[i].trim();
             if (line.isEmpty()) continue;
-            
             // Parse CSV line more carefully to handle JSON in comments field
             List<String> contents = parseCSVLine(line);
-            System.out.println("[DEBUG] Line " + i + " parsed into " + contents.size() + " parts");
-            
             if (contents.size() < 12) { // Minimum required columns
-                System.out.println("[DEBUG] Skipping line " + i + " - insufficient columns");
                 continue;
             }
-
             try {
                 String initiativeID = contents.get(0).trim();
                 String title = contents.get(1).trim();
@@ -361,27 +354,21 @@ public class ReaderFiles implements IDataFetcher {
                             // Try Base64 decoding first (new format)
                             byte[] decodedBytes = java.util.Base64.getDecoder().decode(commentsJson);
                             cleanJson = new String(decodedBytes, java.nio.charset.StandardCharsets.UTF_8);
-                            System.out.println("[DEBUG] Decoded Base64 JSON for " + title + ": " + cleanJson);
                         } catch (IllegalArgumentException e) {
                             // Fall back to old character replacement method for backward compatibility
                             if (commentsJson.contains("§") || commentsJson.contains("¶") || commentsJson.contains("¶") || commentsJson.contains("")) {
                                 cleanJson = commentsJson.replace("§", ",").replace("¶", "\n").replace("¶", ",").replace("", ",");
-                                System.out.println("[DEBUG] Unescaped JSON for " + title + ": " + cleanJson);
                             }
                         }
-                        
                         JSONArray commentsArray = new JSONArray(cleanJson);
-                        System.out.println("[DEBUG] Parsing " + commentsArray.length() + " comments for initiative: " + title);
                         List<Initiative.Comment> comments = new ArrayList<>();
                         for (int j = 0; j < commentsArray.length(); j++) {
                             Initiative.Comment comment = unpackComment(commentsArray.getJSONObject(j));
                             if (comment != null) {
                                 comments.add(comment);
-                                System.out.println("[DEBUG] Loaded comment: " + comment.getContent());
                             }
                         }
                         initiative.setCommentList(comments);
-                        System.out.println("[DEBUG] Successfully loaded " + comments.size() + " comments for " + title);
                     } catch (Exception e) {
                         System.out.println("[DEBUG] Error parsing comments JSON for " + title + ": " + e.getMessage());
                         System.out.println("[DEBUG] Raw comments JSON: " + commentsJson);
@@ -389,14 +376,10 @@ public class ReaderFiles implements IDataFetcher {
                 }
 
                 initiatives.add(initiative);
-                System.out.println("[DEBUG] Successfully loaded initiative: " + title);
-
             } catch (Exception e) {
                 System.out.println("[DEBUG] Error parsing line " + i + ": " + e.getMessage());
             }
         }
-
-        System.out.println("[DEBUG] Total initiatives loaded: " + initiatives.size());
         return initiatives;
     }
 

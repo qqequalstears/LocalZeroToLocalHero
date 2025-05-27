@@ -69,6 +69,9 @@ public class GUIInController {
         Platform.runLater(() -> {
             loginController.closeStage();
             createStage("HOMESTAGE");
+            // Automatically request initiatives when logging in
+            System.out.println("[DEBUG] Requesting initiatives after successful login");
+            GUIOutController.getInstance().getAllInitiativesFromServer();
         });
     }
 

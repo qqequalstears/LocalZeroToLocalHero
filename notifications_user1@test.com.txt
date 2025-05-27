@@ -1,3 +1,7 @@
 user@test.com joined the initiative: Drill Available
 user@test.com joined the initiative: Drill Available
 user@test.com joined the initiative: Community Garden
+user@test.com joined the initiative: Carpool test
+user@test.com commented on initiative: Carpool test
+user@test.com liked your comment on initiative: Carpool test
+user@test.com replied to your comment on initiative: Carpool test

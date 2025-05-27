@@ -3,6 +3,7 @@ package Client.Controller.GUIControllers.Home;
 import Client.Controller.GUIControllers.FxController;
 import Client.Controller.GUIControllers.GUIInController;
 import Client.Controller.GUIControllers.GUIOutController;
+import Client.Controller.GUIControllers.GUIControllerRegistry;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,8 +44,10 @@ public class HomeLeftController implements FxController {
 
     @FXML
     public void initialize() {
-        guiInController = GUIInController.getInstance();
-        guiOutController = GUIOutController.getInstance();
+        this.guiInController = GUIInController.getInstance();
+        this.guiOutController = GUIOutController.getInstance();
+        GUIControllerRegistry.getInstance().add(this.getClass().getName(), this);
+        
         initiativesListview.setItems(intitiatives);
         initiativesListview.setCellFactory(listView -> new ListCell<String>() {
             @Override
@@ -57,7 +60,6 @@ public class HomeLeftController implements FxController {
                 }
             }
         });
-        loadInitiativesFromCSV();
 
        /* initiativesListview.setOnMouseClicked(event -> {
             String selectedInitiative = (String) initiativesListview.getSelectionModel().getSelectedItem();
@@ -67,19 +69,6 @@ public class HomeLeftController implements FxController {
             }
         });*/
 
-    }
-
-    private void loadInitiativesFromCSV() {
-        String csvFile = "src/main/java/Server/fileStorage/activeIntiative.csv";
-        try (java.util.stream.Stream<String> lines = java.nio.file.Files.lines(java.nio.file.Paths.get(csvFile))) {
-            lines.skip(1) // skip header
-                 .map(line -> line.split(","))
-                 .filter(parts -> parts.length > 1)
-                 .map(parts -> parts[1].trim()) // get the title column
-                 .forEach(intitiatives::add);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
@@ -122,6 +111,7 @@ public class HomeLeftController implements FxController {
 
     public void updateInitiatives(List<String> titles) {
         System.out.println("[DEBUG] HomeLeftController.updateInitiatives called with " + titles.size() + " titles");
+        System.out.println("[DEBUG] Titles: " + titles);
         System.out.println("[DEBUG] Current list view items: " + initiativesListview.getItems().size());
         
         Platform.runLater(() -> {
@@ -129,6 +119,7 @@ public class HomeLeftController implements FxController {
             intitiatives.addAll(titles);
             initiativesListview.setItems(intitiatives);
             System.out.println("[DEBUG] List view updated with " + intitiatives.size() + " items");
+            System.out.println("[DEBUG] Final list view items: " + initiativesListview.getItems().size());
         });
     }
 

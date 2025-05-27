@@ -178,7 +178,7 @@ public class ReaderFiles implements IDataFetcher {
         String csvContent = readWholeCSVFile(destinationUser);
         String[] lines = csvContent.split("\n");
 
-        for (int i = 1; i < lines.length; i++) {
+        for (int i = 1; i < lines.length; i++) { // Start from line 1 for users.csv (only one header line)
             String[] contents = lines[i].split(",");
             if (contents.length < 5) {
                 continue;
@@ -289,62 +289,54 @@ public class ReaderFiles implements IDataFetcher {
     @Override
     public List<Initiative> fetchAllActiveInitiatives() {
         List<Initiative> initiatives = new ArrayList<>();
-        String csvContent = readWholeCSVFile(destinationActiveIntiative);
-        System.out.println("[DEBUG] CSV content: " + csvContent);
-        String[] lines = csvContent.split("\n");
-        System.out.println("[DEBUG] Number of lines in CSV: " + lines.length);
+        String content = readWholeCSVFile(destinationActiveIntiative);
+        if (content == null || content.trim().isEmpty()) {
+            System.out.println("[DEBUG] CSV file is empty or null");
+            return initiatives;
+        }
 
-        for (int i = 1; i < lines.length; i++) {
-            String[] contents = lines[i].split(",", -1);
-            System.out.println("[DEBUG] Line " + i + " split into " + contents.length + " parts: " + java.util.Arrays.toString(contents));
-            if (contents.length < 12) {
+        String[] lines = content.split("\n");
+        System.out.println("[DEBUG] Total lines in CSV: " + lines.length);
+
+        for (int i = 2; i < lines.length; i++) { // Start from line 2 to skip both header lines
+            String line = lines[i].trim();
+            if (line.isEmpty()) continue;
+            
+            // Parse CSV line more carefully to handle JSON in comments field
+            List<String> contents = parseCSVLine(line);
+            System.out.println("[DEBUG] Line " + i + " parsed into " + contents.size() + " parts");
+            
+            if (contents.size() < 12) { // Minimum required columns
                 System.out.println("[DEBUG] Skipping line " + i + " - insufficient columns");
                 continue;
             }
 
-            String initiativeID = contents[0].trim();
-            String title = contents[1].trim();
-            String description = contents[2].trim();
-            String location = contents[3].trim();
-            String duration = contents[4].trim();
-            String startTime = contents[5].trim();
-            String creator = contents[6].trim();
-            String participant = contents[7].trim();
-            String participants = contents[8].trim();
-            boolean isPublic = Boolean.parseBoolean(contents[9].trim());
-            String itemsToSell = contents[10].trim();
-            String numberOfSeats = contents[11].trim();
-            String commentsJson = contents.length > 12 ? contents[12].trim() : "";
-            List<String> comments = new ArrayList<>();
-            List<String> likes = new ArrayList<>();
-            List<Achievement> achievements = new ArrayList<>();
+            try {
+                String initiativeID = contents.get(0).trim();
+                String title = contents.get(1).trim();
+                String description = contents.get(2).trim();
+                String location = contents.get(3).trim();
+                String duration = contents.get(4).trim();
+                String startTime = contents.get(5).trim();
+                String creator = contents.get(6).trim();
+                String participant = contents.get(7).trim();
+                String participants = contents.get(8).trim();
+                String isPublic = contents.get(9).trim();
+                String itemsToSell = contents.get(10).trim();
+                String numberOfSeats = contents.get(11).trim();
+                String commentsJson = contents.size() > 12 ? contents.get(12).trim() : "";
 
-            System.out.println("[DEBUG] Processing initiative: " + initiativeID + " - " + title + " at " + location);
-
-            Initiative initiative = null;
-            switch (initiativeID) {
-                case "CarPool":
-                    initiative = new CarPool(title, description, location, duration, startTime, numberOfSeats, initiativeID, isPublic);
-                    System.out.println("[DEBUG] Created CarPool initiative");
-                    break;
-                case "Garage Sale":
-                    initiative = new GarageSale(title, description, location, duration, startTime, itemsToSell, initiativeID, isPublic);
-                    System.out.println("[DEBUG] Created GarageSale initiative");
-                    break;
-                case "Gardening":
-                    initiative = new Gardening(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
-                    System.out.println("[DEBUG] Created Gardening initiative");
-                    break;
-                case "ToolSharing":
-                    initiative = new ToolSharing(initiativeID, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
-                    System.out.println("[DEBUG] Created ToolSharing initiative");
-                    break;
-                default:
+                Initiative initiative;
+                if ("CarPool".equals(initiativeID)) {
+                    initiative = new CarPool(title, description, location, duration, startTime, numberOfSeats, "CarPool", Boolean.parseBoolean(isPublic));
+                } else if ("Garage Sale".equals(initiativeID)) {
+                    initiative = new GarageSale(title, description, location, duration, startTime, itemsToSell, "Garage Sale", Boolean.parseBoolean(isPublic));
+                } else {
                     System.out.println("[DEBUG] Unknown initiative type: " + initiativeID);
-            }
-            
-            if (initiative != null) {
-                // Parse and set participants
+                    continue;
+                }
+
+                // Set participants
                 if (!participants.isEmpty()) {
                     String[] participantArray = participants.split(";");
                     List<String> participantList = new ArrayList<>();
@@ -354,35 +346,66 @@ public class ReaderFiles implements IDataFetcher {
                         }
                     }
                     initiative.setParticipants(participantList);
-                    System.out.println("[DEBUG] Set participants for " + title + ": " + participantList);
                 }
-                
-                // Parse and set comments
-                if (!commentsJson.isEmpty()) {
+
+                // Parse comments JSON if present
+                if (!commentsJson.isEmpty() && !commentsJson.equals("\"\"")) {
                     try {
-                        String unescapedJson = commentsJson.replace("§", ",").replace("¶", "\n");
-                        JSONArray commentsArray = new JSONArray(unescapedJson);
-                        List<Initiative.Comment> commentList = new ArrayList<>();
+                        // Handle escaped JSON format (old format with § or ¶ or ¶ characters)
+                        String cleanJson = commentsJson;
+                        if (commentsJson.contains("§") || commentsJson.contains("¶") || commentsJson.contains("¶")) {
+                            cleanJson = commentsJson.replace("§", ",").replace("¶", "\n").replace("¶", ",");
+                            System.out.println("[DEBUG] Unescaped JSON for " + title + ": " + cleanJson);
+                        }
+                        
+                        JSONArray commentsArray = new JSONArray(cleanJson);
+                        System.out.println("[DEBUG] Parsing " + commentsArray.length() + " comments for initiative: " + title);
+                        List<Initiative.Comment> comments = new ArrayList<>();
                         for (int j = 0; j < commentsArray.length(); j++) {
                             Initiative.Comment comment = unpackComment(commentsArray.getJSONObject(j));
                             if (comment != null) {
-                                commentList.add(comment);
+                                comments.add(comment);
+                                System.out.println("[DEBUG] Loaded comment: " + comment.getContent());
                             }
                         }
-                        initiative.setCommentList(commentList);
-                        System.out.println("[DEBUG] Loaded " + commentList.size() + " comments for " + title);
+                        initiative.setCommentList(comments);
+                        System.out.println("[DEBUG] Successfully loaded " + comments.size() + " comments for " + title);
                     } catch (Exception e) {
-                        System.out.println("[DEBUG] Error parsing comments for " + title + ": " + e.getMessage());
+                        System.out.println("[DEBUG] Error parsing comments JSON for " + title + ": " + e.getMessage());
+                        System.out.println("[DEBUG] Raw comments JSON: " + commentsJson);
                     }
                 }
-                
+
                 initiatives.add(initiative);
-                System.out.println("[DEBUG] Added initiative to list: " + title);
+                System.out.println("[DEBUG] Successfully loaded initiative: " + title);
+
+            } catch (Exception e) {
+                System.out.println("[DEBUG] Error parsing line " + i + ": " + e.getMessage());
             }
         }
 
         System.out.println("[DEBUG] Total initiatives loaded: " + initiatives.size());
         return initiatives;
+    }
+
+    // Helper method to parse CSV line with proper handling of quoted fields and JSON
+    private List<String> parseCSVLine(String line) {
+        List<String> result = new ArrayList<>();
+        
+        // For lines with JSON comments, use a simpler approach
+        // Split on comma but limit to 13 parts (12 regular fields + 1 comments field)
+        String[] parts = line.split(",", 13);
+        
+        for (String part : parts) {
+            result.add(part);
+        }
+        
+        // If we have fewer than 12 parts, pad with empty strings
+        while (result.size() < 12) {
+            result.add("");
+        }
+        
+        return result;
     }
 
     private Initiative.Comment unpackComment(JSONObject commentObj) {

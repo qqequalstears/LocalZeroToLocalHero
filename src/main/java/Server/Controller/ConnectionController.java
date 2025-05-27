@@ -315,20 +315,30 @@ public class ConnectionController {
         System.out.println("[DEBUG] Found " + allActiveInitiatives.size() + " initiatives to send");
         JSONArray allActiveInitiativesArray = new JSONArray();
 
+        // Send ALL initiatives (both public and private) for community visibility
         for (int i = 0; i < allActiveInitiatives.size(); i++) {
             Initiative initiative = allActiveInitiatives.get(i);
+            System.out.println("[DEBUG] Processing initiative " + i + ": " + initiative.getTitle() + " (type: " + initiative.getClass().getSimpleName() + ")");
             JSONObject initiativeJson = new JSONObject();
 
             if (initiative instanceof CarPool) {
+                System.out.println("[DEBUG] Creating JSON for CarPool: " + initiative.getTitle());
                 initiativeJson = packager.createJsonForInitiativeCarPool((CarPool) initiative);
             } else if (initiative instanceof GarageSale) {
+                System.out.println("[DEBUG] Creating JSON for GarageSale: " + initiative.getTitle());
                 initiativeJson = packager.createJsonForInitiativeGarageSale((GarageSale) initiative);
             } else if (initiative instanceof Gardening) {
+                System.out.println("[DEBUG] Creating JSON for Gardening: " + initiative.getTitle());
                 initiativeJson = packager.createJsonForInitiativeGargening((Gardening) initiative);
             } else if (initiative instanceof ToolSharing) {
+                System.out.println("[DEBUG] Creating JSON for ToolSharing: " + initiative.getTitle());
                 initiativeJson = packager.createJsonForInitiativeToolSharing((ToolSharing) initiative);
+            } else {
+                System.out.println("[DEBUG] Unknown initiative type for: " + initiative.getTitle() + " (type: " + initiative.getClass().getName() + ")");
+                continue;
             }
 
+            System.out.println("[DEBUG] Created JSON with keys: " + initiativeJson.keySet());
             allActiveInitiativesArray.put(initiativeJson);
         }
 
@@ -382,8 +392,17 @@ public class ConnectionController {
                 response.put("type", "joinInitiativeSuccess");
                 response.put("message", "Successfully joined initiative");
             } else {
-                response.put("type", "joinInitiativeFailure");
-                response.put("message", "Failed to join initiative - may be full or already joined");
+                // Check specific reason for failure
+                if (targetInitiative.getParticipants().contains(userEmail)) {
+                    response.put("type", "joinInitiativeFailure");
+                    response.put("message", "You are already a participant in this initiative");
+                } else if (targetInitiative.isFull()) {
+                    response.put("type", "joinInitiativeFailure");
+                    response.put("message", "Initiative is full");
+                } else {
+                    response.put("type", "joinInitiativeFailure");
+                    response.put("message", "Failed to join initiative");
+                }
             }
         } else {
             System.out.println("[DEBUG] Target initiative not found!");

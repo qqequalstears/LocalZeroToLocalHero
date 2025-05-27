@@ -1,3 +1,5 @@
 user1@test.com joined the initiative: Rideto denmark
 user1@test.com joined the initiative: Rideto denmark
 user1@test.com joined the initiative: Rideto denmark
+user1@test.com liked your comment on initiative: Carpool test
+user1@test.com replied to your comment on initiative: Carpool test

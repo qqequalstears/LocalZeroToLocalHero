@@ -1,10 +1,11 @@
 achievementID,achievementName,achievementDescription,achievementPoints,location
-Category,Title,Description,Location,Duration,StartTime,Creator,Participant,Participants,IsPublic,ItemsToSell,NumberOfSeats
-CarPool,Ride to Malm√∂,Need passengers for trip to Malm√∂,Osby,1 hour,09:00,,,user1@test.com,true,,3
-CarPool,Trip to Stockholm,Need 2 passengers for Stockholm trip,Osby,4 hours,08:00,,,user@test.com,true,,4
-CarPool,Rideto denmark,we are riding to denmark,Osby,60,20:00,,,user@test.com;user1@test.com,true,,4
-Garage Sale,testingpls,plswork,Osby,60,15:00,,,user@test.com,false,Toys,
-Garage Sale,work,work,Osby,60,20:00,,,user@test.com,false,Cars,
-Garage Sale,working,on,pls,20,20:00,,,user@test.com,true,test,
-CarPool,Testing,test,test,60,20,user@test.com,,user@test.com,true,,2
-10,CarPool,ZeroToHero,1,test
+Category,Title,Description,Location,Duration,StartTime,Creator,Participant,Participants,IsPublic,ItemsToSell,NumberOfSeats,Comments
+CarPool,Ride to Malm√∂,Need passengers for trip to Malm√∂,Osby,1 hour,09:00,,,user1@test.com,true,,3,
+CarPool,Trip to Stockholm,Need 2 passengers for Stockholm trip,Osby,4 hours,08:00,,,user@test.com,true,,4,
+CarPool,Rideto denmark,we are riding to denmark,Osby,60,20:00,,,user@test.com;user1@test.com,true,,4,
+Garage Sale,testingpls,plswork,Osby,60,15:00,,,user@test.com,false,Toys,,
+Garage Sale,work,work,Osby,60,20:00,,,user@test.com,false,Cars,,
+Garage Sale,working,on,pls,20,20:00,,,user@test.com,true,test,,
+CarPool,Testing,test,test,60,20,,,user@test.com,true,,2,[{"authorEmail":"user@test.com"ß"replies":[{"authorEmail":"user@test.com"ß"replies":[]ß"likedBy":[]ß"id":"8197affd-70a3-4659-b85e-d71288b4417a"ß"content":"i agree"ß"parentId":"5cdde157-992b-44d9-9c43-7c08b0a1f671"ß"likes":0}]ß"likedBy":["user@test.com"]ß"id":"5cdde157-992b-44d9-9c43-7c08b0a1f671"ß"content":"test"ß"likes":1}ß{"authorEmail":"user@test.com"ß"replies":[]ß"likedBy":[]ß"id":"e678f3a9-fdc7-4c67-8503-99e15106ef37"ß"content":"test"ß"likes":0}]
+CarPool,Carpool test,testing the carpool,Malmo,60,20:00,user1@test.com,,user1@test.com,true,,3
+11,CarPool,ZeroToHero,1,Malmo

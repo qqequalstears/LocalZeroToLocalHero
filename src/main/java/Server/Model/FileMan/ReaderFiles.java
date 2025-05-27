@@ -351,11 +351,19 @@ public class ReaderFiles implements IDataFetcher {
                 // Parse comments JSON if present
                 if (!commentsJson.isEmpty() && !commentsJson.equals("\"\"")) {
                     try {
-                        // Handle escaped JSON format (old format with § or ¶ or ¶ characters)
+                        // Decode Base64 encoded JSON
                         String cleanJson = commentsJson;
-                        if (commentsJson.contains("§") || commentsJson.contains("¶") || commentsJson.contains("¶")) {
-                            cleanJson = commentsJson.replace("§", ",").replace("¶", "\n").replace("¶", ",");
-                            System.out.println("[DEBUG] Unescaped JSON for " + title + ": " + cleanJson);
+                        try {
+                            // Try Base64 decoding first (new format)
+                            byte[] decodedBytes = java.util.Base64.getDecoder().decode(commentsJson);
+                            cleanJson = new String(decodedBytes, java.nio.charset.StandardCharsets.UTF_8);
+                            System.out.println("[DEBUG] Decoded Base64 JSON for " + title + ": " + cleanJson);
+                        } catch (IllegalArgumentException e) {
+                            // Fall back to old character replacement method for backward compatibility
+                            if (commentsJson.contains("§") || commentsJson.contains("¶") || commentsJson.contains("¶") || commentsJson.contains("")) {
+                                cleanJson = commentsJson.replace("§", ",").replace("¶", "\n").replace("¶", ",").replace("", ",");
+                                System.out.println("[DEBUG] Unescaped JSON for " + title + ": " + cleanJson);
+                            }
                         }
                         
                         JSONArray commentsArray = new JSONArray(cleanJson);

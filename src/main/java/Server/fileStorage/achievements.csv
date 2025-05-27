@@ -1,11 +1,13 @@
 achievementID,achievementName,achievementDescription,achievementPoints,location
 Category,Title,Description,Location,Duration,StartTime,Creator,Participant,Participants,IsPublic,ItemsToSell,NumberOfSeats,Comments
 CarPool,Ride to Malmรถ,Need passengers for trip to Malmรถ,Osby,1 hour,09:00,,,user1@test.com,true,,3,
-CarPool,Trip to Stockholm,Need 2 passengers for Stockholm trip,Osby,4 hours,08:00,,,user@test.com,true,,4,
+CarPool,Trip to Stockholm,Need 2 passengers for Stockholm trip,Osby,4 hours,08:00,,,user@test.com,true,,4,W3siYXV0aG9yRW1haWwiOiJ1c2VyQHRlc3QuY29tIiwicmVwbGllcyI6W10sImxpa2VkQnkiOltdLCJpZCI6IjUxYTU4ZWYwLWZkNzMtNDM4NS1iMTRkLTI1NmNhYTM0ZjQ4ZSIsImNvbnRlbnQiOiJ3b3JraW5nPyIsImxpa2VzIjowfV0=
 CarPool,Rideto denmark,we are riding to denmark,Osby,60,20:00,,,user@test.com;user1@test.com,true,,4,
 Garage Sale,testingpls,plswork,Osby,60,15:00,,,user@test.com,false,Toys,,
 Garage Sale,work,work,Osby,60,20:00,,,user@test.com,false,Cars,,
 Garage Sale,working,on,pls,20,20:00,,,user@test.com,true,test,,
-CarPool,Testing,test,test,60,20,,,user@test.com,true,,2,[{"authorEmail":"user@test.com"ง"replies":[{"authorEmail":"user@test.com"ง"replies":[]ง"likedBy":[]ง"id":"8197affd-70a3-4659-b85e-d71288b4417a"ง"content":"i agree"ง"parentId":"5cdde157-992b-44d9-9c43-7c08b0a1f671"ง"likes":0}]ง"likedBy":["user@test.com"]ง"id":"5cdde157-992b-44d9-9c43-7c08b0a1f671"ง"content":"test"ง"likes":1}ง{"authorEmail":"user@test.com"ง"replies":[]ง"likedBy":[]ง"id":"e678f3a9-fdc7-4c67-8503-99e15106ef37"ง"content":"test"ง"likes":0}]
-CarPool,Carpool test,testing the carpool,Malmo,60,20:00,user1@test.com,,user1@test.com,true,,3
-11,CarPool,ZeroToHero,1,Malmo
+CarPool,Testing,test,test,60,20,,,user@test.com;user1@test.com,true,,2,
+CarPool,Carpool test,testing the carpool,Malmo,60,20:00,,,user1@test.com;user@test.com,true,,3,W3siYXV0aG9yRW1haWwiOiJ1c2VyQHRlc3QuY29tIiwicmVwbGllcyI6W10sImxpa2VkQnkiOlsidXNlcjFAdGVzdC5jb20iXSwiaWQiOiI3YWJlYzEyZS0zYjY2LTRkY2ItOTNlMi1jNjg5NDFkNGRhODgiLCJjb250ZW50IjoiaGkiLCJsaWtlcyI6MX1d
+Gardening,Gardening event!,We are going to the garden!,Hemma,55,14:53,user@test.com,,user@test.com,true,,,
+Gardening,not workimg?,-,60,60,20:00,user@test.com,,user@test.com,true,,,
+13,Gardening,ZeroToHero,4,60

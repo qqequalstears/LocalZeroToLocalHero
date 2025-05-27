@@ -141,7 +141,7 @@ public class InitiativeManager {
         } else if(initiative instanceof GarageSale garageSale) {
             itemsToSell = garageSale.getItemsToSell();
         }
-        return String.join(",", category, title, description, location, duration, startTime, creator, participant, participants, isPublic, itemsToSell, numberOfSeats);
+        return String.join(",", category, title, description, location, duration, startTime, creator, participant, participants, isPublic, itemsToSell, numberOfSeats, "");
     }
 
     public void updateInitiativeParticipants(Initiative initiative) {

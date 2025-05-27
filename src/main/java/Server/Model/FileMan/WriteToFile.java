@@ -157,7 +157,7 @@ public class WriteToFile implements IDataWriter {
      * @Date 2025-04-16
      */
     private String writeToActiveIntiative(String data) {
-        String header = "category,title,description,location,duration,startTime,creator,participant,participants,isPublic,itemsToSell,numberOfSeats\n";
+        String header = "category,title,description,location,duration,startTime,creator,participant,participants,isPublic,itemsToSell,numberOfSeats,comments\n";
         File file = destinationActiveIntiative;
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {  // false = OVERWRITE mode

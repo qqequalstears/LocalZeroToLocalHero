@@ -182,7 +182,9 @@ public class FileHandler {
                 for (Initiative.Comment comment : init.getCommentList()) {
                     commentsArray.put(packComment(comment));
                 }
-                commentsJson = commentsArray.toString().replace(",", "§").replace("\n", "¶"); // Escape commas and newlines
+                // Use Base64 encoding instead of character replacement to avoid encoding issues
+                String jsonString = commentsArray.toString();
+                commentsJson = java.util.Base64.getEncoder().encodeToString(jsonString.getBytes(java.nio.charset.StandardCharsets.UTF_8));
             }
             
             csvContent.append(String.join(",", category, title, description, location, duration, startTime, "", "", participants, isPublic, itemsToSell, numberOfSeats, commentsJson)).append("\n");

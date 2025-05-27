@@ -10,6 +10,7 @@ import java.io.IOException;
 
 public class ViewInitiativeStage implements StageCreator {
 
+    private Stage initiativeStage;
 
     public ViewInitiativeStage( ) {
         
@@ -17,16 +18,26 @@ public class ViewInitiativeStage implements StageCreator {
 
     @Override
     public void createStage() {
-        Stage recipeStage = new Stage();
+        initiativeStage = new Stage();
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("/Initiative/InitiativeView.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        recipeStage.setScene(new Scene(root, 600, 400));
-        recipeStage.setResizable(false);
-        recipeStage.show();
+        initiativeStage.setScene(new Scene(root, 600, 400));
+        initiativeStage.setResizable(false);
+        initiativeStage.show();
+    }
+
+    public void closeStage() {
+        if (initiativeStage != null) {
+            initiativeStage.close();
+        }
+    }
+
+    public Stage getStage() {
+        return initiativeStage;
     }
 
 }

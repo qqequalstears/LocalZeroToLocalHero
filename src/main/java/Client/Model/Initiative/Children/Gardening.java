@@ -20,10 +20,14 @@ import java.util.List;
 public class Gardening extends Initiative implements Log {
 
     private User needsHelp;
-    private List<User> helpers;
+    private List<User> helpers = new java.util.ArrayList<>();
 
     public Gardening(String category, String title, String description, String location, String duration, String startTime, List<String> comments, List<String> likes, boolean isPublic, List<Achievement> achievements) {
         super(category, title, description, location, duration, startTime, comments, likes, isPublic, achievements);
+    }
+
+    public Gardening(String title, String description, String location, String duration, String startTime, String category, boolean isPublic) {
+        super(title, description, location, duration, startTime, category, isPublic);
     }
 
     @Override

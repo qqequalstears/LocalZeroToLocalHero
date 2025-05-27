@@ -331,6 +331,7 @@ public class ConnectionController {
     }
 
     private void sendAllActiveInitiatives(ClientConnection sender) {
+        System.out.println("[DEBUG] sendAllActiveInitiatives CALLED");
         System.out.println("[DEBUG] sendAllActiveInitiatives called");
         List<Initiative> allActiveInitiatives = FileHandler.getInstance().getAllActiveInitiatives();
         System.out.println("[DEBUG] Found " + allActiveInitiatives.size() + " initiatives to send");

@@ -95,7 +95,7 @@ public class Unpacker {
         }
 
         else if (category.equals("Gardening")) {
-            Gardening g = new Gardening(category, title, description, location, duration, startTime, new ArrayList<>(), new ArrayList<>(), isPublic, new ArrayList<>());
+            Gardening g = new Gardening(title, description, location, duration, startTime, category, isPublic);
 
             if (obj.has("needsHelp")) {
                 g.setNeedsHelp(unpackaUser(obj.getJSONObject("needsHelp")));
@@ -114,7 +114,7 @@ public class Unpacker {
         }
 
         else if (category.equals("ToolSharing")) {
-            ToolSharing ts = new ToolSharing(category, title, description, location, duration, startTime, new ArrayList<>(), new ArrayList<>(), isPublic, new ArrayList<>());
+            ToolSharing ts = new ToolSharing(title, description, location, duration, startTime, category, isPublic);
 
             if (obj.has("loaner")) {
                 ts.setLoaner(unpackaUser(obj.getJSONObject("loaner")));

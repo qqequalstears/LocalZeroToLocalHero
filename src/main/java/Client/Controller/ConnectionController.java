@@ -313,7 +313,7 @@ public class ConnectionController {
      * @autor Martin Frick
      */
     public void sendRequestForInitiatives(){
-
+        System.out.println("[DEBUG] sendRequestForInitiatives CALLED");
         JSONObject getInitJson = packager.createIntentionJson("getInitiatives");
         sendJsonObject(getInitJson);
     }
@@ -347,6 +347,7 @@ public class ConnectionController {
     }
 
     private void updateInitiatives(JSONObject jsonObject) {
+        System.out.println("[DEBUG] updateInitiatives CALLED");
         System.out.println("[DEBUG] Client updateInitiatives called with: " + jsonObject.toString());
         JSONArray array = jsonObject.getJSONArray("listOfInitiatives");
         System.out.println("[DEBUG] Client received " + array.length() + " initiatives");

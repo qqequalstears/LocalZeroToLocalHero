@@ -331,6 +331,10 @@ public class ReaderFiles implements IDataFetcher {
                     initiative = new CarPool(title, description, location, duration, startTime, numberOfSeats, "CarPool", Boolean.parseBoolean(isPublic));
                 } else if ("Garage Sale".equals(initiativeID)) {
                     initiative = new GarageSale(title, description, location, duration, startTime, itemsToSell, "Garage Sale", Boolean.parseBoolean(isPublic));
+                } else if ("Gardening".equals(initiativeID)) {
+                    initiative = new Gardening(title, description, location, duration, startTime, "Gardening", Boolean.parseBoolean(isPublic));
+                } else if ("ToolSharing".equals(initiativeID)) {
+                    initiative = new ToolSharing(title, description, location, duration, startTime, "ToolSharing", Boolean.parseBoolean(isPublic));
                 } else {
                     System.out.println("[DEBUG] Unknown initiative type: " + initiativeID);
                     continue;

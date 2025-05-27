@@ -2,6 +2,7 @@ package Server.Controller;
 
 import Client.Model.Initiative.Children.CarPool;
 import Client.Model.Initiative.Children.GarageSale;
+import Client.Model.Initiative.Children.Gardening;
 import Client.Model.Initiative.Children.ToolSharing;
 import Client.Model.Initiative.Parent.Initiative;
 import Server.Model.AchievementTracker;
@@ -47,7 +48,7 @@ public class InitiativeManager {
                 dataIsValid = validateRegularInitiative(name,description,location,duration,startTime);
                 System.out.println("[DEBUG] Gardening validation result: " + dataIsValid);
                 if (dataIsValid) {
-                    initiativeToCreate = new ToolSharing(name,description,location,duration,startTime, category, isPublic);
+                    initiativeToCreate = new Gardening(name,description,location,duration,startTime, category, isPublic);
                 }
                 break;
             case "ToolSharing":

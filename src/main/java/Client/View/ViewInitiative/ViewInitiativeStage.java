@@ -25,7 +25,7 @@ public class ViewInitiativeStage implements StageCreator {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        initiativeStage.setScene(new Scene(root, 600, 400));
+        initiativeStage.setScene(new Scene(root, 800, 700));
         initiativeStage.setResizable(false);
         initiativeStage.show();
     }

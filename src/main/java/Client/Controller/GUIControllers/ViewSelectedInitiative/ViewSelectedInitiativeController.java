@@ -29,6 +29,8 @@ public class ViewSelectedInitiativeController implements Client.Controller.GUICo
     @FXML
     private Label initName;
     @FXML
+    private TextField descriptionField;
+    @FXML
     private VBox commentsBox;
     @FXML
     private TextField txtInputField;
@@ -166,6 +168,7 @@ public class ViewSelectedInitiativeController implements Client.Controller.GUICo
     private void populateCommonFields(Initiative initiative) {
         this.initiative = initiative;
         initName.setText(initiative.getTitle());
+        descriptionField.setText(initiative.getDescription());
 
         // Show participants
         List<String> participants = initiative.getParticipants();

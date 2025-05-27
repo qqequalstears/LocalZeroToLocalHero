@@ -1,16 +1,8 @@
 achievementID,achievementName,achievementDescription,achievementPoints,location
 Category,Title,Description,Location,Duration,StartTime,Creator,Participant,Participants,IsPublic,ItemsToSell,NumberOfSeats,Comments
-CarPool,Ride to Malmö,Need passengers for trip to Malmö,Osby,1 hour,09:00,,,user1@test.com,true,,3,
+CarPool,Ride to Malmö,Need passengers for trip to Malmö,Osby,1 hour,09:00,,,user1@test.com;user@test.com,true,,3,
 CarPool,Trip to Stockholm,Need 2 passengers for Stockholm trip,Osby,4 hours,08:00,,,user@test.com,true,,4,W3siYXV0aG9yRW1haWwiOiJ1c2VyQHRlc3QuY29tIiwicmVwbGllcyI6W10sImxpa2VkQnkiOltdLCJpZCI6IjUxYTU4ZWYwLWZkNzMtNDM4NS1iMTRkLTI1NmNhYTM0ZjQ4ZSIsImNvbnRlbnQiOiJ3b3JraW5nPyIsImxpa2VzIjowfV0=
 CarPool,Rideto denmark,we are riding to denmark,Osby,60,20:00,,,user@test.com;user1@test.com,true,,4,
-Garage Sale,testingpls,plswork,Osby,60,15:00,,,user@test.com,false,Toys,,
-Garage Sale,work,work,Osby,60,20:00,,,user@test.com,false,Cars,,
-Garage Sale,working,on,pls,20,20:00,,,user@test.com,true,test,,
-CarPool,Testing,test,test,60,20,,,user@test.com;user1@test.com,true,,2,
-CarPool,Carpool test,testing the carpool,Malmo,60,20:00,,,user1@test.com;user@test.com,true,,3,W3siYXV0aG9yRW1haWwiOiJ1c2VyQHRlc3QuY29tIiwicmVwbGllcyI6W10sImxpa2VkQnkiOlsidXNlcjFAdGVzdC5jb20iXSwiaWQiOiI3YWJlYzEyZS0zYjY2LTRkY2ItOTNlMi1jNjg5NDFkNGRhODgiLCJjb250ZW50IjoiaGkiLCJsaWtlcyI6MX1d
-Gardening,Gardening event!,We are going to the garden!,Hemma,55,14:53,,,user@test.com,true,,,
-Gardening,not workimg?,-,60,60,20:00,,,user@test.com,true,,,
-Gardening,test,test,test,60,20:00,,,user@test.com,true,,,
-Gardening,Testing Garden,Hej,hemma,60,20:00,,,user@test.com;user1@test.com,true,,,W3siYXV0aG9yRW1haWwiOiJ1c2VyQHRlc3QuY29tIiwicmVwbGllcyI6W3siYXV0aG9yRW1haWwiOiJ1c2VyMUB0ZXN0LmNvbSIsInJlcGxpZXMiOltdLCJsaWtlZEJ5IjpbXSwiaWQiOiIyOTc2NzA3Yi0xZDU2LTRjNGItODliNS1jMzllYjFlM2Q4YzAiLCJjb250ZW50IjoieW8iLCJwYXJlbnRJZCI6ImRhZjczN2YzLTUxNTMtNDY4ZS05YjRjLWE3ODMyZTk2ZDgzMiIsImxpa2VzIjowfV0sImxpa2VkQnkiOltdLCJpZCI6ImRhZjczN2YzLTUxNTMtNDY4ZS05YjRjLWE3ODMyZTk2ZDgzMiIsImNvbnRlbnQiOiJoaSIsImxpa2VzIjowfV0=
-Gardening,testing garden garden,hej garden,Osby,60,20:00,user@test.com,,user@test.com,true,,,
-16,Gardening,ZeroToHero,3,Osby
+Garage Sale,testingpls,plswork,Osby,60,15:00,,,user@test.com,false,Toys,,Gardening,Gardening at my house,Come over for my gardening event!,My house,200,12:00,user1@test.com,,user1@test.com,false,,,
+Gardening,test,test,test,50,20:00,user@test.com,,user@test.com,false,,,
+8,Gardening,ZeroToHero,3,test

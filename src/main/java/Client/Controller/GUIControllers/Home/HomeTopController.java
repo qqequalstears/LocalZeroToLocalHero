@@ -56,12 +56,18 @@ public class HomeTopController implements FxController {
 
     public void updateNotificationsButton() {
         int unread = Notifications.getUnreadCount();
-        if (unread > 0) {
-            notificationsButton.setText("Notifications (" + unread + ")");
+        System.out.println("[DEBUG] HomeTopController.updateNotificationsButton called, unread: " + unread);
+        
+        if (notificationsButton != null) {
+            if (unread > 0) {
+                notificationsButton.setText("Notifications (" + unread + ")");
+            } else {
+                notificationsButton.setText("Notifications");
+            }
+            System.out.println("[DEBUG] Notifications button text updated to: " + notificationsButton.getText());
         } else {
-            notificationsButton.setText("Notifications");
+            System.out.println("[DEBUG] WARNING: notificationsButton is null!");
         }
-        System.out.println("[DEBUG] Notifications button updated, unread: " + unread);
     }
 
     public void notifyUser() {

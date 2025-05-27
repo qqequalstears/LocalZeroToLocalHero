@@ -99,14 +99,22 @@ public class GUIInController {
     }
 
     public void newNotification() {
+        System.out.println("[DEBUG] GUIInController.newNotification() called");
+        System.out.println("[DEBUG] Current notification count: " + Notifications.getUnreadCount());
+        
         if (GUIControllerRegistry.getInstance().contains(NotificationController.class.getName())) {
+            System.out.println("[DEBUG] Notification window is open, updating list");
             NotificationController notificationController = (NotificationController) GUIControllerRegistry.getInstance().get(NotificationController.class.getName());
             Platform.runLater(notificationController::updateNotifcations);
+        }
+        
+        // Always update the home button regardless of whether notification window is open
+        HomeTopController homeTopController = (HomeTopController) GUIControllerRegistry.getInstance().get(HomeTopController.class.getName());
+        if (homeTopController != null) {
+            System.out.println("[DEBUG] Updating notification button");
+            Platform.runLater(homeTopController::notifyUser);
         } else {
-            HomeTopController homeTopController = (HomeTopController) GUIControllerRegistry.getInstance().get(HomeTopController.class.getName());
-            if (homeTopController != null) {
-                Platform.runLater(homeTopController::notifyUser);
-            }
+            System.out.println("[DEBUG] HomeTopController not found in registry");
         }
     }
 

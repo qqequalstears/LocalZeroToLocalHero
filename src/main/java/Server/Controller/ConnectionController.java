@@ -120,6 +120,13 @@ public class ConnectionController {
             case "getInitiatives":
                 sendAllActiveInitiatives(sender);
                 break;
+            case "testNotification":
+                // Test notification functionality
+                String testEmail = jsonObject.optString("email", "test@test.com");
+                String testMessage = jsonObject.optString("message", "Test notification from server");
+                System.out.println("[DEBUG] Sending test notification to: " + testEmail);
+                sendNotification(testMessage, testEmail);
+                break;
             default:
                 System.out.println("Intention was not found: " + intention);
                 break;
@@ -137,18 +144,28 @@ public class ConnectionController {
     }
 
     private void deliverStoredNotifications(String mail, ClientConnection sender) {
+        System.out.println("[DEBUG] Delivering stored notifications for: " + mail);
         String filename = "notifications_" + mail + ".txt";
         String notifications = fileStorageService.readFile(filename);
+        System.out.println("[DEBUG] Read notifications content: '" + notifications + "'");
+        
         if (!notifications.isEmpty()) {
-            for (String notification : notifications.split("\n")) {
+            String[] notificationLines = notifications.split("\n");
+            System.out.println("[DEBUG] Found " + notificationLines.length + " notification lines");
+            
+            for (String notification : notificationLines) {
                 if (!notification.trim().isEmpty()) {
+                    System.out.println("[DEBUG] Sending stored notification: " + notification);
                     JSONObject notificationPackage = new JSONObject();
                     notificationPackage.put("type", "notification");
-                    notificationPackage.put("notification", notification);
+                    notificationPackage.put("notification", notification.trim());
                     sender.sendObject(notificationPackage.toString());
                 }
             }
             fileStorageService.deleteFile(filename);
+            System.out.println("[DEBUG] Stored notifications delivered and file deleted");
+        } else {
+            System.out.println("[DEBUG] No stored notifications found for: " + mail);
         }
     }
 
@@ -179,24 +196,28 @@ public class ConnectionController {
 
     public void sendNotification(String notification, String mailToReceiver) {
         System.out.println("[DEBUG] sendNotification called for: " + mailToReceiver + " with: " + notification);
+        
+        // Validate inputs
+        if (notification == null || notification.trim().isEmpty() || mailToReceiver == null || mailToReceiver.trim().isEmpty()) {
+            System.out.println("[DEBUG] Invalid notification parameters, skipping");
+            return;
+        }
+        
         ClientConnection receiver = clientUpdater.getClientConnection(mailToReceiver);
-        System.out.println("Sending notification to " + receiver);
+        System.out.println("[DEBUG] Receiver connection: " + (receiver != null ? "found" : "not found"));
+        
         if (receiver != null) {
+            // Send to online user
             JSONObject notificationPackage = new JSONObject();
             notificationPackage.put("type", "notification");
             notificationPackage.put("notification", notification);
             receiver.sendObject(notificationPackage.toString());
+            System.out.println("[DEBUG] Notification sent to online user: " + mailToReceiver);
         } else {
-            // Store notification in a file for offline users
-            try {
-                File file = new File("notifications_" + mailToReceiver + ".txt");
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-                    writer.write(notification);
-                    writer.newLine();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // Store notification for offline user using FileStorageService
+            String filename = "notifications_" + mailToReceiver + ".txt";
+            fileStorageService.appendToFile(filename, notification);
+            System.out.println("[DEBUG] Notification stored for offline user: " + mailToReceiver);
         }
     }
 
@@ -447,10 +468,12 @@ public class ConnectionController {
     }
 
     private void handleAddComment(JSONObject jsonObject, ClientConnection sender) {
+        System.out.println("[DEBUG] handleAddComment called with: " + jsonObject.toString());
         String userEmail = jsonObject.getString("userEmail");
         String initiativeTitle = jsonObject.getString("initiativeTitle");
         String commentContent = jsonObject.getString("content");
         String commentId = java.util.UUID.randomUUID().toString();
+        System.out.println("[DEBUG] Comment details - User: " + userEmail + ", Initiative: " + initiativeTitle + ", Content: " + commentContent);
         
         List<Initiative> initiatives = FileHandler.getInstance().getAllActiveInitiatives();
         Initiative targetInitiative = null;
@@ -483,6 +506,9 @@ public class ConnectionController {
                 if (!participantEmail.equals(userEmail)) {
                     String notification = userEmail + " commented on initiative: " + initiativeTitle;
                     sendNotification(notification, participantEmail);
+                    System.out.println("[DEBUG] Comment notification sent to participant: " + participantEmail);
+                } else {
+                    System.out.println("[DEBUG] Skipping self-comment notification for: " + participantEmail);
                 }
             }
             
@@ -498,11 +524,13 @@ public class ConnectionController {
     }
 
     private void handleReplyComment(JSONObject jsonObject, ClientConnection sender) {
+        System.out.println("[DEBUG] handleReplyComment called with: " + jsonObject.toString());
         String userEmail = jsonObject.getString("userEmail");
         String initiativeTitle = jsonObject.getString("initiativeTitle");
         String commentContent = jsonObject.getString("content");
         String parentCommentId = jsonObject.getString("parentCommentId");
         String replyId = java.util.UUID.randomUUID().toString();
+        System.out.println("[DEBUG] Reply details - User: " + userEmail + ", Initiative: " + initiativeTitle + ", Parent: " + parentCommentId);
         
         List<Initiative> initiatives = FileHandler.getInstance().getAllActiveInitiatives();
         Initiative targetInitiative = null;
@@ -534,9 +562,14 @@ public class ConnectionController {
                 // Update persistence
                 initiativeManager.updateInitiativeComments(targetInitiative);
                 
-                // Notify original comment author
-                String notification = userEmail + " replied to your comment on initiative: " + initiativeTitle;
-                sendNotification(notification, parentComment.getAuthorEmail());
+                // Notify original comment author (but not if replying to own comment)
+                if (!parentComment.getAuthorEmail().equals(userEmail)) {
+                    String notification = userEmail + " replied to your comment on initiative: " + initiativeTitle;
+                    sendNotification(notification, parentComment.getAuthorEmail());
+                    System.out.println("[DEBUG] Reply notification sent to: " + parentComment.getAuthorEmail());
+                } else {
+                    System.out.println("[DEBUG] Skipping self-reply notification");
+                }
                 
                 response.put("type", "replyCommentSuccess");
                 response.put("replyId", replyId);
@@ -554,9 +587,11 @@ public class ConnectionController {
     }
 
     private void handleLikeComment(JSONObject jsonObject, ClientConnection sender) {
+        System.out.println("[DEBUG] handleLikeComment called with: " + jsonObject.toString());
         String userEmail = jsonObject.getString("userEmail");
         String initiativeTitle = jsonObject.getString("initiativeTitle");
         String commentId = jsonObject.getString("commentId");
+        System.out.println("[DEBUG] Like details - User: " + userEmail + ", Initiative: " + initiativeTitle + ", Comment: " + commentId);
         
         List<Initiative> initiatives = FileHandler.getInstance().getAllActiveInitiatives();
         Initiative targetInitiative = null;
@@ -583,10 +618,13 @@ public class ConnectionController {
                 // Update persistence
                 initiativeManager.updateInitiativeComments(targetInitiative);
                 
-                // Notify comment author
+                // Notify comment author (but not if liking own comment)
                 if (!comment.getAuthorEmail().equals(userEmail)) {
                     String notification = userEmail + " liked your comment on initiative: " + initiativeTitle;
                     sendNotification(notification, comment.getAuthorEmail());
+                    System.out.println("[DEBUG] Like notification sent to: " + comment.getAuthorEmail());
+                } else {
+                    System.out.println("[DEBUG] Skipping self-like notification");
                 }
                 
                 response.put("type", "likeCommentSuccess");

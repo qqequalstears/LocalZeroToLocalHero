@@ -246,10 +246,15 @@ public class ConnectionController {
     }
 
     private void newNotification(JSONObject jsonObject) {
-        System.out.println("REACHED NOTIFICATION METHOD");
+        System.out.println("[DEBUG] Client received notification JSON: " + jsonObject.toString());
         String notification = (String) jsonObject.get("notification");
+        System.out.println("[DEBUG] Notification content: " + notification);
+        
         Notifications.addNotification(notification);
+        System.out.println("[DEBUG] Notification added to model, new count: " + Notifications.getUnreadCount());
+        
         guiInController.newNotification();
+        System.out.println("[DEBUG] GUI notification update triggered");
     }
 
     public void requestAchievements() {

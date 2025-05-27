@@ -242,23 +242,36 @@ public class ViewSelectedInitiativeController implements Client.Controller.GUICo
     }
 
     private void handleLikeComment(String commentId) {
+        System.out.println("[DEBUG] handleLikeComment called for commentId: " + commentId);
         String initiativeTitle = GUIInController.getInstance().getCurrentlySelectedInitiative();
+        System.out.println("[DEBUG] Initiative title: " + initiativeTitle);
         if (initiativeTitle != null) {
+            System.out.println("[DEBUG] Sending like comment request to server");
             guiOutController.likeComment(initiativeTitle, commentId);
+        } else {
+            System.out.println("[DEBUG] ERROR: Initiative title is null");
         }
     }
 
     private void handleReplyComment(String parentCommentId) {
+        System.out.println("[DEBUG] handleReplyComment called for parentCommentId: " + parentCommentId);
         String replyContent = txtInputField.getText().trim();
+        System.out.println("[DEBUG] Reply content: " + replyContent);
+        
         if (replyContent.isEmpty()) {
+            System.out.println("[DEBUG] Reply content is empty, showing error");
             guiInController.notifyUser("Please enter a reply");
             return;
         }
 
         String initiativeTitle = GUIInController.getInstance().getCurrentlySelectedInitiative();
+        System.out.println("[DEBUG] Initiative title: " + initiativeTitle);
         if (initiativeTitle != null) {
+            System.out.println("[DEBUG] Sending reply comment request to server");
             guiOutController.replyComment(initiativeTitle, replyContent, parentCommentId);
             txtInputField.clear();
+        } else {
+            System.out.println("[DEBUG] ERROR: Initiative title is null");
         }
     }
 
